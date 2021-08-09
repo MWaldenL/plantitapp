@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "280609903358",
+    "project_id": "plantitapp-7316c",
+    "storage_bucket": "plantitapp-7316c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280609903358:android:9af3153fa97b57b234cbaf",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s15.group8.mobdeve_mp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "280609903358-qr78gmh7iq7595d6s0bprcuuvh2q5seu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobdeve.s15.group8.mobdeve_mp",
+            "certificate_hash": "896b36a96ab79c48199d6c971bd7897b40a0fd7d"
+          }
+        },
+        {
+          "client_id": "280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_JCITvFUy0xsnehyaLZGmEnxz8OdJ7Y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
