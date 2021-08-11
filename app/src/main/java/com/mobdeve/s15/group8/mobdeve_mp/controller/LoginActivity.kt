@@ -12,7 +12,8 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.model.GoogleSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.FirebaseSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: SignInButton
@@ -40,6 +41,16 @@ class LoginActivity : AppCompatActivity() {
             .signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val user = GoogleSingleton.firebaseAuth.currentUser
+                    val userId = user?.uid.toString()
+                    val userDoc = FirebaseSingleton.usersCollection.document(userId)
+                    userDoc.get().addOnSuccessListener { doc ->
+                        if (doc.data == null) {
+                            FirebaseSingleton.usersCollection.document(userId).set(hashMapOf(
+                                "name" to user?.displayName
+                            ))
+                        }
+                    }
                     val dashboardIntent = Intent(this@LoginActivity, DashboardActivity::class.java)
                     dashboardLauncher.launch(dashboardIntent)
                 }

@@ -7,7 +7,7 @@
     tools:context=".controller.DashboardActivity">
 
     <Button
-        android:id="@+id/button_signout"
+        android:id="@+id/btn_signout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign out"
