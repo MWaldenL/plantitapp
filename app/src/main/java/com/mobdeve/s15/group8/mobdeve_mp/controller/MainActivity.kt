@@ -13,10 +13,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (GoogleSingleton.firebaseAuth.currentUser == null) {
-            launcher.launch(Intent(this@MainActivity, LoginActivity::class.java))
-        } else {
-            launcher.launch(Intent(this@MainActivity, DashboardActivity::class.java))
-        }
+        launcher.launch(Intent(this@MainActivity, ViewAllPlantsActivity::class.java))
+//        if (GoogleSingleton.firebaseAuth.currentUser == null) {
+//            launcher.launch(Intent(this@MainActivity, LoginActivity::class.java))
+//        } else {
+//            launcher.launch(Intent(this@MainActivity, DashboardActivity::class.java))
+//        }
     }
 }
