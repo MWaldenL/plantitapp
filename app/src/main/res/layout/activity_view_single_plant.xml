@@ -81,47 +81,66 @@
                 app:layout_constraintStart_toEndOf="@+id/tv_purchase_date_label"
                 app:layout_constraintTop_toBottomOf="@+id/tv_common_name" />
 
-            <TextView
-                android:id="@+id/tv_task_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/task_header"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_purchase_date_label" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_tasks"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:overScrollMode="never"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
+                app:cardMaxElevation="2dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_task_header" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_purchase_date_label">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_tasks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:overScrollMode="never"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_task_header" />
+
+                    <TextView
+                        android:id="@+id/tv_task_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_header"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp"
-                app:cardMaxElevation="12dp"
+                app:cardMaxElevation="2dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="false"
-                app:contentPadding="8dp"
+                app:contentPadding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerview_tasks">
+                app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
