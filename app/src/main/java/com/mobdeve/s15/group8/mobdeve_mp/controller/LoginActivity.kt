@@ -12,7 +12,7 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.FirebaseSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
 
 class LoginActivity : AppCompatActivity() {
@@ -43,10 +43,10 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = GoogleSingleton.firebaseAuth.currentUser
                     val userId = user?.uid.toString()
-                    val userDoc = FirebaseSingleton.usersCollection.document(userId)
+                    val userDoc = F.usersCollection.document(userId)
                     userDoc.get().addOnSuccessListener { doc ->
                         if (doc.data == null) {
-                            FirebaseSingleton.usersCollection.document(userId).set(hashMapOf(
+                            F.usersCollection.document(userId).set(hashMapOf(
                                 "name" to user?.displayName
                             ))
                         }

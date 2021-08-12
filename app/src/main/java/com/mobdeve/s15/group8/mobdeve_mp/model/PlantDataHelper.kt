@@ -1,13 +1,13 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model
 
 import com.google.firebase.firestore.QuerySnapshot
-import com.mobdeve.s15.group8.mobdeve_mp.FirebaseSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.F
 import kotlinx.coroutines.tasks.await
 
 class PlantDataHelper {
     private suspend fun fetchData(): QuerySnapshot? {
         return try {
-            val data = FirebaseSingleton.plantsCollection.get().await()
+            val data = F.plantsCollection.get().await()
             data
         } catch (e: Exception) {
             null
