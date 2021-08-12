@@ -5,4 +5,5 @@ import com.google.firebase.ktx.Firebase
 
 object FirebaseSingleton {
     val usersCollection = Firebase.firestore.collection("users")
+    val plantsCollection = Firebase.firestore.collection("plants")
 }
