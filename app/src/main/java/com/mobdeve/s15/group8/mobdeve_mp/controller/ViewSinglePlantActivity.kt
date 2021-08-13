@@ -1,6 +1,5 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller
 
-import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,8 +7,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -22,6 +19,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
     private lateinit var ibtnPlantOptions: ImageButton
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
@@ -40,8 +38,8 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
         val journalData = JournalDataHelper().fetchData()
 
-        recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
-        recyclerViewJournal.adapter = JournalListAdapter(journalData)
+        recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
+        recyclerViewJournal.adapter = JournalListAdapter(journalData, true)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 

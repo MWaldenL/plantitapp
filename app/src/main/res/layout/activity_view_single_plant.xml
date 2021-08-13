@@ -159,11 +159,11 @@
                         android:text="@string/view_all_button"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_recent_journal"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_all_journal"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerview_recent_journal"
+                        android:id="@+id/recyclerview_all_journal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"

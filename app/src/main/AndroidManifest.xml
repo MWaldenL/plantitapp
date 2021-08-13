@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MOBDEVEMP">
         <activity
+            android:name=".controller.ViewAllJournalsActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.ViewSinglePlantActivity"
             android:exported="true" />
         <activity android:name=".controller.ViewAllPlantsActivity" />

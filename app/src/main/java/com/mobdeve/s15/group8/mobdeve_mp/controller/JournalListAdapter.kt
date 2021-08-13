@@ -7,10 +7,13 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.view.JournalViewHolder
 
-class JournalListAdapter(private val data: ArrayList<Journal>):RecyclerView.Adapter<JournalViewHolder>() {
+class JournalListAdapter(private val data: ArrayList<Journal>, private val isRecent: Boolean):RecyclerView.Adapter<JournalViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_journal, parent, false)
+
+        val itemLayout = if (isRecent) R.layout.item_journal else R.layout.item_journal_all
+        val view = inflater.inflate(itemLayout, parent, false)
+
         return JournalViewHolder(view)
     }
 
