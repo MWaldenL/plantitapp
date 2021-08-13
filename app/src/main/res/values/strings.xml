@@ -3,4 +3,14 @@
     <string name="web_client_id">
         280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com
     </string>
+
+
+    <string-array name="tasks_array">
+        <item>Water</item>
+        <item>Weed</item>
+        <item>Prune</item>
+        <item>Move to sunlight</item>
+        <item>Move to dark room</item>
+        <item>Fertilize</item>
+    </string-array>
 </resources>
