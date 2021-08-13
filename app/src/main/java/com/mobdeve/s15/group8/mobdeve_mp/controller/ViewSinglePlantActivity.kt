@@ -51,6 +51,8 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         val inflater = popup.menuInflater
         inflater.inflate(R.menu.plant_menu, popup.menu)
 
+        // TODO: define actions for each option
+
         popup.setOnMenuItemClickListener {
 
             when (it.itemId) {
