@@ -2,14 +2,13 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.PlantListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.model.PlantRepository
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -23,14 +22,11 @@ class ViewAllPlantsActivity: AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_plants)
-        val pr = PlantRepository()
-        Log.d("DEBUG", "Created view all plants")
         launch {
-            pr.getData()
+            PlantRepository.fetchData()
             withContext(Dispatchers.Main) {
-                Log.d("DEBUG", "after get Data")
                 recyclerView = findViewById(R.id.recyclerview_plant)
-                recyclerView.adapter = PlantListAdapter(pr.plantList, mViewPlantLauncher)
+                recyclerView.adapter = PlantListAdapter(PlantRepository.plantList, mViewPlantLauncher)
                 recyclerView.layoutManager = GridLayoutManager(applicationContext, 2)
             }
         }

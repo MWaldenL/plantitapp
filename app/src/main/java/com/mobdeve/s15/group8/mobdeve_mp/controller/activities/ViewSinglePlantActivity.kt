@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 
 class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var recyclerViewTask: RecyclerView

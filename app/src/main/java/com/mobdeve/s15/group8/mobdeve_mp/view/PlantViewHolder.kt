@@ -5,7 +5,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 
 class PlantViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val mImage: ImageView = itemView.findViewById(R.id.image_plant)

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.model.Journal
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.view.JournalViewHolder
 
 class JournalListAdapter(private val data: ArrayList<Journal>, private val isRecent: Boolean):RecyclerView.Adapter<JournalViewHolder>() {

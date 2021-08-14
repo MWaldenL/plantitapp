@@ -54,7 +54,7 @@
             android:text="Start" />
 
         <DatePicker
-            android:id="@+id/simpleDatePicker"
+            android:id="@+id/date_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

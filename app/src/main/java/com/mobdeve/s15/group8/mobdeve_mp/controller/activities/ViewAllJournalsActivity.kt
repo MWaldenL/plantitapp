@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.model.Journal
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 
 class ViewAllJournalsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

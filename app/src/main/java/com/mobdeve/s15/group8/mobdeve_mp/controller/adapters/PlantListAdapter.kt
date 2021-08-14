@@ -7,7 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.ViewSinglePlantActivity
-import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.view.PlantViewHolder
 
 class PlantListAdapter(
