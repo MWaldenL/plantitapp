@@ -5,7 +5,7 @@
     <string name="common_name_placeholder">Common Name</string>
     <string name="date_placeholder">January 1, 1999</string>
 
-    <string name="date_label">Date of Purchase:</string>
+    <string name="date_label">Date Added:</string>
 
     <string name="task_header">Daily Tasks</string>
     <string name="journal_header">Plant Journal</string>

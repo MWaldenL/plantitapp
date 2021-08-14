@@ -38,6 +38,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         mBindData()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun mInitViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
         tvNickname = findViewById(R.id.tv_nickname)
