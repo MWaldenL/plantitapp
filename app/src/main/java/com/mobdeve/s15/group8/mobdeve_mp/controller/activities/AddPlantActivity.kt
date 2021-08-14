@@ -1,6 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -58,4 +60,14 @@ class AddPlantActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putSerializable(getString(R.string.SAVED_PLANT_KEY), NewPlantInstance.plant)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val plant = savedInstanceState.getSerializable(getString(R.string.SAVED_PLANT_KEY))
+        Log.d("TAG", plant.toString())
+    }
 }

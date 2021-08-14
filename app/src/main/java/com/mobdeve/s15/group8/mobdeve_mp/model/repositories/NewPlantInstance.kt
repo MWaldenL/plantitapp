@@ -30,4 +30,8 @@ object NewPlantInstance {
     fun setPlantNickname(nickname: String) {
         plant["nickname"] = nickname
     }
+
+    fun setPlantInstance() {
+
+    }
 }
