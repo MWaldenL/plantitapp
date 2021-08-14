@@ -44,6 +44,7 @@ class AddPlantTasksAdapter(
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
+            // TODO: connect sa logic
             notifyItemRemoved(holder.adapterPosition)
         }
     }

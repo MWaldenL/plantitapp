@@ -44,7 +44,7 @@ class AddTaskDialogFragment : DialogFragment() {
             builder.setView(view)
                 .setPositiveButton("Add",
                     DialogInterface.OnClickListener { dialog, id ->
-                        // data goes here
+                        // TODO: connect sa logic
                     })
                 .setNegativeButton("Cancel",
                     DialogInterface.OnClickListener { dialog, id ->
