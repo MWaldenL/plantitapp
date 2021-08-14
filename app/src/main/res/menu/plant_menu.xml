@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/plant_menu_edit_details"
+        android:title="Edit Plant Details"
+        android:icon="@drawable/outline_edit_24" />
+    <item
+        android:id="@+id/plant_menu_set_death"
+        android:title="Mark the Plant as Dead"
+        android:icon="@drawable/baseline_hide_source_24" />
+    <item
+        android:id="@+id/plant_menu_delete_plant"
+        android:title="Delete Plant"
+        android:icon="@drawable/baseline_delete_outline_24" />
+</menu>

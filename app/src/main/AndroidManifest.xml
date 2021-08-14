@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         tools:replace="android:fullBackupContent"
         android:theme="@style/Theme.MOBDEVEMP">
+        <activity
+            android:name=".controller.ViewSinglePlantActivity"
+            android:exported="true" />
         <activity android:name=".controller.ViewAllPlantsActivity" />
         <activity android:name=".controller.LoginActivity" />
         <activity android:name=".controller.DashboardActivity" />
