@@ -31,7 +31,7 @@ object PlantRepository {
                 val imageUrl = d["imageUrl"].toString()
                 val name = d["name"].toString()
                 val nickname = d["nickname"].toString()
-                val datePurchased = d["datePurchased"].toString()
+                val dateAdded = d["dateAdded"].toString()
                 val docTasks = d["tasks"] as ArrayList<HashMap<*, *>>
                 val docJournal = d["journal"] as ArrayList<HashMap<*, *>>
                 for (t in docTasks) {
@@ -50,7 +50,7 @@ object PlantRepository {
                     imageUrl,
                     name,
                     nickname,
-                    datePurchased,
+                    dateAdded,
                     tasks,
                     journal))
             }

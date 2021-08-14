@@ -6,12 +6,15 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddPlantActivity : AppCompatActivity() {
     private lateinit var tasksRV: RecyclerView
@@ -40,9 +43,18 @@ class AddPlantActivity : AppCompatActivity() {
 
         btnSave = findViewById(R.id.btn_save_plant)
         btnSave.setOnClickListener {
+            val id = UUID.randomUUID().toString()
             NewPlantInstance.setPlantName(etPlantName.text.toString())
             NewPlantInstance.setPlantNickname(etPlantNickname.text.toString())
-            DBService().addDocument(F.plantsCollection, NewPlantInstance.plant)
+            DBService.addDocument(
+                collection=F.plantsCollection,
+                id=id,
+                data=NewPlantInstance.plant)
+            DBService.updateDocument(
+                collection=F.usersCollection,
+                id=F.auth.currentUser?.uid,
+                field="plants",
+                value=FieldValue.arrayUnion(id))
         }
     }
 

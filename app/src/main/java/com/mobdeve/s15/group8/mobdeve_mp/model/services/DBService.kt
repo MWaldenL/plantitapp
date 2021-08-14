@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.CoroutineContext
 
-class DBService: CoroutineScope {
+object DBService: CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
     suspend fun readDocument(collection: CollectionReference, id: String): DocumentSnapshot? {
@@ -23,9 +23,19 @@ class DBService: CoroutineScope {
         }
     }
 
-    fun addDocument(collection: CollectionReference, data: Any) {
+    fun addDocument(collection: CollectionReference, id: String="", data: Any) {
         launch(Dispatchers.IO) {
-            collection.add(data)
+            when (id) {
+                "" -> collection.add(data)
+                else -> collection.document(id).set(data)
+            }
+        }
+    }
+
+    fun updateDocument(collection: CollectionReference, id: String?, field: String, value: Any) {
+        if (id == null) return
+        launch(Dispatchers.IO) {
+            collection.document(id).update(field, value)
         }
     }
 }
