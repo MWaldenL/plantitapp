@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -43,7 +44,7 @@ class AddTaskDialogFragment : DialogFragment() {
             builder.setView(view)
                 .setPositiveButton("Add",
                     DialogInterface.OnClickListener { dialog, id ->
-
+                        // data goes here
                     })
                 .setNegativeButton("Cancel",
                     DialogInterface.OnClickListener { dialog, id ->

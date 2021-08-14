@@ -53,13 +53,14 @@
             android:ems="3"
             android:text="Start" />
 
-        <EditText
-            android:id="@+id/etd_start"
+        <DatePicker
+            android:id="@+id/simpleDatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
     </LinearLayout>
 
     <LinearLayout
