@@ -57,8 +57,15 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
     private fun mBindData() {
         val (imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
-        tvCommonName.text = name
-        tvNickname.text = nickname
+
+        if (nickname == "") {
+            tvCommonName.visibility = View.GONE
+            tvNickname.text = name
+        } else {
+            tvCommonName.text = name
+            tvNickname.text = nickname
+        }
+
         tvPurchaseDate.text = datePurchased
 
         Glide.with(this)

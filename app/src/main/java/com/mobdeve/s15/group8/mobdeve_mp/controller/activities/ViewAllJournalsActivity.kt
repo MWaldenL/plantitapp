@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +19,19 @@ class ViewAllJournalsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_journals)
 
+        val nickname = intent.getStringExtra(getString(R.string.NICKNAME_KEY))
+        val name = intent.getStringExtra(getString(R.string.COMMON_NAME_KEY))
+
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
 
-        tvNickname.text = intent.getStringExtra(getString(R.string.NICKNAME_KEY))
-        tvCommonName.text = intent.getStringExtra(getString(R.string.COMMON_NAME_KEY))
+        if (nickname == "") {
+            tvCommonName.visibility = View.GONE
+            tvNickname.text = name
+        } else {
+            tvCommonName.text = name
+            tvNickname.text = nickname
+        }
 
         val journalData = intent.getSerializableExtra(getString(R.string.ALL_JOURNALS_KEY)) as ArrayList<Journal>
 
