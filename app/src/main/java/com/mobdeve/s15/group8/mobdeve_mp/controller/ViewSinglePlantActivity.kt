@@ -26,6 +26,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
@@ -44,8 +45,8 @@ class ViewSinglePlantActivity : AppCompatActivity() {
             showPopup(ibtnPlantOptions)
         }
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
+        recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
         recyclerViewTask.layoutManager = LinearLayoutManager(this)
-        recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
@@ -59,7 +60,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
         recyclerViewTask.adapter = TaskListAdapter(tasks)
-        recyclerViewJournal.adapter = JournalListAdapter(journal)
+        recyclerViewJournal.adapter = JournalListAdapter(journal, true)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

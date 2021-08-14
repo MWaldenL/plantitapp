@@ -15,7 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         MediaManager.init(this) // for Cloudinary
-        launcher.launch(Intent(this@MainActivity, ViewAllPlantsActivity::class.java))
+//        launcher.launch(Intent(this@MainActivity, ViewAllPlantsActivity::class.java))
+
+        launcher.launch(Intent(this@MainActivity, ViewAllJournalsActivity::class.java))
 //        if (GoogleSingleton.firebaseAuth.currentUser == null) {
 //            launcher.launch(Intent(this@MainActivity, LoginActivity::class.java))
 //        } else {
