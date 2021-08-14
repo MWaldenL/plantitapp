@@ -60,16 +60,20 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         tvCommonName.text = name
         tvNickname.text = nickname
         tvPurchaseDate.text = datePurchased
+
         Glide.with(this)
             .load(imageUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
+
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(journal, true)
     }
 
     private fun mGotoViewAllJournalsActivity() {
         val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
+        intent.putExtra(getString(R.string.NICKNAME_KEY), mPlantData.nickname)
+        intent.putExtra(getString(R.string.COMMON_NAME_KEY), mPlantData.name)
         intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mPlantData.journal)
         mViewAllJournalsLauncher.launch(intent)
     }
