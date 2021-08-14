@@ -23,6 +23,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var ibtnPlantOptions: ImageButton
     private lateinit var tvCommonName: TextView
     private lateinit var tvNickname: TextView
+    private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,20 +32,17 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         val plantData = intent.getParcelableExtra<Plant>("PLANT_KEY")
         mInitViews()
         mBindData(plantData!!)
-
     }
 
     private fun mInitViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
         tvNickname = findViewById(R.id.tv_nickname)
+        tvPurchaseDate = findViewById(R.id.tv_purchase_date)
         ivPlant = findViewById(R.id.iv_plant)
         ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
         ibtnPlantOptions.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                showPopup(ibtnPlantOptions)
-            }
+            showPopup(ibtnPlantOptions)
         }
-
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewTask.layoutManager = LinearLayoutManager(this)
         recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
@@ -52,14 +50,16 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     }
 
     private fun mBindData(data: Plant) {
-        tvCommonName.text = data.name
-        tvNickname.text = data.nickname
+        val (imageUrl, name, nickname, datePurchased, tasks, journal) = data
+        tvCommonName.text = name
+        tvNickname.text = nickname
+        tvPurchaseDate.text = datePurchased
         Glide.with(this)
-            .load(data.imageUrl)
+            .load(imageUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
-        recyclerViewTask.adapter = TaskListAdapter(data.tasks)
-        recyclerViewJournal.adapter = JournalListAdapter(data.journal)
+        recyclerViewTask.adapter = TaskListAdapter(tasks)
+        recyclerViewJournal.adapter = JournalListAdapter(journal)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

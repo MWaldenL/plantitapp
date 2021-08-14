@@ -9,5 +9,6 @@ data class Plant(
     val imageUrl: String,
     val name: String,
     val nickname: String,
+    val datePurchased: String,
     val tasks: @RawValue ArrayList<Task>,
     val journal: @RawValue ArrayList<Journal>): Parcelable

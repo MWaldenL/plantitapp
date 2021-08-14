@@ -22,10 +22,16 @@ class PlantRepository {
         val res = mFetchData()
         if (res != null) {
             for (doc in res) {
+                val d = doc.data
                 val journal = ArrayList<Journal>()
                 val tasks = ArrayList<Task>()
-                val docTasks = doc.data["tasks"] as ArrayList<HashMap<*, *>>
-                val docJournal = doc.data["journal"] as ArrayList<HashMap<*, *>>
+                val imageUrl = d["imageUrl"].toString()
+                val name = d["name"].toString()
+                val nickname = d["nickname"].toString()
+                val datePurchased = d["datePurchased"].toString()
+                val docTasks = d["tasks"] as ArrayList<HashMap<*, *>>
+                val docJournal = d["journal"] as ArrayList<HashMap<*, *>>
+
                 for (t in docTasks) {
                     val done = t["done"].toString().toBoolean()
                     val task = t["task"].toString()
@@ -38,9 +44,10 @@ class PlantRepository {
                     journal.add(Journal(body, date))
                 }
                 plantList.add(Plant(
-                    doc.data["imageUrl"].toString(),
-                    doc.data["name"].toString(),
-                    doc.data["nickname"].toString(),
+                    imageUrl,
+                    name,
+                    nickname,
+                    datePurchased,
                     tasks,
                     journal))
             }
