@@ -7,9 +7,9 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.Task
 
 class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val cbTask: CheckBox = itemView.findViewById(R.id.cb_task)
+//    private val cbTask: CheckBox = itemView.findViewById(R.id.cb_task)
 
     fun bindData(task: Task) {
-        cbTask.text = task.task
+//        cbTask.text = task.action
     }
 }

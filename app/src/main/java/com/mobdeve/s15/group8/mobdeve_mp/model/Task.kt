@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Task(
-    val done: Boolean,
-    val task: String,
-    val everyTime: Int): Parcelable
+    val action: String,
+    val startDate: String,
+    val repeat: Int,
+    val occurrence: String): Parcelable

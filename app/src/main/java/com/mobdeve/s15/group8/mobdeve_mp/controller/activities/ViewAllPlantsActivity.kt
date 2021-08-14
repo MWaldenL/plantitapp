@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
@@ -23,9 +24,11 @@ class ViewAllPlantsActivity: AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_plants)
         val pr = PlantRepository()
+        Log.d("DEBUG", "Created view all plants")
         launch {
             pr.getData()
             withContext(Dispatchers.Main) {
+                Log.d("DEBUG", "after get Data")
                 recyclerView = findViewById(R.id.recyclerview_plant)
                 recyclerView.adapter = PlantListAdapter(pr.plantList, mViewPlantLauncher)
                 recyclerView.layoutManager = GridLayoutManager(applicationContext, 2)

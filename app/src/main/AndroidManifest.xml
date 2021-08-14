@@ -27,6 +27,7 @@
         <activity android:name=".controller.activities.ViewAllPlantsActivity" />
         <activity android:name=".controller.activities.LoginActivity" />
         <activity android:name=".controller.activities.DashboardActivity" />
+        <activity android:name=".controller.activities.AddPlantActivity" />
         <activity android:name=".controller.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
