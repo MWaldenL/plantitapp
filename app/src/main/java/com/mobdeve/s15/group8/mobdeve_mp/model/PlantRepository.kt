@@ -1,10 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model
 
-import android.util.Log
 import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
 
 class PlantRepository {
     val plantList: ArrayList<Plant> = ArrayList()

@@ -1,13 +1,12 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,14 +24,18 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
+    private lateinit var btnViewAll: Button
+    private lateinit var mPlantData: Plant
+    private val mViewAllJournalsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
-        val plantData = intent.getParcelableExtra<Plant>("PLANT_KEY")
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         mInitViews()
-        mBindData(plantData!!)
+        mBindData()
     }
 
     private fun mInitViews() {
@@ -40,18 +43,19 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         tvNickname = findViewById(R.id.tv_nickname)
         tvPurchaseDate = findViewById(R.id.tv_purchase_date)
         ivPlant = findViewById(R.id.iv_plant)
+        btnViewAll = findViewById(R.id.btn_view_all)
         ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
-        ibtnPlantOptions.setOnClickListener {
-            showPopup(ibtnPlantOptions)
-        }
+        ibtnPlantOptions.setOnClickListener { mShowPopup(ibtnPlantOptions) }
+        btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
+
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
         recyclerViewTask.layoutManager = LinearLayoutManager(this)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun mBindData(data: Plant) {
-        val (imageUrl, name, nickname, datePurchased, tasks, journal) = data
+    private fun mBindData() {
+        val (imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
         tvCommonName.text = name
         tvNickname.text = nickname
         tvPurchaseDate.text = datePurchased
@@ -63,8 +67,14 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         recyclerViewJournal.adapter = JournalListAdapter(journal, true)
     }
 
+    private fun mGotoViewAllJournalsActivity() {
+        val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
+        intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mPlantData.journal)
+        mViewAllJournalsLauncher.launch(intent)
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun showPopup(view: View) {
+    private fun mShowPopup(view: View) {
         val popup = PopupMenu(this, view)
         val inflater = popup.menuInflater
         inflater.inflate(R.menu.plant_menu, popup.menu)

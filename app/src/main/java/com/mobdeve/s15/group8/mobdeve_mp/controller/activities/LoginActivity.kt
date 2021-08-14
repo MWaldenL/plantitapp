@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,29 +19,36 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
+        btnLogin = findViewById(R.id.btn_login)
+        btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
+    }
+
     private val googleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account?.idToken!!)
+                mFirebaseAuthWithGoogle(account?.idToken!!)
             } catch (e: ApiException) {
                 Log.e("TAG","signInResult:failed code=" + e.statusCode)
             }
         }
     }
 
-    private val dashboardLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val dashboardLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
+    private fun mFirebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        GoogleSingleton.firebaseAuth
+        F.auth
             .signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = GoogleSingleton.firebaseAuth.currentUser
+                    val user = F.auth.currentUser
                     val userId = user?.uid.toString()
                     val userDoc = F.usersCollection.document(userId)
                     userDoc.get().addOnSuccessListener { doc ->
@@ -55,13 +62,5 @@ class LoginActivity : AppCompatActivity() {
                     dashboardLauncher.launch(dashboardIntent)
                 }
             }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
-        btnLogin = findViewById(R.id.btn_login)
-        btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
     }
 }

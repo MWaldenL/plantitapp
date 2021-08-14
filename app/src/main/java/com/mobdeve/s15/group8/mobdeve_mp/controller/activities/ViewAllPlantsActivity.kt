@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
 // Can be converted to fragment later on for tabbed interface
 class ViewAllPlantsActivity: AppCompatActivity(), CoroutineScope {
     private lateinit var recyclerView: RecyclerView
-    private val viewPlantLauncher = registerForActivityResult(StartActivityForResult()) { result -> }
+    private val mViewPlantLauncher = registerForActivityResult(StartActivityForResult()) { result -> }
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext = Dispatchers.IO + job
 
@@ -27,7 +27,7 @@ class ViewAllPlantsActivity: AppCompatActivity(), CoroutineScope {
             pr.getData()
             withContext(Dispatchers.Main) {
                 recyclerView = findViewById(R.id.recyclerview_plant)
-                recyclerView.adapter = PlantListAdapter(pr.plantList, viewPlantLauncher)
+                recyclerView.adapter = PlantListAdapter(pr.plantList, mViewPlantLauncher)
                 recyclerView.layoutManager = GridLayoutManager(applicationContext, 2)
             }
         }

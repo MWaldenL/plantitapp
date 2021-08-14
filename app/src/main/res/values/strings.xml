@@ -1,19 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Plantitapp</string>
     <string name="web_client_id">
         280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com
     </string>
-
-    <string name="nickname_placeholder">Nickname</string>
-    <string name="common_name_placeholder">Common Name</string>
-    <string name="date_placeholder">January 1, 1999</string>
-
-    <string name="date_label">Date of Purchase:</string>
-
-    <string name="task_header">Daily Tasks</string>
-    <string name="journal_header">Plant Journal</string>
-
-    <string name="view_all_button">View All Entries</string>
-    <string name="dead_button">Mark the Plant as Dead</string>
-    <string name="delete_button">Delete Plant</string>
 </resources>

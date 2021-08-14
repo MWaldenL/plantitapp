@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.ViewSinglePlantActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.ViewSinglePlantActivity
 import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.view.PlantViewHolder
 
@@ -24,8 +24,9 @@ class PlantListAdapter(
     override fun onBindViewHolder(holder: PlantViewHolder, position: Int) {
         holder.bindData(data[position])
         holder.itemView.setOnClickListener {
+            val PLANT_KEY = holder.itemView.context.getString(R.string.PLANT_KEY)
             val plantIntent = Intent(holder.itemView.context, ViewSinglePlantActivity::class.java)
-            plantIntent.putExtra("PLANT_KEY", data[position])
+            plantIntent.putExtra(PLANT_KEY, data[position])
             viewPlantLauncher.launch(plantIntent)
         }
     }
