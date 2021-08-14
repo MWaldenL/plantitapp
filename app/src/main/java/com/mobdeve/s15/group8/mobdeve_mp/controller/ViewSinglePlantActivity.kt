@@ -3,7 +3,6 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -16,10 +15,7 @@ import com.bumptech.glide.Glide
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.model.Journal
-import com.mobdeve.s15.group8.mobdeve_mp.model.JournalDataHelper
 import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
-import com.mobdeve.s15.group8.mobdeve_mp.model.TaskDataHelper
 
 class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var recyclerViewTask: RecyclerView
@@ -36,21 +32,6 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         mInitViews()
         mBindData(plantData!!)
 
-        ibtnPlantOptions.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                showPopup(ibtnPlantOptions)
-            }
-        }
-
-        val taskData = TaskDataHelper().fetchData()
-        recyclerViewTask = findViewById(R.id.recyclerview_tasks)
-        recyclerViewTask.adapter = TaskListAdapter(taskData)
-        recyclerViewTask.layoutManager = LinearLayoutManager(this)
-
-//        val journalData = JournalDataHelper().fetchData()
-        recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
-        recyclerViewJournal.adapter = JournalListAdapter(plantData.journal)
-        recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
     private fun mInitViews() {
@@ -58,6 +39,16 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         tvNickname = findViewById(R.id.tv_nickname)
         ivPlant = findViewById(R.id.iv_plant)
         ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
+        ibtnPlantOptions.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                showPopup(ibtnPlantOptions)
+            }
+        }
+
+        recyclerViewTask = findViewById(R.id.recyclerview_tasks)
+        recyclerViewTask.layoutManager = LinearLayoutManager(this)
+        recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
+        recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
     private fun mBindData(data: Plant) {
@@ -67,6 +58,8 @@ class ViewSinglePlantActivity : AppCompatActivity() {
             .load(data.imageUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
+        recyclerViewTask.adapter = TaskListAdapter(data.tasks)
+        recyclerViewJournal.adapter = JournalListAdapter(data.journal)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

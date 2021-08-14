@@ -7,4 +7,3 @@ import kotlinx.parcelize.Parcelize
 data class Journal(
     val body: String,
     val date: String): Parcelable
-// etc...
