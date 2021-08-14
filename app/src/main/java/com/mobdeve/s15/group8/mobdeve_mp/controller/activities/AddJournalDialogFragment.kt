@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import androidx.fragment.app.DialogFragment
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.widget.EditText
 import android.widget.TextView
@@ -23,14 +25,23 @@ class AddJournalDialogFragment :
             val view = inflater.inflate(R.layout.dialog_add_journal, null)
 
             etJournal = view.findViewById(R.id.et_journal)
+            tvName = view.findViewById(R.id.tv_name_journal)
             tvCharCount = view.findViewById(R.id.tv_char_count)
-            
-            etJournal.setOnKeyListener { v, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_UP) {
-                    tvCharCount.text = etJournal.text.length.toString()
+
+            val bundle = this.arguments
+
+            if (bundle != null)
+                tvName.text = bundle.getString(getString(R.string.NICKNAME_KEY), "Hello")
+
+            etJournal.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(s: Editable?) {}
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val count = 500 - s!!.length
+                    tvCharCount.text = count.toString()
                 }
-                false
-            }
+            })
 
             builder
                 .setView(view)

@@ -64,6 +64,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
+            tvCommonName.text = ""
             tvNickname.text = name
         } else {
             tvCommonName.text = name
@@ -83,6 +84,17 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
     private fun mHandleNewJournalRequest() {
         val fragment = AddJournalDialogFragment()
+        val bundle = Bundle()
+        bundle.putString(
+            getString(R.string.NICKNAME_KEY),
+
+            if (tvCommonName.text.toString() == "")
+                tvCommonName.text.toString()
+            else
+                tvNickname.text.toString()
+        )
+
+        fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
     }
 
