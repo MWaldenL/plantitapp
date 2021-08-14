@@ -1,8 +1,10 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,9 @@ class AddPlantActivity : AppCompatActivity() {
     private lateinit var etPlantNickname: EditText
     private lateinit var ibtnDelete: Button
     private val mTasks = NewPlantInstance.plant["tasks"] as ArrayList<Task>
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,10 @@ class AddPlantActivity : AppCompatActivity() {
             NewPlantInstance.setPlantName(etPlantName.text.toString())
             NewPlantInstance.setPlantNickname(etPlantNickname.text.toString())
             DBService().addDocument(F.plantsCollection, NewPlantInstance.plant)
+
+            // TODO: edit as necessary
+            launcher.launch(Intent(this@AddPlantActivity, ViewAllPlantsActivity::class.java))
+            finish()
         }
     }
 

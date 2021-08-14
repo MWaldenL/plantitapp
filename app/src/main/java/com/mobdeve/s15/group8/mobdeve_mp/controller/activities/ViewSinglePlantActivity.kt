@@ -20,6 +20,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
     private lateinit var ibtnPlantOptions: ImageButton
+    private lateinit var ibtnAddNewJournal: ImageButton
     private lateinit var tvCommonName: TextView
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
@@ -46,6 +47,9 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         ivPlant = findViewById(R.id.iv_plant)
         btnViewAll = findViewById(R.id.btn_view_all)
         ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
+        ibtnAddNewJournal = findViewById(R.id.ibtn_add_journal)
+
+        ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
         ibtnPlantOptions.setOnClickListener { mShowPopup(ibtnPlantOptions) }
         btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
 
@@ -75,6 +79,11 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(journal, true)
+    }
+
+    private fun mHandleNewJournalRequest() {
+        val fragment = AddJournalDialogFragment()
+        fragment.show(supportFragmentManager, "add_journal")
     }
 
     private fun mGotoViewAllJournalsActivity() {

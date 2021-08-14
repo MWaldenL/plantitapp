@@ -148,7 +148,7 @@
                     android:layout_height="match_parent">
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/ibtn_add_journal"
                         android:layout_width="26dp"
                         android:layout_height="22dp"
                         android:background="#00FFFFFF"
