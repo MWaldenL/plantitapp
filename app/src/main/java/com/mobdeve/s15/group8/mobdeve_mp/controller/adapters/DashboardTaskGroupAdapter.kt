@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.CheckBox
 import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 
@@ -73,8 +74,8 @@ class DashboardTaskGroupAdapter(
             val layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
-        val tvPlantTaskItem: TextView = cv!!.findViewById(R.id.tv_item_task_plant)
-        tvPlantTaskItem.text = childListText
+        val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
+        checkboxDashboardPlant.text = childListText
 
         return cv
     }
