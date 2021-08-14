@@ -84,15 +84,9 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
     private fun mHandleNewJournalRequest() {
         val fragment = AddJournalDialogFragment()
-        val bundle = Bundle()
-        bundle.putString(
-            getString(R.string.NICKNAME_KEY),
 
-            if (tvCommonName.text.toString() == "")
-                tvCommonName.text.toString()
-            else
-                tvNickname.text.toString()
-        )
+        val bundle = Bundle()
+        bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
 
         fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
