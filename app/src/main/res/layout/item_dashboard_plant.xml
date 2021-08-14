@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".controller.activities.DashboardActivity">
+    android:layout_height="wrap_content">
 
-    <ExpandableListView
-        android:id="@+id/elv_task_group"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+    <TextView
+        android:id="@+id/tv_item_task_plant"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="World Hello"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
