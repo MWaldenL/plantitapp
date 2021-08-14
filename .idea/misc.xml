@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/font/.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/font/source_sans_pro.xml" value="0.17777777777777778" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_add_plant.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_dashboard.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_main.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/dialog_add_task.xml" value="0.33" />
       </map>
     </option>
   </component>

@@ -45,10 +45,10 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    android:src="@drawable/sample" />
 
             </androidx.cardview.widget.CardView>
 
@@ -68,24 +68,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="General Information"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
             <EditText
                 android:id="@+id/et_plant_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
+                android:ems="12"
+                android:hint="Name of Plant"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
-                android:text="Name of Plant"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />
 
@@ -93,24 +91,24 @@
                 android:id="@+id/et_plant_nickname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:ems="10"
+                android:hint="Nickname (optional)"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
-                android:text="Nickname  (optional)"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_plant_name" />
+                app:layout_constraintStart_toEndOf="@+id/et_plant_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />
 
             <TextView
                 android:id="@+id/tv_care_methods"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="Care Methods"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_plant_nickname" />
@@ -126,6 +124,7 @@
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_care_methods">
 
@@ -133,7 +132,7 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
+                    android:layout_margin="16dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -143,106 +142,52 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/tv_task"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_action"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="0"
-                                android:text="Action"
-                                android:textColor="#1e1e1e"
-                                android:textSize="14sp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_action"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:minHeight="48dp"
-                                android:spinnerMode="dropdown" />
-                        </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="Water"
+                            android:textColor="#1E1E1E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/tv_start"
+                                android:id="@+id/textView2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="0"
-                                android:text="Starting on"
-                                android:textColor="#1e1e1e"
-                                android:textSize="14sp" />
+                                android:text="Starts on " />
 
-                            <EditText
-                                android:id="@+id/et_start_date"
+                            <TextView
+                                android:id="@+id/tv_start_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:ems="10"
-                                android:inputType="date"
-                                android:minHeight="48dp"
-                                android:textSize="14sp" />
+                                android:text="August 14. 2021" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/tv_repeat"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/tv_repeat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="0"
-                                android:text="Repeat every"
-                                android:textColor="#1e1e1e"
-                                android:textSize="14sp" />
-
-                            <EditText
-                                android:id="@+id/et_repeat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="0"
-                                android:ems="2"
-                                android:inputType="number"
-                                android:minHeight="48dp"
-                                android:textSize="14sp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_occurrence"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="100"
-                                android:dropDownWidth="wrap_content"
-                                android:minHeight="48dp"
-                                android:spinnerMode="dropdown" />
-
-                        </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:text="Repeats 2 times weekly" />
 
                     </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/ibtn_delete"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="top"
                         android:backgroundTint="#00000000"
-                        app:srcCompat="@drawable/ic_delete" />
+                        android:contentDescription="delete task"
+                        app:srcCompat="@drawable/ic_delete"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -250,7 +195,7 @@
                 android:id="@+id/btn_add_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:text="Add a Task"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

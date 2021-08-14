@@ -4,13 +4,19 @@
         280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com
     </string>
 
-
-    <string-array name="tasks_array">
+    <string-array name="actions_array">
         <item>Water</item>
         <item>Weed</item>
         <item>Prune</item>
         <item>Move to sunlight</item>
         <item>Move to dark room</item>
         <item>Fertilize</item>
+    </string-array>
+    <string-array name="occurrence_array">
+        <item>daily</item>
+        <item>weekly</item>
+        <item>monthly</item>
+        <item>quarterly</item>
+        <item>yearly</item>
     </string-array>
 </resources>

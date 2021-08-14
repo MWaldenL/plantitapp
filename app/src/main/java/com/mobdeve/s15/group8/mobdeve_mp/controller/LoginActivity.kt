@@ -3,6 +3,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -63,5 +64,11 @@ class LoginActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
+
+        val addPlantBtn: Button = findViewById(R.id.btn_add_plant)
+        addPlantBtn.setOnClickListener {
+            val intent = Intent(this, AddPlantActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
