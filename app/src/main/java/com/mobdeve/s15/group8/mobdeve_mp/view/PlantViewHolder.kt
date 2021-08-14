@@ -13,7 +13,7 @@ class PlantViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val mImage: ImageView = itemView.findViewById(R.id.image_plant)
     fun bindData(plant: Plant) {
         Glide.with(itemView.context)
-             .load(plant.imgUrl)
+             .load(plant.imageUrl)
              .placeholder(R.drawable.ic_launcher_background)
              .into(mImage)
     }

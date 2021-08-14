@@ -1,48 +1,72 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller
 
-import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.model.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.JournalDataHelper
+import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.TaskDataHelper
 
 class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
-
     private lateinit var ibtnPlantOptions: ImageButton
+    private lateinit var tvCommonName: TextView
+    private lateinit var tvNickname: TextView
+    private lateinit var ivPlant: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
-
-        ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
+        val plantData = intent.getParcelableExtra<Plant>("PLANT_KEY")
+        mInitViews()
+        mBindData(plantData!!)
 
         ibtnPlantOptions.setOnClickListener {
-            showPopup(ibtnPlantOptions)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                showPopup(ibtnPlantOptions)
+            }
         }
 
         val taskData = TaskDataHelper().fetchData()
-
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewTask.adapter = TaskListAdapter(taskData)
         recyclerViewTask.layoutManager = LinearLayoutManager(this)
 
-        val journalData = JournalDataHelper().fetchData()
-
+//        val journalData = JournalDataHelper().fetchData()
         recyclerViewJournal = findViewById(R.id.recyclerview_recent_journal)
-        recyclerViewJournal.adapter = JournalListAdapter(journalData)
+        recyclerViewJournal.adapter = JournalListAdapter(plantData.journal)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun mInitViews() {
+        tvCommonName = findViewById(R.id.tv_common_name)
+        tvNickname = findViewById(R.id.tv_nickname)
+        ivPlant = findViewById(R.id.iv_plant)
+        ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
+    }
+
+    private fun mBindData(data: Plant) {
+        tvCommonName.text = data.name
+        tvNickname.text = data.nickname
+        Glide.with(this)
+            .load(data.imageUrl)
+            .placeholder(R.drawable.ic_launcher_background)
+            .into(ivPlant)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

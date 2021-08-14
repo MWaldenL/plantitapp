@@ -1,13 +1,20 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller
+package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.ViewSinglePlantActivity
 import com.mobdeve.s15.group8.mobdeve_mp.model.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.view.PlantViewHolder
 
-class PlantListAdapter(private val data: ArrayList<Plant>):RecyclerView.Adapter<PlantViewHolder>() {
+class PlantListAdapter(
+    private val data: ArrayList<Plant>,
+    private val viewPlantLauncher: ActivityResultLauncher<Intent>):
+    RecyclerView.Adapter<PlantViewHolder>()
+{
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlantViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_plant, parent, false)
@@ -16,6 +23,11 @@ class PlantListAdapter(private val data: ArrayList<Plant>):RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: PlantViewHolder, position: Int) {
         holder.bindData(data[position])
+        holder.itemView.setOnClickListener {
+            val plantIntent = Intent(holder.itemView.context, ViewSinglePlantActivity::class.java)
+            plantIntent.putExtra("PLANT_KEY", data[position])
+            viewPlantLauncher.launch(plantIntent)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        launcher.launch(Intent(this@MainActivity, ViewAllPlantsActivity::class.java)) // temporary
         MediaManager.init(this) // for Cloudinary
+        launcher.launch(Intent(this@MainActivity, ViewAllPlantsActivity::class.java))
 //        if (GoogleSingleton.firebaseAuth.currentUser == null) {
 //            launcher.launch(Intent(this@MainActivity, LoginActivity::class.java))
 //        } else {

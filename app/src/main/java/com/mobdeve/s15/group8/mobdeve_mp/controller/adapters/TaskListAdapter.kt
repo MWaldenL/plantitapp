@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller
+package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
