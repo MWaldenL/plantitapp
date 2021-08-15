@@ -60,7 +60,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     }
 
     private fun mBindData() {
-        val (imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
+        val (id, imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -87,6 +87,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
         val bundle = Bundle()
         bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
+        bundle.putString(getString(R.string.ID_KEY), mPlantData.id)
 
         fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
@@ -96,6 +97,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
         intent.putExtra(getString(R.string.NICKNAME_KEY), mPlantData.nickname)
         intent.putExtra(getString(R.string.COMMON_NAME_KEY), mPlantData.name)
+        intent.putExtra(getString(R.string.ID_KEY), mPlantData.id)
         intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mPlantData.journal)
         mViewAllJournalsLauncher.launch(intent)
     }

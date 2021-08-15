@@ -26,6 +26,7 @@ object PlantRepository {
         if (res != null) {
             for (doc in res) {
                 val d = doc.data
+                val id = doc.id
                 val journal = ArrayList<Journal>()
                 val tasks = ArrayList<Task>()
                 val imageUrl = d["imageUrl"].toString()
@@ -47,6 +48,7 @@ object PlantRepository {
                     journal.add(Journal(body, date))
                 }
                 plantList.add(Plant(
+                    id,
                     imageUrl,
                     name,
                     nickname,

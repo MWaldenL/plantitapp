@@ -23,6 +23,7 @@ class AddJournalDialogFragment :
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_add_journal, null)
+            var id = "DefaultID"
 
             etJournal = view.findViewById(R.id.et_journal)
             tvName = view.findViewById(R.id.tv_name_journal)
@@ -30,8 +31,10 @@ class AddJournalDialogFragment :
 
             val bundle = this.arguments
 
-            if (bundle != null)
+            if (bundle != null) {
                 tvName.text = bundle.getString(getString(R.string.NICKNAME_KEY), "Hello")
+                id = bundle.getString(getString(R.string.ID_KEY), "DefaultID")
+            }
 
             etJournal.addTextChangedListener(object: TextWatcher {
                 override fun afterTextChanged(s: Editable?) {}

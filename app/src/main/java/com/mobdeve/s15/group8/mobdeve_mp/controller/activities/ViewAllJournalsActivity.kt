@@ -23,6 +23,7 @@ class ViewAllJournalsActivity : AppCompatActivity() {
 
         val nickname = intent.getStringExtra(getString(R.string.NICKNAME_KEY))
         val name = intent.getStringExtra(getString(R.string.COMMON_NAME_KEY))
+        val id = intent.getStringExtra(getString(R.string.ID_KEY))
 
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
@@ -47,6 +48,7 @@ class ViewAllJournalsActivity : AppCompatActivity() {
 
             val bundle = Bundle()
             bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
+            bundle.putString(getString(R.string.ID_KEY), id)
 
             fragment.arguments = bundle
             fragment.show(supportFragmentManager, "add_journal")

@@ -5,4 +5,5 @@
     <string name="ALL_JOURNALS_KEY">ALL_JOURNALS_KEY</string>
     <string name="COMMON_NAME_KEY">COMMON_NAME_KEY</string>
     <string name="NICKNAME_KEY">NICKNAME_KEY</string>
+    <string name="ID_KEY">ID_KEY</string>
 </resources>
