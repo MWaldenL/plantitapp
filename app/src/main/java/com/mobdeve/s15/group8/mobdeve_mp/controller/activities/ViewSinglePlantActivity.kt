@@ -4,19 +4,32 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FieldValue
+import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
-class ViewSinglePlantActivity : AppCompatActivity() {
+class ViewSinglePlantActivity :
+    AppCompatActivity(),
+    AddJournalDialogFragment.AddJournalDialogListener
+{
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
     private lateinit var ibtnPlantOptions: ImageButton
@@ -27,6 +40,9 @@ class ViewSinglePlantActivity : AppCompatActivity() {
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
+    private lateinit var mJournalDescending: ArrayList<Journal>
+    private var mJournalLimited =
+        arrayListOf<Journal>()
     private val mViewAllJournalsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
@@ -78,8 +94,20 @@ class ViewSinglePlantActivity : AppCompatActivity() {
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
 
+//        mJournalDescending = journal.reversed() as ArrayList<Journal>
+        mJournalDescending = journal.indices
+            .map{i: Int -> journal[journal.size - 1 - i]}
+            .toCollection(ArrayList())
+
+        var count = 0
+        for (journal in mJournalDescending) {
+            mJournalLimited.add(journal)
+            count++
+            if (count == 3) break
+        }
+
         recyclerViewTask.adapter = TaskListAdapter(tasks)
-        recyclerViewJournal.adapter = JournalListAdapter(journal, true)
+        recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
     }
 
     private fun mHandleNewJournalRequest() {
@@ -87,10 +115,41 @@ class ViewSinglePlantActivity : AppCompatActivity() {
 
         val bundle = Bundle()
         bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
-        bundle.putString(getString(R.string.ID_KEY), mPlantData.id)
 
         fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onSave(dialog: DialogFragment, text: String) {
+        val body = text
+        val date = LocalDateTime.now().toString()
+
+        val toAdd: HashMap<*, *> = hashMapOf(
+            "body" to body,
+            "date" to date
+        )
+
+        DBService().updateDocument(
+            F.plantsCollection,
+            mPlantData.id,
+            "journal",
+            FieldValue.arrayUnion(toAdd)
+        )
+
+        mJournalDescending.add(0, Journal(body, date))
+
+        if (mJournalLimited.size >= 3) {
+            mJournalLimited.removeAt(2)
+            recyclerViewJournal.adapter?.notifyItemRemoved(2)
+        }
+
+        mJournalLimited.add(0, Journal(body, date))
+        recyclerViewJournal.adapter?.notifyItemInserted(0)
+    }
+
+    override fun onCancel(dialog: DialogFragment) {
+        // TODO: Notify user???
     }
 
     private fun mGotoViewAllJournalsActivity() {
@@ -98,7 +157,7 @@ class ViewSinglePlantActivity : AppCompatActivity() {
         intent.putExtra(getString(R.string.NICKNAME_KEY), mPlantData.nickname)
         intent.putExtra(getString(R.string.COMMON_NAME_KEY), mPlantData.name)
         intent.putExtra(getString(R.string.ID_KEY), mPlantData.id)
-        intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mPlantData.journal)
+        intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mJournalDescending)
         mViewAllJournalsLauncher.launch(intent)
     }
 
