@@ -54,7 +54,8 @@ class DashboardTaskGroupAdapter(
         val groupListText: String = getGroup(groupPosition) as String
         var cv = convertView
         if (cv == null) {
-            val layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val layoutInflater: LayoutInflater =
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.group_dashboard_tasks, null)
         }
 
@@ -76,7 +77,8 @@ class DashboardTaskGroupAdapter(
         val childListText: String = getChild(groupPosition, childPosition)
         var cv = convertView
         if (cv == null) {
-            val layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val layoutInflater: LayoutInflater =
+                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
@@ -87,11 +89,20 @@ class DashboardTaskGroupAdapter(
         // remove item from the elv
         checkboxDashboardPlant.setOnClickListener {
             if (checkboxDashboardPlant.isChecked) {
+                // remove plant from the list of children
                 tasksChildren[getGroup(groupPosition) as String]?.removeAt(childPosition)
+                // remove task if there are no plants associated with the task
+                if (tasksChildren[getGroup(groupPosition) as String]?.size == 0) {
+                    val key = getGroup(groupPosition) as String
+                    tasksChildren.remove(key)
+                    tasksTitles.remove(key)
+                }
                 checkboxDashboardPlant.isChecked = false
             }
             // TODO: dito ba ung pagupdate sa db?
             notifyDataSetChanged()
+
+            // TODO: snackbar for undo? o wag na hahahahhahaa
         }
 
         return cv

@@ -49,7 +49,7 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         elvTaskGroup = findViewById(R.id.elv_task_group)
-        tasksChildren = mGenerateSampleTasksChildren()
+        tasksChildren = mGenerateSampleTasksChildren()  // store the data as a HashMap for ELV rendering
         taskGroupAdapter = DashboardTaskGroupAdapter(applicationContext, tasksChildren)
         elvTaskGroup.setAdapter(taskGroupAdapter)
         mExpandAllGroups()
