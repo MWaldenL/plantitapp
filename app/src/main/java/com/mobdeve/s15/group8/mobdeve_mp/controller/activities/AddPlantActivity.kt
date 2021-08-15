@@ -67,8 +67,8 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         outState.putSerializable(getString(R.string.SAVED_PLANT_KEY), NewPlantInstance.plant)
     }
 
