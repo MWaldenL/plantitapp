@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Dashbored"
+                android:text="Today's tasks"
                 android:textColor="#1E1E1E"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -38,7 +38,8 @@
                 android:layout_marginTop="16dp"
                 android:divider="@null"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:groupIndicator="@null"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

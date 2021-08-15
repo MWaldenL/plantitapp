@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 
@@ -55,8 +56,11 @@ class DashboardTaskGroupAdapter(
             val layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.group_dashboard_tasks, null)
         }
+
+        // update view content
         val tvGroupTask: TextView = cv!!.findViewById(R.id.tv_group_task)
         tvGroupTask.text = groupListText
+        mUpdateExpandedIndicator(isExpanded, cv)
 
         return cv
     }
@@ -74,6 +78,8 @@ class DashboardTaskGroupAdapter(
             val layoutInflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
+
+        // update view content
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
         checkboxDashboardPlant.text = childListText
 
@@ -82,6 +88,15 @@ class DashboardTaskGroupAdapter(
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
         return true
+    }
+
+    private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
+        if (isExpanded)
+            cv.findViewById<ImageView>(R.id.iv_expand_group)
+                .setImageResource(R.drawable.ic_baseline_expand_less_24)
+        else
+            cv.findViewById<ImageView>(R.id.iv_expand_group)
+                .setImageResource(R.drawable.ic_baseline_expand_more_24)
     }
 
 }
