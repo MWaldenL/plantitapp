@@ -63,6 +63,7 @@ class DashboardTaskGroupAdapter(
         val tvGroupTask: TextView = cv!!.findViewById(R.id.tv_group_task)
         tvGroupTask.text = groupListText
         mUpdateExpandedIndicator(isExpanded, cv)
+        mUpdatePlantsLeft(groupPosition, cv)
 
         return cv
     }
@@ -110,6 +111,12 @@ class DashboardTaskGroupAdapter(
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
         return true
+    }
+
+    private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
+        val plantsLeftString = tasksChildren[getGroup(groupPosition) as String]?.size.toString() + " left"
+        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
+        tvPlantsLeft.text = plantsLeftString
     }
 
     private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
