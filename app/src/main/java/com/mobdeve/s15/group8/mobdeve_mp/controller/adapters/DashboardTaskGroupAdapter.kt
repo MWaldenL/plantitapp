@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,6 +83,16 @@ class DashboardTaskGroupAdapter(
         // update view content
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
         checkboxDashboardPlant.text = childListText
+
+        // remove item from the elv
+        checkboxDashboardPlant.setOnClickListener {
+            if (checkboxDashboardPlant.isChecked) {
+                tasksChildren[getGroup(groupPosition) as String]?.removeAt(childPosition)
+                checkboxDashboardPlant.isChecked = false
+            }
+            // TODO: dito ba ung pagupdate sa db?
+            notifyDataSetChanged()
+        }
 
         return cv
     }

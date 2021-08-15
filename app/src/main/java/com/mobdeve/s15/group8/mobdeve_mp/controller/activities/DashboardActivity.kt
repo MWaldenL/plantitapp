@@ -26,19 +26,19 @@ class DashboardActivity : AppCompatActivity() {
     private val loginLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     private fun mGenerateSampleTasksChildren(): HashMap<String, ArrayList<String>> {
-        var sampleTaskGroup: HashMap<String, ArrayList<String>> = HashMap()
-
-        var plants: ArrayList<String> = ArrayList()
-        plants.add("Snake Plant")
-        plants.add("Oregano")
-        plants.add("Basil")
-        plants.add("San Francisco")
-        plants.add("Johnny")
+        val sampleTaskGroup: HashMap<String, ArrayList<String>> = HashMap()
 
         val grpKeys = arrayListOf(*resources.getStringArray(R.array.actions_array))
         for (key in grpKeys) {
-            if (key != "Weed")
-                sampleTaskGroup[key] = plants
+
+            val plants: ArrayList<String> = ArrayList()
+            plants.add("Snake Plant")
+            plants.add("Oregano")
+            plants.add("Basil")
+            plants.add("San Francisco")
+            plants.add("Johnny")
+
+            sampleTaskGroup[key] = plants
         }
 
         return sampleTaskGroup
