@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_header">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/img_plant"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"

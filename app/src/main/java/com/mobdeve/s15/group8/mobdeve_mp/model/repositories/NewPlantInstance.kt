@@ -11,12 +11,7 @@ object NewPlantInstance {
     var plant: HashMap<String, Any> = HashMap()
 
     init {
-        plant["imageUrl"] = ""
-        plant["name"] = ""
-        plant["nickname"] = ""
-        plant["dateAdded"] = SimpleDateFormat("MM/dd/yyyy").format(Date())
-        plant["tasks"] = ArrayList<Task>()
-        plant["journal"] = ArrayList<Journal>()
+        resetPlant()
     }
 
     fun addTask(task: Task) {
@@ -31,7 +26,12 @@ object NewPlantInstance {
         plant["nickname"] = nickname
     }
 
-    fun setPlantInstance() {
-
+    fun resetPlant() {
+        plant["imageUrl"] = ""
+        plant["name"] = ""
+        plant["nickname"] = ""
+        plant["dateAdded"] = SimpleDateFormat("MM/dd/yyyy").format(Date())
+        plant["tasks"] = ArrayList<Task>()
+        plant["journal"] = ArrayList<Journal>()
     }
 }
