@@ -11,24 +11,24 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 
 class DashboardTaskGroupAdapter(
     private val context: Context,
-    private val taskGroups: ArrayList<String>,
-    private val tasksChildren: HashMap<String, ArrayList<String>>
-    ) : BaseExpandableListAdapter() {
+    private val tasksChildren: HashMap<String, ArrayList<String>>,
+    private val tasksTitles: ArrayList<String> = ArrayList(tasksChildren.keys)
+) : BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int {
-        return taskGroups.size
+        return tasksTitles.size
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return tasksChildren[taskGroups[groupPosition]]!!.size
+        return tasksChildren[tasksTitles[groupPosition]]!!.size
     }
 
     override fun getGroup(groupPosition: Int): Any {
-        return taskGroups[groupPosition]
+        return tasksTitles[groupPosition]
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): String {
-        return tasksChildren[taskGroups[groupPosition]]!![childPosition]
+        return tasksChildren[tasksTitles[groupPosition]]!![childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {

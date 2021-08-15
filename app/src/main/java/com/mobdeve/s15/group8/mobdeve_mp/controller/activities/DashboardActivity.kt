@@ -18,7 +18,6 @@ class DashboardActivity : AppCompatActivity() {
 //    private lateinit var textGreeting: TextView
 //    private lateinit var buttonSignOut: Button
 
-    private lateinit var taskGroups: ArrayList<String>
     private lateinit var tasksChildren: HashMap<String, ArrayList<String>>
 
     private lateinit var elvTaskGroup: ExpandableListView
@@ -38,7 +37,8 @@ class DashboardActivity : AppCompatActivity() {
 
         val grpKeys = arrayListOf(*resources.getStringArray(R.array.actions_array))
         for (key in grpKeys) {
-            sampleTaskGroup[key] = plants
+            if (key != "Weed")
+                sampleTaskGroup[key] = plants
         }
 
         return sampleTaskGroup
@@ -49,15 +49,21 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         elvTaskGroup = findViewById(R.id.elv_task_group)
-        taskGroups = arrayListOf(*resources.getStringArray(R.array.actions_array))
         tasksChildren = mGenerateSampleTasksChildren()
-        taskGroupAdapter = DashboardTaskGroupAdapter(applicationContext, taskGroups, tasksChildren)
+        taskGroupAdapter = DashboardTaskGroupAdapter(applicationContext, tasksChildren)
         elvTaskGroup.setAdapter(taskGroupAdapter)
+        mExpandAllGroups()
 
         /*textGreeting = findViewById(R.id.text_user)
         textGreeting.text = F.auth.currentUser?.displayName
         buttonSignOut = findViewById(R.id.btn_signout)
         buttonSignOut.setOnClickListener { mSignOut() }*/
+    }
+
+    private fun mExpandAllGroups() {
+        for (i in 0 until tasksChildren.size) {
+            elvTaskGroup.expandGroup(i)
+        }
     }
 
     private fun mSignOut() {
