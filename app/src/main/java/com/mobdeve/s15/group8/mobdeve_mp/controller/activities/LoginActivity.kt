@@ -12,9 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: SignInButton
@@ -58,11 +61,16 @@ class LoginActivity : AppCompatActivity() {
                     val user = F.auth.currentUser
                     val userId = user?.uid.toString()
                     val userDoc = F.usersCollection.document(userId)
+                    val now: String = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'").format(Date())
                     userDoc.get().addOnSuccessListener { doc ->
                         if (doc.data == null) {
-                            F.usersCollection.document(userId).set(hashMapOf(
-                                "name" to user?.displayName
-                            ))
+                            DBService.addDocument(
+                                collection=F.usersCollection,
+                                id=userId,
+                                data=hashMapOf(
+                                    "name" to user?.displayName,
+                                    "dateJoined" to now,
+                                    "plants" to ArrayList<String>()))
                         }
                     }
                     val dashboardIntent = Intent(this@LoginActivity, DashboardActivity::class.java)
