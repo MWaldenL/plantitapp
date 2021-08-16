@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
+import android.content.res.Resources
 import android.util.Log
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
@@ -16,7 +17,9 @@ object ImageUploadService : UploadCallback {
     fun uploadToCloud(filename: String) {
         MediaManager
             .get()
-            .upload(filename).unsigned("vywedaso")
+            .upload(filename)
+            .option("folder", "SAMPLE")
+            .unsigned("vywedaso")
             .callback(this).dispatch()
     }
 

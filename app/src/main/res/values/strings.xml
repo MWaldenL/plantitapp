@@ -5,7 +5,7 @@
         280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com
     </string>
     <string name="file_provider_authority">com.mobdeve.s15.group8.mobdeve_mp.fileprovider</string>
-
+    <string name="cloudinary_upload_preset">vywedaso</string>
     <string-array name="actions_array">
         <item>Water</item>
         <item>Weed</item>
