@@ -2,7 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -13,7 +13,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 
 class MainActivity: AppCompatActivity() {
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
+    private val addPlantLauncher = registerForActivityResult(StartActivityForResult()) { result -> }
 
     lateinit var bottomNav: BottomNavigationView
     lateinit var fabAddPlant: FloatingActionButton
@@ -33,7 +33,7 @@ class MainActivity: AppCompatActivity() {
 
         fabAddPlant = findViewById(R.id.fab_add_plant)
         fabAddPlant.setOnClickListener {
-            launcher.launch(Intent(this@MainActivity, AddPlantActivity::class.java))
+            addPlantLauncher.launch(Intent(this@MainActivity, AddPlantActivity::class.java))
         }
 
     }

@@ -46,13 +46,12 @@ object PlantRepository: CoroutineScope {
                         Plant(
                             id,
                             imageUrl,
+                            filePath="",
                             name,
                             nickname,
                             dateAdded,
                             tasks,
-                            journal
-                        )
-                    )
+                            journal))
                 }
             }
         }

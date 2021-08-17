@@ -33,7 +33,7 @@ object ImageUploadService : UploadCallback {
     override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
         Log.d("CLOUDINARY", "Uploaded to cloud, $resultData")
         val imageUrl = resultData?.get("secure_url").toString()
-        mListener?.onCloudinaryUploadSuccess(imageUrl)
+        mListener?.onImageUploadSuccess(imageUrl)
     }
 
     override fun onError(requestId: String?, error: ErrorInfo?) {

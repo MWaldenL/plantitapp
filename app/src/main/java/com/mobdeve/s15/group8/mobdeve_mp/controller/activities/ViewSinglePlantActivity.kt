@@ -3,6 +3,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import java.io.File
 import java.time.LocalDateTime
 
 class ViewSinglePlantActivity :
@@ -95,7 +97,7 @@ class ViewSinglePlantActivity :
     private fun mBindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
-        val (id, imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
+        val (id, imageUrl, filePath, name, nickname, datePurchased, tasks, journal) = mPlantData
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -108,10 +110,16 @@ class ViewSinglePlantActivity :
 
         tvPurchaseDate.text = datePurchased
 
-        Glide.with(this)
-            .load(imageUrl)
-            .placeholder(R.drawable.ic_launcher_background)
-            .into(ivPlant)
+        if (filePath == "") {
+            Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
+                .into(ivPlant)
+        } else {
+            val imgFile = File(filePath)
+            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
+            ivPlant.setImageBitmap(bmp)
+        }
 
         val size = journal.size
         if (size > 0) {
@@ -125,10 +133,8 @@ class ViewSinglePlantActivity :
 
     private fun mHandleNewJournalRequest() {
         val fragment = AddJournalDialogFragment()
-
         val bundle = Bundle()
         bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
-
         fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
     }
@@ -138,7 +144,6 @@ class ViewSinglePlantActivity :
     override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
         val date = LocalDateTime.now().toString()
-
         val toAdd: HashMap<*, *> = hashMapOf(
             "body" to body,
             "date" to date
