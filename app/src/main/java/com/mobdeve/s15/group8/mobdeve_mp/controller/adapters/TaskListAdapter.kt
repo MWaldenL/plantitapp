@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import com.mobdeve.s15.group8.mobdeve_mp.view.TaskViewHolder
+import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.TaskViewHolder
 
 class TaskListAdapter(
     private val data: ArrayList<Task>):

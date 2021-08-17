@@ -15,6 +15,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DashboardFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import java.text.SimpleDateFormat
 import java.util.*
@@ -73,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                                     "plants" to ArrayList<String>()))
                         }
                     }
-                    val dashboardIntent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                    val dashboardIntent = Intent(this@LoginActivity, DashboardFragment::class.java)
                     dashboardLauncher.launch(dashboardIntent)
                 }
             }

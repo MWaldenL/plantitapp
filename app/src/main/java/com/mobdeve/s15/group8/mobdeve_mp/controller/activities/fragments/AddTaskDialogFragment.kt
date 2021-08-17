@@ -1,14 +1,12 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import java.text.DateFormatSymbols

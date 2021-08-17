@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.PersistableBundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
@@ -23,6 +22,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddTaskDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService

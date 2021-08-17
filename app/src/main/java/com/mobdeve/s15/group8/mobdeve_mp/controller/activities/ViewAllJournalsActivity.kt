@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -17,14 +16,12 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 class ViewAllJournalsActivity :
     AppCompatActivity(),

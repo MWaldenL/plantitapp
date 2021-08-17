@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activities.ViewAllPlantsFragment">
+    tools:context=".controller.activities.fragments.ViewAllPlantsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_plant"

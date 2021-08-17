@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.view
+package com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders
 
 import android.view.View
 import android.widget.ImageView

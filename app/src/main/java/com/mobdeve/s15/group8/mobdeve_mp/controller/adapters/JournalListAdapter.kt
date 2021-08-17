@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
-import com.mobdeve.s15.group8.mobdeve_mp.view.JournalViewHolder
+import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.JournalViewHolder
 
 class JournalListAdapter(
     private val data: ArrayList<Journal>,

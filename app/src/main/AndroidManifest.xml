@@ -31,9 +31,9 @@
         <activity
             android:name=".controller.activities.ViewSinglePlantActivity"
             android:exported="true" />
-        <activity android:name=".controller.activities.ViewAllPlantsFragment" />
+        <activity android:name="com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.ViewAllPlantsFragment" />
         <activity android:name=".controller.activities.LoginActivity" />
-        <activity android:name=".controller.activities.DashboardActivity" />
+        <activity android:name="com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
         <activity android:name=".controller.activities.MainActivity">
             <intent-filter>

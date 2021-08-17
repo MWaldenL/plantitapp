@@ -1,6 +1,5 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +7,12 @@ import android.view.ViewGroup
 import android.widget.ExpandableListView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class DashboardActivity : Fragment() {
+class DashboardFragment : Fragment() {
 //    private lateinit var textGreeting: TextView
 //    private lateinit var buttonSignOut: Button
 

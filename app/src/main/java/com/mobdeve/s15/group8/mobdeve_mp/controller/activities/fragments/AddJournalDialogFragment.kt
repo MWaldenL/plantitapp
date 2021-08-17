@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,12 +7,9 @@ import androidx.fragment.app.DialogFragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.KeyEvent
 import android.widget.EditText
 import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import java.lang.ClassCastException
 
 class AddJournalDialogFragment :
