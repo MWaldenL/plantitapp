@@ -24,7 +24,7 @@
         <activity
             android:name=".controller.activities.ViewSinglePlantActivity"
             android:exported="true" />
-        <activity android:name=".controller.activities.ViewAllPlantsActivity" />
+        <activity android:name=".controller.activities.ViewAllPlantsFragment" />
         <activity android:name=".controller.activities.LoginActivity" />
         <activity android:name=".controller.activities.DashboardActivity" />
         <activity android:name=".controller.activities.AddPlantActivity" />
