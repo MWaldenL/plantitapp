@@ -14,6 +14,15 @@ import kotlin.coroutines.CoroutineContext
 object DBService: CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
+    suspend fun readCollection(collection: CollectionReference): QuerySnapshot? {
+        return try {
+            collection.get().await()
+        } catch(e: Exception) {
+            Log.e("DBService readCollection", "$e")
+            null
+        }
+    }
+
     suspend fun readDocument(collection: CollectionReference, id: String): DocumentSnapshot? {
         return try {
             collection.document(id).get().await()
