@@ -9,6 +9,10 @@
         android:title="Mark the Plant as Dead"
         android:icon="@drawable/baseline_hide_source_24" />
     <item
+        android:id="@+id/plant_menu_revive"
+        android:title="Revive Plant"
+        android:icon="@drawable/baseline_cached_24" />
+    <item
         android:id="@+id/plant_menu_delete_plant"
         android:title="Delete Plant"
         android:icon="@drawable/baseline_delete_outline_24" />

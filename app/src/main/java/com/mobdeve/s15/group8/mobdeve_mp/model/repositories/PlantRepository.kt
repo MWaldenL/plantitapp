@@ -61,6 +61,7 @@ object PlantRepository: DBCallback {
                 name=mPlantDoc["name"].toString(),
                 nickname=mPlantDoc["nickname"].toString(),
                 dateAdded=mPlantDoc["dateAdded"].toString(),
+                death=mPlantDoc["death"] as Boolean,
                 tasks,
                 journal
             ))
