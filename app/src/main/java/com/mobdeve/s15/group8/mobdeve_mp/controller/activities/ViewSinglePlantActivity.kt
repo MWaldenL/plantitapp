@@ -143,7 +143,7 @@ class ViewSinglePlantActivity :
         )
 
         // add to firebase
-        DBService().updateDocument(
+        DBService.updateDocument(
             F.plantsCollection,
             mPlantData.id,
             "journal",

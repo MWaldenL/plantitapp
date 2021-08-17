@@ -47,11 +47,4 @@ object DBService: CoroutineScope {
             collection.document(id).update(field, value)
         }
     }
-
-    fun updateDocument(collection: CollectionReference, id: String?, field: String, value: Any) {
-        if (id == null) return
-        launch(Dispatchers.IO) {
-            collection.document(id).update(field, value)
-        }
-    }
 }

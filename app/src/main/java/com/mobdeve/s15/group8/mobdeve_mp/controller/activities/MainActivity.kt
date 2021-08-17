@@ -18,12 +18,8 @@ class MainActivity: AppCompatActivity() {
         MediaManager.init(this) // for Cloudinary
 
         PlantRepository.getData()
-//        launcher.launch(Intent(this@MainActivity, AddPlantActivity::class.java))
-        launcher.launch(Intent(this@MainActivity, DashboardActivity::class.java))
-        /*if (F.auth.currentUser == null) {
-            launcher.launch(Intent(this@MainActivity, LoginActivity::class.java))
-        } else {
-            launcher.launch(Intent(this@MainActivity, DashboardActivity::class.java))
-        }*/
+
+        
+
     }
 }

@@ -107,7 +107,7 @@ class ViewAllJournalsActivity :
         )
 
         // add to db
-        DBService().updateDocument(
+        DBService.updateDocument(
             F.plantsCollection,
             mPlantData.id,
             "journal",
