@@ -42,4 +42,11 @@ object DBService: CoroutineScope {
             collection.document(id).update(field, value)
         }
     }
+
+    fun deleteDocument(collection: CollectionReference, id: String?) {
+        if (id == null) return
+        launch(Dispatchers.IO) {
+            collection.document(id).delete()
+        }
+    }
 }

@@ -21,6 +21,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddJournalDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DeletePlantDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.ViewAllPlantsFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -30,7 +32,8 @@ import java.time.LocalDateTime
 
 class ViewSinglePlantActivity :
     AppCompatActivity(),
-    AddJournalDialogFragment.AddJournalDialogListener
+    AddJournalDialogFragment.AddJournalDialogListener,
+    DeletePlantDialogFragment.DeletePlantDialogListener
 {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
@@ -63,6 +66,9 @@ class ViewSinglePlantActivity :
                 }
             }
         }
+
+    private var mDashboardLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     private var mJournalLimited = arrayListOf<Journal>()
 
@@ -201,9 +207,10 @@ class ViewSinglePlantActivity :
         popup.setOnMenuItemClickListener {
 
             when (it.itemId) {
-//                R.id.header1 -> {
-//                    Toast.makeText(this@ViewSinglePlantActivity, item.title, Toast.LENGTH_SHORT).show()
-//                }
+                R.id.plant_menu_delete_plant -> {
+                    val fragment = DeletePlantDialogFragment()
+                    fragment.show(supportFragmentManager, "delete_plant")
+                }
 //                R.id.header2 -> {
 //                    Toast.makeText(this@ViewSinglePlantActivity, item.title, Toast.LENGTH_SHORT).show()
 //                }
@@ -217,5 +224,28 @@ class ViewSinglePlantActivity :
 
         popup.setForceShowIcon(true)
         popup.show()
+    }
+
+    override fun onPlantDelete(dialog: DialogFragment) {
+        val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
+
+        DBService.deleteDocument(
+            F.plantsCollection,
+            mPlantData.id
+        )
+
+        PlantRepository
+            .plantList
+            .remove(mPlantData)
+
+        Toast.makeText(
+            this,
+            "${name} has been deleted. Returning to the home screen.",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        val intent = Intent(this@ViewSinglePlantActivity, MainActivity::class.java)
+        mDashboardLauncher.launch(intent)
+        finish()
     }
 }
