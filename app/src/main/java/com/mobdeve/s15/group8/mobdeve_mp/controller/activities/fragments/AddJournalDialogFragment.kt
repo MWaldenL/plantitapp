@@ -31,7 +31,7 @@ class AddJournalDialogFragment :
         try {
             listener = context as AddJournalDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + " must implement NoticeDialogListener"))
+            throw ClassCastException((context.toString() + " must implement AddJournalDialogListener"))
         }
     }
 

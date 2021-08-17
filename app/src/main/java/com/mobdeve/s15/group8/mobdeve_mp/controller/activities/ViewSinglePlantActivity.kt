@@ -53,12 +53,13 @@ class ViewSinglePlantActivity :
 
                     val size = journal.size
                     mJournalLimited.clear()
-                    if (size > 0) {
-                        mJournalLimited.add(journal[size - 1])
-                        if (size >= 2) mJournalLimited.add(journal[size - 2])
-                        if (size >= 3) mJournalLimited.add(journal[size - 3])
+
+                    for (i in 1..3) {
+                        if (size == i - 1)
+                            break
+                        mJournalLimited.add(journal[size - i])
                     }
-                    recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
+                    recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
                 }
             }
         }
@@ -122,13 +123,13 @@ class ViewSinglePlantActivity :
         }
 
         val size = journal.size
-        if (size > 0) {
-            mJournalLimited.add(journal[size - 1])
-            if (size >= 2) mJournalLimited.add(journal[size - 2])
-            if (size >= 3) mJournalLimited.add(journal[size - 3])
+        for (i in 1..3) {
+            if (size == i - 1)
+                break
+            mJournalLimited.add(journal[size - i])
         }
         recyclerViewTask.adapter = TaskListAdapter(tasks)
-        recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
+        recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
     }
 
     private fun mHandleNewJournalRequest() {
