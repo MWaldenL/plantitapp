@@ -12,12 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.PlantListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 
 // Can be converted to fragment later on for tabbed interface
 class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewAlive: RecyclerView
+    private lateinit var recyclerViewDead: RecyclerView
+
+    private var mAlive = arrayListOf<Plant>()
+    private var mDead = arrayListOf<Plant>()
+
     private val mViewPlantLauncher = registerForActivityResult(StartActivityForResult()) { result -> }
 
     override fun onCreateView(
@@ -31,9 +37,30 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NewPlantInstance.setOnNewPlantListener(this)
-        recyclerView = view.findViewById(R.id.recyclerview_plant)
-        recyclerView.adapter = PlantListAdapter(PlantRepository.plantList, mViewPlantLauncher)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
+        recyclerViewAlive.adapter = PlantListAdapter(mAlive, mViewPlantLauncher)
+        recyclerViewAlive.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
+        recyclerViewDead.adapter = PlantListAdapter(mDead, mViewPlantLauncher)
+        recyclerViewDead.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        mDead.clear()
+        mAlive.clear()
+
+        for (plant in PlantRepository.plantList) {
+            if (plant.death)
+                mDead.add(plant)
+            else
+                mAlive.add(plant)
+        }
+
+        updateView()
     }
 
     override fun onResume() {
@@ -42,6 +69,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     }
 
     override fun updateView() {
-        recyclerView.adapter?.notifyDataSetChanged()
+        recyclerViewAlive.adapter?.notifyDataSetChanged()
+        recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 }
