@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +24,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 class ViewSinglePlantActivity :
     AppCompatActivity(),
@@ -42,10 +40,27 @@ class ViewSinglePlantActivity :
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
-    private var mJournalLimited =
-        arrayListOf<Journal>()
-    private val mViewAllJournalsLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
+
+    private var mViewAllJournalsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data?.getParcelableExtra<Plant>(getString(R.string.PLANT_KEY))
+                if (data != null) {
+                    mPlantData = data
+                    val journal = mPlantData.journal
+
+                    val size = journal.size
+                    mJournalLimited.clear()
+                    mJournalLimited.add(journal[size - 1])
+                    if (size >= 2) mJournalLimited.add(journal[size - 2])
+                    if (size >= 3) mJournalLimited.add(journal[size - 3])
+
+                    recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
+                }
+            }
+        }
+
+    private var mJournalLimited = arrayListOf<Journal>()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,9 +158,7 @@ class ViewSinglePlantActivity :
             .journal
             .add(Journal(body, date))
 
-        Log.d("tag", PlantRepository.plantList[3].journal.toString())
-
-        // update plant data
+        // update plant data, unnecessary but for consistency of data
         mPlantData = PlantRepository.plantList[index]
 
         // notify adapter of removal

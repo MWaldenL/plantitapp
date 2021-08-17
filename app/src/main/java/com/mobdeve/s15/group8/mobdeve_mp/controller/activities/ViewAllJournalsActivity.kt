@@ -1,8 +1,11 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -40,6 +43,15 @@ class ViewAllJournalsActivity :
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         mInitViews()
         mBindData()
+    }
+
+    override fun onBackPressed() {
+        val resultIntent = Intent()
+        resultIntent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+
+        setResult(Activity.RESULT_OK, resultIntent)
+
+        super.onBackPressed()
     }
 
     private fun mInitViews() {
@@ -110,8 +122,12 @@ class ViewAllJournalsActivity :
             .journal
             .add(Journal(body, date))
 
+        // update plant data, unnecessary but for consistency of data
+        mPlantData = PlantRepository.plantList[index]
+
         // notify adapter of addition
         mJournal.add(0, Journal(body, date))
+        recyclerView.layoutManager?.smoothScrollToPosition(recyclerView, null, 0)
         recyclerView.adapter?.notifyItemInserted(0)
     }
 
