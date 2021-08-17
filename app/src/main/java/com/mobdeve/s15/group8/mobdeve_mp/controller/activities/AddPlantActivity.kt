@@ -93,11 +93,12 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
 
     private fun mSavePlant() {
         // Compile final map to write to firebase
-        NewPlantInstance.setStringParams(
+        NewPlantInstance.setStaticParams(
             id=mPlantId,
             name=etPlantName.text.toString(),
             nick=etPlantNickname.text.toString(),
-            filePath=mPhotoFilename)
+            filePath=mPhotoFilename,
+            death=false)
 
         // Write plant to firebase first
         DBService.addDocument(
