@@ -18,7 +18,7 @@ object DBService: CoroutineScope {
         return try {
             collection.get().await()
         } catch(e: Exception) {
-            Log.e("DBService readCollection", "$e")
+            Log.e("DBService readCol", "$e")
             null
         }
     }

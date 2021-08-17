@@ -2,21 +2,31 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddJournalDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DeleteJournalDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalAllListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -25,7 +35,8 @@ import java.time.LocalDateTime
 
 class ViewAllJournalsActivity :
     AppCompatActivity(),
-    AddJournalDialogFragment.AddJournalDialogListener
+    AddJournalDialogFragment.AddJournalDialogListener,
+    DeleteJournalDialogFragment.DeleteJournalDialogListener
 {
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvNickname: TextView
@@ -33,13 +44,16 @@ class ViewAllJournalsActivity :
     private lateinit var fabAddNewJournal: FloatingActionButton
     private lateinit var mJournal: ArrayList<Journal>
     private lateinit var mPlantData: Plant
+    private lateinit var mRecentlyDeletedItem: Journal
+    private var mRecentlyDeletedPosition: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_journals)
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+
         mInitViews()
         mBindData()
+        mPrepareSwipeCallback()
     }
 
     override fun onBackPressed() {
@@ -63,6 +77,8 @@ class ViewAllJournalsActivity :
     }
 
     private fun mBindData() {
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+
         val nickname = mPlantData.nickname
         val name = mPlantData.name
         mJournal = mPlantData.journal
@@ -80,7 +96,94 @@ class ViewAllJournalsActivity :
             tvNickname.text = nickname
         }
 
-        recyclerView.adapter = JournalListAdapter(mJournal, false)
+        recyclerView.adapter = JournalAllListAdapter(mJournal)
+    }
+
+    private fun mPrepareSwipeCallback() {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                mRecentlyDeletedItem = mJournal.get(viewHolder.adapterPosition)
+                mRecentlyDeletedPosition = viewHolder.adapterPosition
+
+                mJournal.removeAt(mRecentlyDeletedPosition)
+                recyclerView.adapter?.notifyItemRemoved(mRecentlyDeletedPosition)
+                mHandleDeleteJournalRequest()
+            }
+
+            // TODO: Check why icon not showing
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+                val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.baseline_delete_outline_24)
+                val bg = ColorDrawable(Color.RED)
+
+                val itemView = viewHolder.itemView
+                val offset = 20
+
+                val iconMargin = itemView.height - icon!!.intrinsicHeight / 2
+                val iconTop = itemView.top + iconMargin
+                val iconBottom = iconTop + icon.intrinsicHeight
+
+                if (dX > 0) {
+                    val iconLeft = itemView.left + iconMargin + icon.intrinsicWidth
+                    val iconRight = itemView.left + iconMargin
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+
+                    bg.setBounds(
+                        itemView.left,
+                        itemView.top,
+                        itemView.left + dX.toInt() - offset,
+                        itemView.bottom
+                    )
+                } else if (dX < 0) {
+                    val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+
+                    bg.setBounds(
+                        itemView.right + dX.toInt() - offset,
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
+                } else {
+                    bg.setBounds(0, 0, 0, 0)
+                }
+
+                icon.draw(c)
+                bg.draw(c)
+            }
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     private fun mHandleNewJournalRequest() {
@@ -91,6 +194,11 @@ class ViewAllJournalsActivity :
 
         fragment.arguments = bundle
         fragment.show(supportFragmentManager, "add_journal")
+    }
+
+    private fun mHandleDeleteJournalRequest() {
+        val fragment = DeleteJournalDialogFragment()
+        fragment.show(supportFragmentManager, "delete_journal")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -119,7 +227,7 @@ class ViewAllJournalsActivity :
             .journal
             .add(Journal(body, date))
 
-        // update plant data, unnecessary but for consistency of data
+        // update plant data
         mPlantData = PlantRepository.plantList[index]
 
         // notify adapter of addition
@@ -130,5 +238,38 @@ class ViewAllJournalsActivity :
 
     override fun onJournalCancel(dialog: DialogFragment) {
         // TODO: Notify user???
+    }
+
+    override fun onJournalDelete(dialog: DialogFragment) {
+        val toRemove: HashMap<*, *> = hashMapOf(
+            "body" to mRecentlyDeletedItem.body,
+            "date" to mRecentlyDeletedItem.date
+        )
+
+        // add to db
+        DBService.updateDocument(
+            F.plantsCollection,
+            mPlantData.id,
+            "journal",
+            FieldValue.arrayRemove(toRemove)
+        )
+
+        val index = PlantRepository.plantList.indexOf(mPlantData)
+
+        // remove from local repo
+        PlantRepository
+            .plantList[index]
+            .journal
+            .removeAt(mRecentlyDeletedPosition)
+
+        // update plant data
+        mPlantData = PlantRepository.plantList[index]
+
+        // no need to notify adapter since notification was done before dialog launch
+    }
+
+    override fun onJournalDeleteCancel(dialog: DialogFragment) {
+        mJournal.add(mRecentlyDeletedPosition, mRecentlyDeletedItem)
+        recyclerView.adapter?.notifyItemInserted(mRecentlyDeletedPosition)
     }
 }
