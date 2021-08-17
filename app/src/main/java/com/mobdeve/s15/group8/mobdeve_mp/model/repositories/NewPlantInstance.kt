@@ -22,6 +22,7 @@ object NewPlantInstance {
                 plant["name"].toString(),
                 plant["nickname"].toString(),
                 plant["dateAdded"].toString(),
+                plant["death"] as Boolean,
                 plant["tasks"] as ArrayList<Task>,
                 plant["journal"] as ArrayList<Journal>)
         }
@@ -42,11 +43,12 @@ object NewPlantInstance {
         plant["imageUrl"] = url
     }
 
-    fun setStringParams(id: String, name: String, nick: String, filePath: String) {
+    fun setStaticParams(id: String, name: String, nick: String, filePath: String, death: Boolean) {
         plant["id"] = id
         plant["name"] = name
         plant["nickname"] = nick
         plant["filePath"] = filePath
+        plant["death"] = death
     }
 
     fun resetPlant() {
@@ -56,6 +58,7 @@ object NewPlantInstance {
         plant["name"] = ""
         plant["nickname"] = ""
         plant["dateAdded"] = SimpleDateFormat("MM/dd/yyyy").format(Date())
+        plant["death"] = false
         plant["tasks"] = ArrayList<Task>()
         plant["journal"] = ArrayList<Journal>()
     }

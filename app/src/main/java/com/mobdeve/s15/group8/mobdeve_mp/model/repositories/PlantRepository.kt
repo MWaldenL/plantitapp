@@ -28,6 +28,7 @@ object PlantRepository: CoroutineScope {
                     val name = d["name"].toString()
                     val nickname = d["nickname"].toString()
                     val dateAdded = d["dateAdded"].toString()
+                    val death = d["death"] as Boolean
                     val docTasks = d["tasks"] as ArrayList<HashMap<*, *>>
                     val docJournal = d["journal"] as ArrayList<HashMap<*, *>>
                     for (t in docTasks) {
@@ -50,6 +51,7 @@ object PlantRepository: CoroutineScope {
                             name,
                             nickname,
                             dateAdded,
+                            death,
                             tasks,
                             journal))
                 }

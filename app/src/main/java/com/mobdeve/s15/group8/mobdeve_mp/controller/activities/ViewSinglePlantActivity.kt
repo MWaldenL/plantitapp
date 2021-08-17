@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +23,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DeletePlantDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.PlantDeathDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.ViewAllPlantsFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
@@ -33,7 +35,8 @@ import java.time.LocalDateTime
 class ViewSinglePlantActivity :
     AppCompatActivity(),
     AddJournalDialogFragment.AddJournalDialogListener,
-    DeletePlantDialogFragment.DeletePlantDialogListener
+    DeletePlantDialogFragment.DeletePlantDialogListener,
+    PlantDeathDialogFragment.PlantDeathDialogListener
 {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
@@ -45,6 +48,7 @@ class ViewSinglePlantActivity :
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
+    private lateinit var mStartIntent: Intent
 
     private var mViewAllJournalsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -76,6 +80,7 @@ class ViewSinglePlantActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
+        mStartIntent = intent
 
         mInitViews()
         mBindData()
@@ -104,7 +109,9 @@ class ViewSinglePlantActivity :
     private fun mBindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
-        val (id, imageUrl, filePath, name, nickname, datePurchased, tasks, journal) = mPlantData
+        val (id, imageUrl, filePath, name, nickname, datePurchased, death, tasks, journal) = mPlantData
+
+        Log.d("hatdog", death.toString())
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -199,10 +206,17 @@ class ViewSinglePlantActivity :
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun mShowPopup(view: View) {
         val popup = PopupMenu(this, view)
+        val menu = popup.menu
         val inflater = popup.menuInflater
         inflater.inflate(R.menu.plant_menu, popup.menu)
 
-        // TODO: define actions for each option
+        if (mPlantData.death) {
+            menu.findItem(R.id.plant_menu_set_death).setVisible(false)
+        } else {
+            menu.findItem(R.id.plant_menu_revive).setVisible(false)
+        }
+
+        // TODO: define actions for edit plant
 
         popup.setOnMenuItemClickListener {
 
@@ -211,12 +225,13 @@ class ViewSinglePlantActivity :
                     val fragment = DeletePlantDialogFragment()
                     fragment.show(supportFragmentManager, "delete_plant")
                 }
-//                R.id.header2 -> {
-//                    Toast.makeText(this@ViewSinglePlantActivity, item.title, Toast.LENGTH_SHORT).show()
-//                }
-//                R.id.header3 -> {
-//                    Toast.makeText(this@ViewSinglePlantActivity, item.title, Toast.LENGTH_SHORT).show()
-//                }
+                R.id.plant_menu_set_death -> {
+                    val fragment = PlantDeathDialogFragment()
+                    fragment.show(supportFragmentManager, "plant_death")
+                }
+                R.id.plant_menu_revive -> {
+                    mHandlePlantRevival()
+                }
             }
 
             true
@@ -229,11 +244,13 @@ class ViewSinglePlantActivity :
     override fun onPlantDelete(dialog: DialogFragment) {
         val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
 
+        // delete from db
         DBService.deleteDocument(
             F.plantsCollection,
             mPlantData.id
         )
 
+        // delete from local repo
         PlantRepository
             .plantList
             .remove(mPlantData)
@@ -244,8 +261,63 @@ class ViewSinglePlantActivity :
             Toast.LENGTH_SHORT
         ).show()
 
+        // launch main activity after deletion TODO
         val intent = Intent(this@ViewSinglePlantActivity, MainActivity::class.java)
         mDashboardLauncher.launch(intent)
+        finish()
+    }
+
+    override fun onPlantDeath(dialog: DialogFragment) {
+        val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
+        val index = PlantRepository.plantList.indexOf(mPlantData)
+
+        DBService.updateDocument(
+            F.plantsCollection,
+            mPlantData.id,
+            "death",
+            true
+        )
+
+        PlantRepository
+            .plantList[index]
+            .death = true
+
+        mPlantData = PlantRepository.plantList[index]
+
+        Toast.makeText(
+            this,
+            "${name} has been marked as dead.",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        dialog.dismiss()
+
+        finish()
+    }
+
+    private fun mHandlePlantRevival() {
+        val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
+        val index = PlantRepository.plantList.indexOf(mPlantData)
+
+        DBService.updateDocument(
+            F.plantsCollection,
+            mPlantData.id,
+            "death",
+            false
+        )
+
+        PlantRepository
+            .plantList[index]
+            .death = false
+
+        mPlantData = PlantRepository.plantList[index]
+
+        Toast.makeText(
+            this,
+            "${name} has been revived.",
+            Toast.LENGTH_SHORT
+        ).show()
+
         finish()
     }
 }
