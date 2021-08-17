@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.content.Context
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,18 @@ class DashboardTaskGroupAdapter(
         mUpdateExpandedIndicator(isExpanded, cv)
         mUpdatePlantsLeft(groupPosition, cv)
 
+        val ivTaskIcon: ImageView = cv!!.findViewById(R.id.iv_task_icon)
+        when (groupListText) {
+            context.resources.getStringArray(R.array.actions_array)[0] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_water_filled_24)
+            context.resources.getStringArray(R.array.actions_array)[1] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_shovel_24)
+            context.resources.getStringArray(R.array.actions_array)[3] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_sunlight_24)
+            context.resources.getStringArray(R.array.actions_array)[5] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
+        }
+
         return cv
     }
 
@@ -90,7 +103,8 @@ class DashboardTaskGroupAdapter(
         // remove item from the elv
         checkboxDashboardPlant.setOnClickListener {
             if (checkboxDashboardPlant.isChecked) {
-                // remove plant from the list of children
+                checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                /*// remove plant from the list of children
                 tasksChildren[getGroup(groupPosition) as String]?.removeAt(childPosition)
                 // remove task if there are no plants associated with the task
                 if (tasksChildren[getGroup(groupPosition) as String]?.size == 0) {
@@ -98,7 +112,9 @@ class DashboardTaskGroupAdapter(
                     tasksChildren.remove(key)
                     tasksTitles.remove(key)
                 }
-                checkboxDashboardPlant.isChecked = false
+                checkboxDashboardPlant.isChecked = false*/
+            } else {
+                checkboxDashboardPlant.paintFlags = 0
             }
             // TODO: dito ba ung pagupdate sa db?
             notifyDataSetChanged()

@@ -7,14 +7,15 @@
 
     <CheckBox
         android:id="@+id/cb_task"
+        style="@style/Widget.MOBDEVEMP.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
         android:layout_marginStart="8dp"
-        android:fontFamily="sans-serif"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
         android:text="CheckBox"
-        android:textSize="14sp"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

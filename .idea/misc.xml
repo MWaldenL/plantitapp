@@ -7,14 +7,20 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_less_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_fertilize_24.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_water_filled_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_main.xml" value="0.5" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_dashboard.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_main.xml" value="0.16" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_view_all_plants.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_dashboard.xml" value="0.22" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_home.xml" value="0.15" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_view_all_plants.xml" value="0.22" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/group_dashboard_tasks.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_dashboard_plant.xml" value="0.33" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_plant.xml" value="0.1802536231884058" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task.xml" value="0.33" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task_view.xml" value="0.5" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/menu/bottom_nav.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/baseline_more_vert_36.xml" value="0.23782894736842106" />
         <entry key="app/src/main/res/drawable/outline_edit_24.xml" value="0.23782894736842106" />

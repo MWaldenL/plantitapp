@@ -27,9 +27,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Today's tasks"
-                android:textColor="#1E1E1E"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
+                android:textColor="@color/primary_color" />
 
             <com.mobdeve.s15.group8.mobdeve_mp.view.UnscrollableExpandableListView
                 android:id="@+id/elv_task_group"
