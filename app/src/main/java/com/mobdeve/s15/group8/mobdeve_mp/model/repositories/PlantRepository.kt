@@ -1,20 +1,25 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
-import android.util.Log
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 
 object PlantRepository: DBCallback {
+    private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
     private var mUserDoc: MutableMap<String, Any> = HashMap()
     private var mPlantDoc: MutableMap<String, Any> = HashMap()
 
     init {
         DBService.setDBCallbackListener(this)
+    }
+
+    fun setOnDataFetchedListener(listener: RefreshCallback) {
+        mRefreshListener = listener
     }
 
     fun getData() {
@@ -36,6 +41,7 @@ object PlantRepository: DBCallback {
                     collection=F.plantsCollection,
                     id=plantId)
             }
+            mRefreshListener?.onDataFetched()
         } else {
             mPlantDoc = doc
             val journal = ArrayList<Journal>()

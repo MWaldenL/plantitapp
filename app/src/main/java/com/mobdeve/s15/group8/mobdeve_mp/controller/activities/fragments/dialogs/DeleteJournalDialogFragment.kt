@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
