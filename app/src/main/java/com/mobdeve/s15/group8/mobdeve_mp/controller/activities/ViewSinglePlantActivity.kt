@@ -12,6 +12,9 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +22,9 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.*
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddJournalDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.DeletePlantDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.PlantDeathDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.ViewAllPlantsFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -36,19 +36,22 @@ class ViewSinglePlantActivity :
     AppCompatActivity(),
     AddJournalDialogFragment.AddJournalDialogListener,
     DeletePlantDialogFragment.DeletePlantDialogListener,
-    PlantDeathDialogFragment.PlantDeathDialogListener
+    PlantDeathDialogFragment.PlantDeathDialogListener,
+    PlantRevivalDialogFragment.PlantRevivalDialogListener
 {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewJournal: RecyclerView
-    private lateinit var ibtnPlantOptions: ImageButton
     private lateinit var ibtnAddNewJournal: ImageButton
+    private lateinit var ibtnEditPlant: ImageButton
+    private lateinit var ibtnKillPlant: ImageButton
+    private lateinit var ibtnRevivePlant: ImageButton
+    private lateinit var ibtnDeletePlant: ImageButton
     private lateinit var tvCommonName: TextView
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
-    private lateinit var mStartIntent: Intent
 
     private var mViewAllJournalsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -76,28 +79,31 @@ class ViewSinglePlantActivity :
 
     private var mJournalLimited = arrayListOf<Journal>()
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
-        mStartIntent = intent
 
         mInitViews()
         mBindData()
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun mInitViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
         tvNickname = findViewById(R.id.tv_nickname)
         tvPurchaseDate = findViewById(R.id.tv_purchase_date)
         ivPlant = findViewById(R.id.iv_plant)
         btnViewAll = findViewById(R.id.btn_view_all)
-        ibtnPlantOptions = findViewById(R.id.ibtn_plant_options)
         ibtnAddNewJournal = findViewById(R.id.ibtn_add_journal)
+        ibtnEditPlant = findViewById(R.id.ibtn_edit_plant)
+        ibtnKillPlant = findViewById(R.id.ibtn_kill_plant)
+        ibtnRevivePlant = findViewById(R.id.ibtn_revive_plant)
+        ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
 
         ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
-        ibtnPlantOptions.setOnClickListener { mShowPopup(ibtnPlantOptions) }
+        ibtnEditPlant.setOnClickListener { /**TODO**/ }
+        ibtnKillPlant.setOnClickListener { mHandlePlantDeath() }
+        ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
+        ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
         btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
 
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
@@ -111,8 +117,6 @@ class ViewSinglePlantActivity :
 
         val (id, imageUrl, filePath, name, nickname, datePurchased, death, tasks, journal) = mPlantData
 
-        Log.d("hatdog", death.toString())
-
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
             tvCommonName.text = ""
@@ -123,6 +127,18 @@ class ViewSinglePlantActivity :
         }
 
         tvPurchaseDate.text = datePurchased
+
+        if (death) {
+            ibtnKillPlant.visibility = View.GONE
+
+            val params = ibtnEditPlant.layoutParams as ConstraintLayout.LayoutParams
+            params.bottomToBottom = tvNickname.id
+            params.topToTop = tvNickname.id
+            params.endToStart = ibtnRevivePlant.id
+            ibtnEditPlant.requestLayout()
+        } else {
+            ibtnRevivePlant.visibility = View.GONE
+        }
 
         if (filePath == "") {
             Glide.with(this)
@@ -197,13 +213,22 @@ class ViewSinglePlantActivity :
         // TODO: Notify user???
     }
 
-    private fun mGotoViewAllJournalsActivity() {
-        val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
-        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
-        mViewAllJournalsLauncher.launch(intent)
+    private fun mHandlePlantDelete() {
+        val fragment = DeletePlantDialogFragment()
+        fragment.show(supportFragmentManager, "delete_plant")
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun mHandlePlantDeath() {
+        val fragment = PlantDeathDialogFragment()
+        fragment.show(supportFragmentManager, "plant_death")
+    }
+
+    private fun mHandlePlantRevival() {
+        val fragment = PlantRevivalDialogFragment()
+        fragment.show(supportFragmentManager, "plant_revival")
+    }
+
+/**
     private fun mShowPopup(view: View) {
         val popup = PopupMenu(this, view)
         val menu = popup.menu
@@ -237,8 +262,19 @@ class ViewSinglePlantActivity :
             true
         }
 
-        popup.setForceShowIcon(true)
+//        val helper = MenuPopupHelper(this, menu as MenuBuilder, view)
+//        helper.setForceShowIcon(true)
+//        helper.show()
+
+//        popup.setForceShowIcon(true)
         popup.show()
+    }
+**/
+
+private fun mGotoViewAllJournalsActivity() {
+        val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
+        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+        mViewAllJournalsLauncher.launch(intent)
     }
 
     override fun onPlantDelete(dialog: DialogFragment) {
@@ -295,7 +331,7 @@ class ViewSinglePlantActivity :
         finish()
     }
 
-    private fun mHandlePlantRevival() {
+    override fun onPlantRevival(dialog: DialogFragment) {
         val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
         val index = PlantRepository.plantList.indexOf(mPlantData)
 
@@ -317,6 +353,8 @@ class ViewSinglePlantActivity :
             "${name} has been revived.",
             Toast.LENGTH_SHORT
         ).show()
+
+        dialog.dismiss()
 
         finish()
     }

@@ -30,7 +30,43 @@
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <ImageButton
-                android:id="@+id/ibtn_plant_options"
+                android:id="@+id/ibtn_edit_plant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                app:layout_constraintEnd_toStartOf="@+id/ibtn_kill_plant"
+                app:layout_constraintTop_toTopOf="@+id/tv_nickname"
+                app:srcCompat="@drawable/outline_edit_24"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            <ImageButton
+                android:id="@+id/ibtn_kill_plant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
+                app:layout_constraintTop_toTopOf="@+id/tv_nickname"
+                app:srcCompat="@drawable/baseline_hide_source_24"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateClickableBoundsCheck" />
+
+            <ImageButton
+                android:id="@+id/ibtn_revive_plant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
+                app:layout_constraintTop_toTopOf="@+id/tv_nickname"
+                app:srcCompat="@drawable/baseline_cached_24"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+            <ImageButton
+                android:id="@+id/ibtn_delete_plant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -38,7 +74,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-                app:srcCompat="@drawable/baseline_more_vert_36"
+                app:srcCompat="@drawable/baseline_delete_outline_24"
+                app:tint="#C80000"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             <TextView
