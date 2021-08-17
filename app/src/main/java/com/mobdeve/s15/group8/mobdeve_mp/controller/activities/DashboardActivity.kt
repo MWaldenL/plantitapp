@@ -2,9 +2,13 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ExpandableListView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -14,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : Fragment() {
 //    private lateinit var textGreeting: TextView
 //    private lateinit var buttonSignOut: Button
 
@@ -44,20 +48,23 @@ class DashboardActivity : AppCompatActivity() {
         return sampleTaskGroup
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+    }
 
-        elvTaskGroup = findViewById(R.id.elv_task_group)
-        tasksChildren = mGenerateSampleTasksChildren()  // store the data as a HashMap for ELV rendering
-        taskGroupAdapter = DashboardTaskGroupAdapter(applicationContext, tasksChildren)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        elvTaskGroup = view.findViewById(R.id.elv_task_group)
+        tasksChildren =
+            mGenerateSampleTasksChildren()  // store the data as a HashMap for ELV rendering
+        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), tasksChildren)
         elvTaskGroup.setAdapter(taskGroupAdapter)
         mExpandAllGroups()
-
-        /*textGreeting = findViewById(R.id.text_user)
-        textGreeting.text = F.auth.currentUser?.displayName
-        buttonSignOut = findViewById(R.id.btn_signout)
-        buttonSignOut.setOnClickListener { mSignOut() }*/
     }
 
     private fun mExpandAllGroups() {
@@ -66,9 +73,9 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    private fun mSignOut() {
+    /*private fun mSignOut() {
         F.auth.signOut()
         GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
         loginLauncher.launch(Intent(this@DashboardActivity, MainActivity::class.java))
-    }
+    }*/
 }
