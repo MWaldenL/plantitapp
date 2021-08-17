@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -46,7 +47,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private val mPlantId = UUID.randomUUID().toString()
 
     private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
+        registerForActivityResult(StartActivityForResult()) { result -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +110,11 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         // Then upload to cloudinary and reset the new plant instance
         ImageUploadService.uploadToCloud(mPhotoFilename)
         NewPlantInstance.resetPlant()
+
+        // Go back to MainActivity
+        Intent(this@AddPlantActivity, MainActivity::class.java)
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->

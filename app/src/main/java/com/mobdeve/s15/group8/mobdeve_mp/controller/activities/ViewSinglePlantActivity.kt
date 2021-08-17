@@ -51,10 +51,11 @@ class ViewSinglePlantActivity :
 
                     val size = journal.size
                     mJournalLimited.clear()
-                    mJournalLimited.add(journal[size - 1])
-                    if (size >= 2) mJournalLimited.add(journal[size - 2])
-                    if (size >= 3) mJournalLimited.add(journal[size - 3])
-
+                    if (size > 0) {
+                        mJournalLimited.add(journal[size - 1])
+                        if (size >= 2) mJournalLimited.add(journal[size - 2])
+                        if (size >= 3) mJournalLimited.add(journal[size - 3])
+                    }
                     recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
                 }
             }
@@ -113,10 +114,11 @@ class ViewSinglePlantActivity :
             .into(ivPlant)
 
         val size = journal.size
-        mJournalLimited.add(journal[size - 1])
-        if (size >= 2) mJournalLimited.add(journal[size - 2])
-        if (size >= 3) mJournalLimited.add(journal[size - 3])
-
+        if (size > 0) {
+            mJournalLimited.add(journal[size - 1])
+            if (size >= 2) mJournalLimited.add(journal[size - 2])
+            if (size >= 3) mJournalLimited.add(journal[size - 3])
+        }
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
     }
