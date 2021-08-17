@@ -1,60 +1,69 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
+import android.util.Log
 import com.mobdeve.s15.group8.mobdeve_mp.F
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
-object PlantRepository: CoroutineScope {
-    override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
-    val plantList: ArrayList<Plant> = ArrayList()
+object PlantRepository: DBCallback {
+    var plantList: ArrayList<Plant> = ArrayList()
+    private var mUserDoc: MutableMap<String, Any> = HashMap()
+    private var mPlantDoc: MutableMap<String, Any> = HashMap()
 
-    fun getData() {
-        launch(coroutineContext) {
-            val res = DBService.readCollection(F.plantsCollection)
-            if (res != null) {
-                for (doc in res) {
-                    val d = doc.data
-                    val id = doc.id
-                    val journal = ArrayList<Journal>()
-                    val tasks = ArrayList<Task>()
-                    val imageUrl = d["imageUrl"].toString()
-                    val name = d["name"].toString()
-                    val nickname = d["nickname"].toString()
-                    val dateAdded = d["dateAdded"].toString()
-                    val docTasks = d["tasks"] as ArrayList<HashMap<*, *>>
-                    val docJournal = d["journal"] as ArrayList<HashMap<*, *>>
-                    for (t in docTasks) {
-                        val action = t["action"].toString()
-                        val occurrence = t["occurrence"].toString()
-                        val repeat = t["repeat"].toString().toInt()
-                        val startDate = t["startDate"].toString()
-                        tasks.add(Task(action, startDate, repeat, occurrence))
-                    }
-                    for (j in docJournal) {
-                        val body = j["body"].toString()
-                        val date = j["date"].toString()
-                        journal.add(Journal(body, date))
-                    }
-                    plantList.add(
-                        Plant(
-                            id,
-                            imageUrl,
-                            filePath="",
-                            name,
-                            nickname,
-                            dateAdded,
-                            tasks,
-                            journal))
-                }
-            }
-        }
+    init {
+        DBService.setDBCallbackListener(this)
     }
 
+    fun getData() {
+        plantList = ArrayList()
+        F.auth.currentUser?.uid?.let {
+            DBService.readDocument(
+                collection=F.usersCollection,
+                id=it)
+        }
+    }
+    override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
+        if (type == "users") {
+            mUserDoc = doc
+            val plants = mUserDoc["plants"] as ArrayList<String>
+
+            // Create a plant object for each id
+            for (plantId in plants) {
+                DBService.readDocument(
+                    collection=F.plantsCollection,
+                    id=plantId)
+            }
+        } else {
+            mPlantDoc = doc
+            val journal = ArrayList<Journal>()
+            val tasks = ArrayList<Task>()
+            val docTasks = mPlantDoc["tasks"] as ArrayList<HashMap<*, *>>
+            val docJournal = mPlantDoc["journal"] as ArrayList<HashMap<*, *>>
+            for (t in docTasks) {
+                tasks.add(Task(
+                    action=t["action"].toString(),
+                    startDate=t["startDate"].toString(),
+                    repeat=t["repeat"].toString().toInt(),
+                    occurrence=t["occurrence"].toString()))
+            }
+            for (j in docJournal) {
+                journal.add(Journal(
+                    body=j["body"].toString(),
+                    date=j["date"].toString()))
+            }
+            plantList.add(Plant(
+                id,
+                imageUrl=mPlantDoc["imageUrl"].toString(),
+                filePath="",
+                name=mPlantDoc["name"].toString(),
+                nickname=mPlantDoc["nickname"].toString(),
+                dateAdded=mPlantDoc["dateAdded"].toString(),
+                tasks,
+                journal
+            ))
+        }
+    }
 }

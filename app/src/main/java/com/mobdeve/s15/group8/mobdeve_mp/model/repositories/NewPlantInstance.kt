@@ -12,7 +12,7 @@ import kotlin.collections.HashMap
 
 object NewPlantInstance {
     var plant: HashMap<String, Any> = HashMap()
-    lateinit var mListener: NewPlantCallback
+    var mListener: NewPlantCallback? = null
     val plantObject: Plant
         get() {
             return Plant(
@@ -61,6 +61,6 @@ object NewPlantInstance {
     }
 
     fun notifyPlantRV() {
-        mListener.updateView()
+        mListener?.updateView()
     }
 }

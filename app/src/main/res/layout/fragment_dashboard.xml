@@ -7,6 +7,7 @@
     tools:context=".controller.activities.fragments.DashboardFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -37,9 +38,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:divider="@null"
+                android:groupIndicator="@null"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                android:nestedScrollingEnabled="false"
-                android:groupIndicator="@null"/>
+                android:nestedScrollingEnabled="false" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -5,6 +5,7 @@ import android.util.Log
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 
 object ImageUploadService : UploadCallback {
@@ -18,7 +19,7 @@ object ImageUploadService : UploadCallback {
         MediaManager
             .get()
             .upload(filename)
-            .option("folder", "SAMPLE")
+            .option("folder", F.auth.currentUser!!.uid)
             .unsigned("vywedaso")
             .callback(this).dispatch()
     }

@@ -2,33 +2,28 @@ package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 object DBService: CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
+    lateinit var mListener: DBCallback
 
-    suspend fun readCollection(collection: CollectionReference): QuerySnapshot? {
-        return try {
-            collection.get().await()
-        } catch(e: Exception) {
-            Log.e("DBService readCol", "$e")
-            null
-        }
+    fun setDBCallbackListener(listener: PlantRepository) {
+        mListener = listener
     }
 
-    suspend fun readDocument(collection: CollectionReference, id: String): DocumentSnapshot? {
-        return try {
-            collection.document(id).get().await()
-        } catch (e: Exception) {
-            Log.e("DBService", "$e")
-            null
+    fun readDocument(collection: CollectionReference, id: String) {
+        launch(coroutineContext) {
+            collection.document(id).get().addOnSuccessListener { doc ->
+                if (doc != null) {
+                    doc.data?.let { mListener.onDataRetrieved(it, id, collection.id) }
+                } else {
+                    Log.d("DBService", "No doc")
+                }
+            }
         }
     }
 
