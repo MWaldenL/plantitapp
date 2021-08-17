@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +44,9 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private lateinit var mPhotoFilename: String
     private val mTasks = NewPlantInstance.plant["tasks"] as ArrayList<Task>
     private val mPlantId = UUID.randomUUID().toString()
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

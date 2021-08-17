@@ -21,6 +21,7 @@ object PlantRepository: CoroutineScope {
             if (res != null) {
                 for (doc in res) {
                     val d = doc.data
+                    val id = doc.id
                     val journal = ArrayList<Journal>()
                     val tasks = ArrayList<Task>()
                     val imageUrl = d["imageUrl"].toString()
@@ -43,6 +44,7 @@ object PlantRepository: CoroutineScope {
                     }
                     plantList.add(
                         Plant(
+                            id,
                             imageUrl,
                             name,
                             nickname,

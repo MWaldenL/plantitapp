@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <CheckBox-->
-<!--        android:id="@+id/cb_task"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:minHeight="0dp"-->
-<!--        android:minWidth="0dp"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:fontFamily="sans-serif"-->
-<!--        android:text="CheckBox"-->
-<!--        android:textSize="14sp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_task"
         android:layout_width="match_parent"
@@ -27,7 +14,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         app:cardBackgroundColor="#fefefe"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

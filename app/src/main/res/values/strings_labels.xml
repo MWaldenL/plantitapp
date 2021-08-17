@@ -5,12 +5,16 @@
     <string name="common_name_placeholder">Common Name</string>
     <string name="date_placeholder">January 1, 1999</string>
 
-    <string name="date_label">Date of Purchase:</string>
+    <string name="date_label">Date Added:</string>
 
     <string name="task_header">Daily Tasks</string>
     <string name="journal_header">Plant Journal</string>
+    <string name="add_journal_header">New Journal Entry</string>
 
     <string name="view_all_button">View All Entries</string>
     <string name="dead_button">Mark the Plant as Dead</string>
     <string name="delete_button">Delete Plant</string>
+
+    <string name="add_journal_hint">What\'s on your mind?</string>
+    <string name="add_journal_counter">500</string>
 </resources>

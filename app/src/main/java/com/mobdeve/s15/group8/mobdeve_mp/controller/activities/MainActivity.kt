@@ -16,6 +16,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         MediaManager.init(this) // for Cloudinary
+
         PlantRepository.getData()
 //        launcher.launch(Intent(this@MainActivity, AddPlantActivity::class.java))
         launcher.launch(Intent(this@MainActivity, DashboardActivity::class.java))

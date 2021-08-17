@@ -7,7 +7,7 @@
     tools:context=".controller.activities.ViewSinglePlantActivity">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/sv_single_plant"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -90,7 +90,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:cardMaxElevation="2dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="false"
@@ -133,14 +133,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:cardMaxElevation="2dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="false"
                 app:contentPadding="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_task_wrapper">
@@ -148,6 +146,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/ibtn_add_journal"
+                        android:layout_width="26dp"
+                        android:layout_height="22dp"
+                        android:background="#00FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@android:drawable/ic_input_add"
+                        app:tint="#000000"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <Button
                         android:id="@+id/btn_view_all"
@@ -159,6 +168,7 @@
                         android:text="@string/view_all_button"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_all_journal"
                         tools:ignore="TouchTargetSizeCheck" />
 
@@ -188,16 +198,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_new_journal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:ignore="SpeakableTextPresentCheck" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fab_add_new_journal"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:layout_marginBottom="32dp"-->
+<!--        android:clickable="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:srcCompat="@android:drawable/ic_input_add"-->
+<!--        tools:ignore="SpeakableTextPresentCheck" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
