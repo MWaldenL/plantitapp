@@ -25,8 +25,8 @@ class AddJournalDialogFragment :
     internal lateinit var listener: AddJournalDialogListener
 
     interface AddJournalDialogListener {
-        fun onSave(dialog: DialogFragment, text: String)
-        fun onCancel(dialog: DialogFragment)
+        fun onJournalSave(dialog: DialogFragment, text: String)
+        fun onJournalCancel(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
@@ -67,10 +67,10 @@ class AddJournalDialogFragment :
             builder
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
-                    listener.onSave(this, etJournal.text.toString())
+                    listener.onJournalSave(this, etJournal.text.toString())
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
-                    listener.onCancel(this)
+                    listener.onJournalCancel(this)
                     getDialog()?.cancel()
                 }
                 .create()

@@ -15,6 +15,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,12 +31,13 @@ class ViewAllJournalsActivity :
     private lateinit var tvNickname: TextView
     private lateinit var tvCommonName: TextView
     private lateinit var fabAddNewJournal: FloatingActionButton
-    private lateinit var mID: String
     private lateinit var mJournal: ArrayList<Journal>
+    private lateinit var mPlantData: Plant
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_journals)
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         mInitViews()
         mBindData()
     }
@@ -51,11 +54,14 @@ class ViewAllJournalsActivity :
     }
 
     private fun mBindData() {
-        val nickname = intent.getStringExtra(getString(R.string.NICKNAME_KEY))
-        val name = intent.getStringExtra(getString(R.string.COMMON_NAME_KEY))
+        val nickname = mPlantData.nickname
+        val name = mPlantData.name
+        mJournal = mPlantData.journal
 
-        mID = intent.getStringExtra(getString(R.string.ID_KEY)).toString()
-        mJournal = intent.getSerializableExtra(getString(R.string.ALL_JOURNALS_KEY)) as ArrayList<Journal>
+        mJournal = mJournal
+            .indices
+            .map{i: Int -> mJournal[mJournal.size - 1 - i]}
+            .toCollection(ArrayList())
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -79,7 +85,7 @@ class ViewAllJournalsActivity :
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onSave(dialog: DialogFragment, text: String) {
+    override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
         val date = LocalDateTime.now().toString()
 
@@ -88,18 +94,28 @@ class ViewAllJournalsActivity :
             "date" to date
         )
 
+        // add to db
         DBService().updateDocument(
             F.plantsCollection,
-            mID,
+            mPlantData.id,
             "journal",
             FieldValue.arrayUnion(toAdd)
         )
 
+        val index = PlantRepository.plantList.indexOf(mPlantData)
+
+        // add to local repo
+        PlantRepository
+            .plantList[index]
+            .journal
+            .add(Journal(body, date))
+
+        // notify adapter of addition
         mJournal.add(0, Journal(body, date))
         recyclerView.adapter?.notifyItemInserted(0)
     }
 
-    override fun onCancel(dialog: DialogFragment) {
+    override fun onJournalCancel(dialog: DialogFragment) {
         // TODO: Notify user???
     }
 }

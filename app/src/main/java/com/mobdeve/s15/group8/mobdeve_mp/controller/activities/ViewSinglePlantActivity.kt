@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -40,7 +42,6 @@ class ViewSinglePlantActivity :
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
-    private lateinit var mJournalDescending: ArrayList<Journal>
     private var mJournalLimited =
         arrayListOf<Journal>()
     private val mViewAllJournalsLauncher =
@@ -50,7 +51,7 @@ class ViewSinglePlantActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+
         mInitViews()
         mBindData()
     }
@@ -76,6 +77,8 @@ class ViewSinglePlantActivity :
     }
 
     private fun mBindData() {
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+
         val (id, imageUrl, name, nickname, datePurchased, tasks, journal) = mPlantData
 
         if (nickname == "") {
@@ -94,17 +97,10 @@ class ViewSinglePlantActivity :
             .placeholder(R.drawable.ic_launcher_background)
             .into(ivPlant)
 
-//        mJournalDescending = journal.reversed() as ArrayList<Journal>
-        mJournalDescending = journal.indices
-            .map{i: Int -> journal[journal.size - 1 - i]}
-            .toCollection(ArrayList())
-
-        var count = 0
-        for (journal in mJournalDescending) {
-            mJournalLimited.add(journal)
-            count++
-            if (count == 3) break
-        }
+        val size = journal.size
+        mJournalLimited.add(journal[size - 1])
+        if (size >= 2) mJournalLimited.add(journal[size - 2])
+        if (size >= 3) mJournalLimited.add(journal[size - 3])
 
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited, true)
@@ -120,8 +116,9 @@ class ViewSinglePlantActivity :
         fragment.show(supportFragmentManager, "add_journal")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onSave(dialog: DialogFragment, text: String) {
+    override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
         val date = LocalDateTime.now().toString()
 
@@ -130,6 +127,7 @@ class ViewSinglePlantActivity :
             "date" to date
         )
 
+        // add to firebase
         DBService().updateDocument(
             F.plantsCollection,
             mPlantData.id,
@@ -137,27 +135,37 @@ class ViewSinglePlantActivity :
             FieldValue.arrayUnion(toAdd)
         )
 
-        mJournalDescending.add(0, Journal(body, date))
+        val index = PlantRepository.plantList.indexOf(mPlantData)
 
+        // add to local repo
+        PlantRepository
+            .plantList[index]
+            .journal
+            .add(Journal(body, date))
+
+        Log.d("tag", PlantRepository.plantList[3].journal.toString())
+
+        // update plant data
+        mPlantData = PlantRepository.plantList[index]
+
+        // notify adapter of removal
         if (mJournalLimited.size >= 3) {
             mJournalLimited.removeAt(2)
             recyclerViewJournal.adapter?.notifyItemRemoved(2)
         }
 
+        // notify adapter of addition
         mJournalLimited.add(0, Journal(body, date))
         recyclerViewJournal.adapter?.notifyItemInserted(0)
     }
 
-    override fun onCancel(dialog: DialogFragment) {
+    override fun onJournalCancel(dialog: DialogFragment) {
         // TODO: Notify user???
     }
 
     private fun mGotoViewAllJournalsActivity() {
         val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
-        intent.putExtra(getString(R.string.NICKNAME_KEY), mPlantData.nickname)
-        intent.putExtra(getString(R.string.COMMON_NAME_KEY), mPlantData.name)
-        intent.putExtra(getString(R.string.ID_KEY), mPlantData.id)
-        intent.putExtra(getString(R.string.ALL_JOURNALS_KEY), mJournalDescending)
+        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
         mViewAllJournalsLauncher.launch(intent)
     }
 
