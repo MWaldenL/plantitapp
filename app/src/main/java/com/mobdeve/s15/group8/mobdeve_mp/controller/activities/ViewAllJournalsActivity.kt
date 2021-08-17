@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -260,10 +261,12 @@ class ViewAllJournalsActivity :
         PlantRepository
             .plantList[index]
             .journal
-            .removeAt(mRecentlyDeletedPosition)
+            .remove(mRecentlyDeletedItem)
 
         // update plant data
         mPlantData = PlantRepository.plantList[index]
+
+        Log.d("hatdog", mPlantData.journal.toString())
 
         // no need to notify adapter since notification was done before dialog launch
     }
