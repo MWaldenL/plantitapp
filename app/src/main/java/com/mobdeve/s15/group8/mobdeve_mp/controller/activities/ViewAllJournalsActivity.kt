@@ -28,6 +28,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -205,7 +206,7 @@ class ViewAllJournalsActivity :
 
     override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
-        val date = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(Date())
+        val date = DateTimeService.getCurrentDateTime()
 
         val toAdd: HashMap<*, *> = hashMapOf(
             "body" to body,

@@ -17,6 +17,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,7 +55,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                     val user = F.auth.currentUser
                     val userId = user?.uid.toString()
                     val userDoc = F.usersCollection.document(userId)
-                    val now: String = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'").format(Date())
+                    val now: String = DateTimeService.getCurrentDate()
                     userDoc.get().addOnSuccessListener { doc ->
                         if (doc.data == null) {
                             DBService.addDocument(

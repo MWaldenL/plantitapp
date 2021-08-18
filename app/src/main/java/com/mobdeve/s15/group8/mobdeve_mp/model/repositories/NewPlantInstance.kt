@@ -4,6 +4,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import kotlinx.parcelize.RawValue
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -58,7 +59,7 @@ object NewPlantInstance {
         plant["filePath"] = ""
         plant["name"] = ""
         plant["nickname"] = ""
-        plant["dateAdded"] = SimpleDateFormat.getDateInstance(DateFormat.LONG).format(Date())
+        plant["dateAdded"] = DateTimeService.getCurrentDate()
         plant["death"] = false
         plant["tasks"] = ArrayList<Task>()
         plant["journal"] = ArrayList<Journal>()
