@@ -2,7 +2,6 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.content.Context
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -142,10 +141,10 @@ class DashboardTaskGroupAdapter(
     private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
         if (isExpanded)
             cv.findViewById<ImageView>(R.id.iv_expand_group)
-                .setImageResource(R.drawable.ic_baseline_expand_less_24)
+                .setImageResource(R.drawable.ic_expand_less_24)
         else
             cv.findViewById<ImageView>(R.id.iv_expand_group)
-                .setImageResource(R.drawable.ic_baseline_expand_more_24)
+                .setImageResource(R.drawable.ic_expand_more_24)
     }
 
 }

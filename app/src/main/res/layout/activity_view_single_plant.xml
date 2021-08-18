@@ -38,7 +38,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_kill_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-                app:srcCompat="@drawable/outline_edit_24"
+                app:srcCompat="@drawable/ic_edit_24"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             <ImageButton
@@ -50,7 +50,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-                app:srcCompat="@drawable/baseline_hide_source_24"
+                app:srcCompat="@drawable/ic_kill_24"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateClickableBoundsCheck" />
 
             <ImageButton
@@ -62,7 +62,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-                app:srcCompat="@drawable/baseline_cached_24"
+                app:srcCompat="@drawable/ic_revive_24"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             <ImageButton
@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-                app:srcCompat="@drawable/baseline_delete_outline_24"
+                app:srcCompat="@drawable/ic_trash_24"
                 app:tint="#C80000"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
