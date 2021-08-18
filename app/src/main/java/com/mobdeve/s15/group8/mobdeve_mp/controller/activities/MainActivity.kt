@@ -24,19 +24,12 @@ class MainActivity: AppCompatActivity() {
         bottomNav = findViewById(R.id.bottom_nav_view)
         val navFragment = supportFragmentManager.findFragmentById(R.id.nav_fragment) as NavHostFragment
         val navController = navFragment.navController
-        val btnSignout = findViewById<Button>(R.id.btn_signout)
         bottomNav.setupWithNavController(navController)
 
         fabAddPlant = findViewById(R.id.fab_add_plant)
         fabAddPlant.setOnClickListener {
             val addPlantIntent = Intent(this@MainActivity, AddPlantActivity::class.java)
             startActivity(addPlantIntent)
-        }
-        btnSignout.setOnClickListener { // sign out from both firebase and google
-            F.auth.signOut()
-            GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
         }
     }
 }

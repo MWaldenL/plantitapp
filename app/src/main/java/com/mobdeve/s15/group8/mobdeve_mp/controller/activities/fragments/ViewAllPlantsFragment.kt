@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -45,11 +46,13 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
 
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewAlive.adapter = PlantListAdapter(mAlive, mViewPlantLauncher)
-        recyclerViewAlive.layoutManager = GridLayoutManager(requireContext(), 2)
+//        recyclerViewAlive.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerViewAlive.layoutManager = LinearLayoutManager(requireContext())
 
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
         recyclerViewDead.adapter = PlantListAdapter(mDead, mViewPlantLauncher)
-        recyclerViewDead.layoutManager = GridLayoutManager(requireContext(), 2)
+//        recyclerViewDead.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerViewDead.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onStart() {
