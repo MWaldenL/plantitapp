@@ -30,12 +30,6 @@ class LoginActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
-
-        val addPlantBtn: Button = findViewById(R.id.btn_add_plant)
-        addPlantBtn.setOnClickListener {
-            val intent = Intent(this, AddPlantActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private val googleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -74,8 +68,7 @@ class LoginActivity : AppCompatActivity() {
                                     "plants" to ArrayList<String>()))
                         }
                     }
-                    val dashboardIntent = Intent(this@LoginActivity, DashboardFragment::class.java)
-                    dashboardLauncher.launch(dashboardIntent)
+                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 }
             }
     }

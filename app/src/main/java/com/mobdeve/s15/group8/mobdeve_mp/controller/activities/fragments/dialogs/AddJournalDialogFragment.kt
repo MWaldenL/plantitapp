@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -31,7 +31,7 @@ class AddJournalDialogFragment :
         try {
             listener = context as AddJournalDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + " must implement NoticeDialogListener"))
+            throw ClassCastException((context.toString() + " must implement AddJournalDialogListener"))
         }
     }
 

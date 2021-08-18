@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -12,7 +13,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,9 +22,10 @@ import com.mobdeve.s15.group8.mobdeve_mp.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.AddTaskDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AddTaskDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
 import java.io.File
@@ -44,9 +45,8 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private lateinit var mPhotoFilename: String
     private val mTasks = NewPlantInstance.plant["tasks"] as ArrayList<Task>
     private val mPlantId = UUID.randomUUID().toString()
-
     private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
+        registerForActivityResult(StartActivityForResult()) { result -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,10 +79,9 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val plant = savedInstanceState.getSerializable(getString(R.string.SAVED_PLANT_KEY))
-        Log.d("HATDOG", plant.toString())
     }
 
-    override fun onCloudinaryUploadSuccess(imageUrl: String) {
+    override fun onImageUploadSuccess(imageUrl: String) {
         DBService.updateDocument(
             collection= F.plantsCollection,
             id=mPlantId,
@@ -92,8 +91,12 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
 
     private fun mSavePlant() {
         // Compile final map to write to firebase
-        NewPlantInstance.setPlantName(etPlantName.text.toString())
-        NewPlantInstance.setPlantNickname(etPlantNickname.text.toString())
+        NewPlantInstance.setStaticParams(
+            id=mPlantId,
+            name=etPlantName.text.toString(),
+            nick=etPlantNickname.text.toString(),
+            filePath=mPhotoFilename,
+            death=false)
 
         // Write plant to firebase first
         DBService.addDocument(
@@ -106,10 +109,19 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
             field="plants",
             value=FieldValue.arrayUnion(mPlantId))
 
+        // Notify the ViewAllPlantsAdapter of a dataset change
+        PlantRepository.plantList.add(NewPlantInstance.plantObject)
+        NewPlantInstance.notifyPlantRV()
+
         // Then upload to cloudinary and reset the new plant instance
         ImageUploadService.uploadToCloud(mPhotoFilename)
-        NewPlantInstance.resetPlant()
+
+        // Go back to MainActivity
+        Intent(this@AddPlantActivity, MainActivity::class.java)
+        setResult(Activity.RESULT_OK)
+        finish()
     }
+
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {

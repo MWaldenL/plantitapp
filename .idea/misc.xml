@@ -3,40 +3,30 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/baseline_delete_outline_24.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_less_24.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_fertilize_24.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_water_filled_24.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/rounded_rectangle.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/font/work_sans_bold.xml" value="0.1" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_main.xml" value="0.16" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_view_all_plants.xml" value="0.18645833333333334" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_dashboard.xml" value="0.22" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_home.xml" value="0.15" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_view_all_plants.xml" value="0.22" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/group_dashboard_tasks.xml" value="0.5" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_dashboard_plant.xml" value="0.33" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_plant.xml" value="0.1802536231884058" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task.xml" value="0.33" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task_view.xml" value="0.5" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/menu/bottom_nav.xml" value="0.18645833333333334" />
+        <entry key="app/src/main/res/drawable-v24/baseline_cached_24.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/drawable/baseline_delete_outline_24.xml" value="0.1355263157894737" />
         <entry key="app/src/main/res/drawable/baseline_more_vert_36.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.1355263157894737" />
         <entry key="app/src/main/res/drawable/outline_edit_24.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/layout/activity_add_plant.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_view_all_journal.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/activity_view_all_journals.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/activity_view_all_plants.xml" value="0.3242753623188406" />
         <entry key="app/src/main/res/layout/activity_view_single_plant.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/dialog_add_journal.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/dialog_add_task.xml" value="0.1730263157894737" />
+        <entry key="app/src/main/res/layout/dialogue_add_journal.xml" value="0.12532894736842104" />
+        <entry key="app/src/main/res/layout/fragment_view_all_plants.xml" value="0.12532894736842104" />
         <entry key="app/src/main/res/layout/item_journal.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/item_journal_all.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_journal_recent.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_plant.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/item_task.xml" value="0.2755208333333333" />
+        <entry key="app/src/main/res/layout/item_task_view.xml" value="0.12532894736842104" />
+        <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.12532894736842104" />
+        <entry key="app/src/main/res/menu/dead_plant_menu.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/menu/plant_menu.xml" value="0.17401315789473684" />
       </map>
     </option>
