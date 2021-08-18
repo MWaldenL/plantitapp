@@ -36,7 +36,6 @@ class MainActivity: AppCompatActivity() {
             startActivity(addPlantIntent)
         }
         btnSignout.setOnClickListener {
-            Log.d("WTF", "wtf")
             F.auth.signOut()
             GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))

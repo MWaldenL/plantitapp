@@ -26,7 +26,7 @@ class SplashActivity : AppCompatActivity(), DBCallback {
     }
 
     override fun onComplete() {
-        Log.d("HATDOG", "complete")
+        PlantRepository.setOnDataFetchedListener(null)
         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         finish()
     }

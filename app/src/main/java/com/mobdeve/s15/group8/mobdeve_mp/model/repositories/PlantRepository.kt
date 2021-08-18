@@ -10,6 +10,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 
 object PlantRepository: DBCallback {
     private var mDBListener: DBCallback? = null
+    private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
     private var mUserDoc: MutableMap<String, Any> = HashMap()
     private var mPlantDoc: MutableMap<String, Any> = HashMap()
@@ -18,8 +19,12 @@ object PlantRepository: DBCallback {
         DBService.setDBCallbackListener(this)
     }
 
-    fun setOnDataFetchedListener(listener: DBCallback) {
+    fun setOnDataFetchedListener(listener: DBCallback?) {
         mDBListener = listener
+    }
+
+    fun setRefreshedListener(listener: RefreshCallback) {
+        mRefreshListener = listener
     }
 
     fun getData() {
@@ -42,8 +47,13 @@ object PlantRepository: DBCallback {
                     collection=F.plantsCollection,
                     id=plantId)
             }
-            mDBListener?.onComplete()
-        } else {
+
+            // Notify listeners on data fetch completion
+            if (mDBListener != null) {
+                mDBListener?.onComplete()
+            }
+            mRefreshListener?.onDataFetched()
+        } else { // Fetch the plant and add to plant list
             mPlantDoc = doc
             val journal = ArrayList<Journal>()
             val tasks = ArrayList<Task>()
