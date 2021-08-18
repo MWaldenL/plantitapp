@@ -28,7 +28,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MOBDEVEMP"
         tools:replace="android:fullBackupContent">
-        <activity android:name=".controller.activities.HomeActivity"></activity>
         <activity
             android:name=".controller.activities.ViewAllJournalsActivity"
             android:exported="true" />
@@ -40,9 +39,16 @@
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
         <activity android:name=".controller.activities.MainActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".controller.activities.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

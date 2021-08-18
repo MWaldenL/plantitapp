@@ -11,7 +11,7 @@ object DBService: CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
     lateinit var mListener: DBCallback
 
-    fun setDBCallbackListener(listener: PlantRepository) {
+    fun setDBCallbackListener(listener: DBCallback) {
         mListener = listener
     }
 

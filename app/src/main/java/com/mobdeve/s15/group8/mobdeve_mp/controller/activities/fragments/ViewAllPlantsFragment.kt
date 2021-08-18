@@ -40,7 +40,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NewPlantInstance.setOnNewPlantListener(this)
-        PlantRepository.setOnDataFetchedListener(this)
+//        PlantRepository.setOnDataFetchedListener(this)
 
         swipeToRefreshLayout = view.findViewById(R.id.sr_layout_view_all_plants)
         swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
@@ -78,6 +78,5 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
     override fun onDataFetched() {
         swipeToRefreshLayout.isRefreshing = false
         Log.d("HATDOG", swipeToRefreshLayout.isRefreshing.toString())
-
     }
 }
