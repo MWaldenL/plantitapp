@@ -2,10 +2,9 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.cloudinary.android.MediaManager
-import com.mobdeve.s15.group8.mobdeve_mp.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 

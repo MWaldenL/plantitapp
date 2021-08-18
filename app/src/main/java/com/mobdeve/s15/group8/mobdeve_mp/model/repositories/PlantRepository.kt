@@ -1,6 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
-import com.mobdeve.s15.group8.mobdeve_mp.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
@@ -31,7 +31,7 @@ object PlantRepository: DBCallback {
         plantList = ArrayList()
         F.auth.currentUser?.uid?.let {
             DBService.readDocument(
-                collection=F.usersCollection,
+                collection= F.usersCollection,
                 id=it)
         }
     }
@@ -44,7 +44,7 @@ object PlantRepository: DBCallback {
             // Create a plant object for each id
             for (plantId in plants) {
                 DBService.readDocument(
-                    collection=F.plantsCollection,
+                    collection= F.plantsCollection,
                     id=plantId)
             }
 

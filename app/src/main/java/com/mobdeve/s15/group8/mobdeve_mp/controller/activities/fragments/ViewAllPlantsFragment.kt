@@ -1,7 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.PlantListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
@@ -67,10 +65,10 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
                 mAlive.add(plant)   
         }
 
-        updateView()
+        onPlantAdded()
     }
 
-    override fun updateView() {
+    override fun onPlantAdded() {
         recyclerViewAlive.adapter?.notifyDataSetChanged()
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }

@@ -4,7 +4,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import kotlinx.parcelize.RawValue
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,6 +63,6 @@ object NewPlantInstance {
     }
 
     fun notifyPlantRV() {
-        mListener?.updateView()
+        mListener?.onPlantAdded()
     }
 }

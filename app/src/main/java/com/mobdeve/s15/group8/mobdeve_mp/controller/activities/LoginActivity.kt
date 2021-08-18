@@ -11,8 +11,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.mobdeve.s15.group8.mobdeve_mp.F
-import com.mobdeve.s15.group8.mobdeve_mp.GoogleSingleton
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                     userDoc.get().addOnSuccessListener { doc ->
                         if (doc.data == null) {
                             DBService.addDocument(
-                                collection=F.usersCollection,
+                                collection= F.usersCollection,
                                 id=userId,
                                 data=hashMapOf(
                                     "name" to user?.displayName,
