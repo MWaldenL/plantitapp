@@ -66,14 +66,18 @@ class DashboardTaskGroupAdapter(
         mUpdateExpandedIndicator(isExpanded, cv)
         mUpdatePlantsLeft(groupPosition, cv)
 
-        val ivTaskIcon: ImageView = cv!!.findViewById(R.id.iv_task_icon)
+        val ivTaskIcon: ImageView = cv.findViewById(R.id.iv_task_icon)
         when (groupListText) {
             context.resources.getStringArray(R.array.actions_array)[0] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_water_filled_24)
             context.resources.getStringArray(R.array.actions_array)[1] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_shovel_24)
+            context.resources.getStringArray(R.array.actions_array)[2] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_prune_24)
             context.resources.getStringArray(R.array.actions_array)[3] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_sunlight_24)
+            context.resources.getStringArray(R.array.actions_array)[4] ->
+                ivTaskIcon.setImageResource(R.drawable.ic_dark_24)
             context.resources.getStringArray(R.array.actions_array)[5] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
         }
@@ -130,7 +134,7 @@ class DashboardTaskGroupAdapter(
     }
 
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
-        val plantsLeftString = tasksChildren[getGroup(groupPosition) as String]?.size.toString() + " left"
+        val plantsLeftString = tasksChildren[getGroup(groupPosition) as String]?.size.toString()
         val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
         tvPlantsLeft.text = plantsLeftString
     }
