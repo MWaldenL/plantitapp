@@ -32,7 +32,7 @@ class MainActivity: AppCompatActivity() {
             val addPlantIntent = Intent(this@MainActivity, AddPlantActivity::class.java)
             startActivity(addPlantIntent)
         }
-        btnSignout.setOnClickListener {
+        btnSignout.setOnClickListener { // sign out from both firebase and google
             F.auth.signOut()
             GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))

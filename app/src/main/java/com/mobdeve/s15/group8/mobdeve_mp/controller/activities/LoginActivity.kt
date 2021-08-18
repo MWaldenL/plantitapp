@@ -34,12 +34,12 @@ class LoginActivity : AppCompatActivity(), DBCallback {
     }
 
     private val googleLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
+        if (result.resultCode == RESULT_OK) { // authenticate with Google
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
+            try { // then with firebase
                 val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
                 mFirebaseAuthWithGoogle(account?.idToken!!)
-            } catch (e: ApiException) {
+            } catch (e: ApiException) { // possibly because
                 Log.e("TAG","signInResult:failed code=" + e.statusCode)
             }
         }
@@ -47,17 +47,17 @@ class LoginActivity : AppCompatActivity(), DBCallback {
 
     private fun mFirebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        F.auth
+        F.auth // sign the user in with their google account
             .signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
+                if (task.isSuccessful) { // get the completed user object
                     val user = F.auth.currentUser
                     val userId = user?.uid.toString()
                     val userDoc = F.usersCollection.document(userId)
                     val now: String = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'").format(Date())
-                    userDoc.get().addOnSuccessListener { doc ->
+                    userDoc.get().addOnSuccessListener { doc -> // if the user doesn't exist yet in firestore,
                         if (doc.data == null) {
-                            DBService.addDocument(
+                            DBService.addDocument( // create a new user document
                                 collection= F.usersCollection,
                                 id=userId,
                                 data=hashMapOf(
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                                     "plants" to ArrayList<String>()))
                         }
                     }
-                    PlantRepository.getData()
+                    PlantRepository.getData() // fetch the user's plants
                 }
             }
     }

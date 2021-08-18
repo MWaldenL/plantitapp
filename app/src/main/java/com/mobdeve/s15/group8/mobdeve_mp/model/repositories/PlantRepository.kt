@@ -8,12 +8,14 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 
+/**
+ * The plant data source for the app. This is called on startup to fetch all of a user's plants into
+ * memory for viewing and interacting. Call getData to make a fetch request to Firebase
+ */
 object PlantRepository: DBCallback {
     private var mDBListener: DBCallback? = null
     private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
-    private var mUserDoc: MutableMap<String, Any> = HashMap()
-    private var mPlantDoc: MutableMap<String, Any> = HashMap()
 
     init {
         DBService.setDBCallbackListener(this)

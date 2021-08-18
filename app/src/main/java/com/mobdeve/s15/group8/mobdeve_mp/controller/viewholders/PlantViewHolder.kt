@@ -12,12 +12,12 @@ import java.io.File
 class PlantViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val mImage: ImageView = itemView.findViewById(R.id.image_plant)
     fun bindData(plant: Plant) {
-        if (plant.filePath == "") {
+        if (plant.filePath == "") { // load the image from cloud
             Glide.with(itemView.context)
                  .load(plant.imageUrl)
                  .placeholder(R.drawable.ic_launcher_background)
                  .into(mImage)
-        } else {
+        } else { // load the image from app storage
             val imgFile = File(plant.filePath)
             val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
             mImage.setImageBitmap(bmp)

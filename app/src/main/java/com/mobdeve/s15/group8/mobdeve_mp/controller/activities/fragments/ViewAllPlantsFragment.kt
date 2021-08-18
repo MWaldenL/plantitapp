@@ -37,8 +37,8 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        NewPlantInstance.setOnNewPlantListener(this)
-        PlantRepository.setRefreshedListener(this)
+        NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
+        PlantRepository.setRefreshedListener(this) // listen for data fetch complete
 
         swipeToRefreshLayout = view.findViewById(R.id.sr_layout_view_all_plants)
         swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
@@ -73,7 +73,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 
-    override fun onRefreshSuccess() {
+    override fun onRefreshSuccess() { // set refreshing to false para di spin ng spin nakakahilo
         swipeToRefreshLayout.isRefreshing = false
     }
 }

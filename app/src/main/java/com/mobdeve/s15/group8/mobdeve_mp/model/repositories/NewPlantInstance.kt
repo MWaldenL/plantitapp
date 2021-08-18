@@ -11,6 +11,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+/**
+ * Plant instance builder for new plants
+ * Used by AddPlantActivity and TaskDialog
+ * Builds a Hashmap<String, Any> to write to firestore
+ */
 object NewPlantInstance {
     var plant: HashMap<String, Any> = HashMap()
     var mListener: NewPlantCallback? = null

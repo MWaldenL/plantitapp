@@ -7,6 +7,11 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * The main database helper for the app. This helper includes the basic CRUD operations on firestore.
+ * Note: after using a DBCallback listener that won't be used again, invoke setDBCallbackListener(null)
+ * to prevent errors.
+ */
 object DBService: CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
     lateinit var mListener: DBCallback

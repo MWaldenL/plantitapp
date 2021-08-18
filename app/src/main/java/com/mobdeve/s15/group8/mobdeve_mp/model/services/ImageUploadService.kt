@@ -7,6 +7,10 @@ import com.cloudinary.android.callback.UploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 
+/**
+ * The main image uploader service for the app. This service allows modules to upload an image and
+ * listen for results. Call uploadToCloud to upload the image to Cloudinary
+ */
 object ImageUploadService : UploadCallback {
     private var mListener: ImageUploadCallback? = null
 
