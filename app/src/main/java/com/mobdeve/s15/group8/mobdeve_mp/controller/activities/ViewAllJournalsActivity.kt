@@ -143,7 +143,7 @@ class ViewAllJournalsActivity :
                     actionState,
                     isCurrentlyActive
                 )
-                val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.baseline_delete_outline_24)
+                val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.ic_trash_24)
                 val bg = ColorDrawable(Color.RED)
 
                 val itemView = viewHolder.itemView
