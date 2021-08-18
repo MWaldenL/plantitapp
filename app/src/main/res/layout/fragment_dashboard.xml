@@ -39,7 +39,8 @@
                 android:divider="@null"
                 android:groupIndicator="@null"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="?android:attr/actionBarSize" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
