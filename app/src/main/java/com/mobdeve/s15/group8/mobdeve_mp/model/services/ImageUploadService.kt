@@ -1,11 +1,10 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
-import android.content.res.Resources
 import android.util.Log
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
-import com.mobdeve.s15.group8.mobdeve_mp.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 
 object ImageUploadService : UploadCallback {

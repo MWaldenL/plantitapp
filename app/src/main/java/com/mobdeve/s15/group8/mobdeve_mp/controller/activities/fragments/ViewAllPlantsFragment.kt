@@ -1,7 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 
-// Can be converted to fragment later on for tabbed interface
 class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
     private lateinit var recyclerViewAlive: RecyclerView
     private lateinit var recyclerViewDead: RecyclerView
@@ -40,7 +38,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NewPlantInstance.setOnNewPlantListener(this)
-        PlantRepository.setOnDataFetchedListener(this)
+        PlantRepository.setRefreshedListener(this)
 
         swipeToRefreshLayout = view.findViewById(R.id.sr_layout_view_all_plants)
         swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
@@ -67,17 +65,15 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
                 mAlive.add(plant)   
         }
 
-        updateView()
+        onPlantAdded()
     }
 
-    override fun updateView() {
+    override fun onPlantAdded() {
         recyclerViewAlive.adapter?.notifyDataSetChanged()
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 
-    override fun onDataFetched() {
+    override fun onRefreshSuccess() {
         swipeToRefreshLayout.isRefreshing = false
-        Log.d("HATDOG", swipeToRefreshLayout.isRefreshing.toString())
-
     }
 }

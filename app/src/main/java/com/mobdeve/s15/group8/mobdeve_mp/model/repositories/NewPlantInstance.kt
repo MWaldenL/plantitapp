@@ -65,6 +65,6 @@ object NewPlantInstance {
     }
 
     fun notifyPlantRV() {
-        mListener?.updateView()
+        mListener?.onPlantAdded()
     }
 }

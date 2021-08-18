@@ -18,7 +18,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
-import com.mobdeve.s15.group8.mobdeve_mp.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
@@ -100,12 +100,12 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
 
         // Write plant to firebase first
         DBService.addDocument(
-            collection=F.plantsCollection,
+            collection= F.plantsCollection,
             id=mPlantId,
             data=NewPlantInstance.plant)
         DBService.updateDocument(
-            collection=F.usersCollection,
-            id=F.auth.currentUser?.uid,
+            collection= F.usersCollection,
+            id= F.auth.currentUser?.uid,
             field="plants",
             value=FieldValue.arrayUnion(mPlantId))
 

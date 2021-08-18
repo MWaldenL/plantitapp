@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp
+package com.mobdeve.s15.group8.mobdeve_mp.singletons
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

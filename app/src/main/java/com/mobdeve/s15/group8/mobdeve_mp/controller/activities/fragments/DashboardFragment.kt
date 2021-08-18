@@ -66,10 +66,4 @@ class DashboardFragment : Fragment() {
             elvTaskGroup.expandGroup(i)
         }
     }
-
-    /*private fun mSignOut() {
-        F.auth.signOut()
-        GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
-        loginLauncher.launch(Intent(this@DashboardActivity, MainActivity::class.java))
-    }*/
 }
