@@ -1,6 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
-import android.content.res.Resources
+import android.content.Context
 import android.util.Log
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo

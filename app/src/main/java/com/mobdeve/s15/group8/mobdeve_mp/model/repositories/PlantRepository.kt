@@ -37,9 +37,9 @@ object PlantRepository: DBCallback {
     }
 
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
-        if (type == "users") {
-            mUserDoc = doc
-            val plants = mUserDoc["plants"] as ArrayList<String>
+        // DBService will inform us of what kind of data was retrieved - either user or plant
+        if (type == "users") { // Fetch the user's plants
+            val plants = doc["plants"] as ArrayList<String>
 
             // Create a plant object for each id
             for (plantId in plants) {
@@ -52,13 +52,12 @@ object PlantRepository: DBCallback {
             if (mDBListener != null) {
                 mDBListener?.onComplete()
             }
-            mRefreshListener?.onDataFetched()
+            mRefreshListener?.onRefreshSuccess()
         } else { // Fetch the plant and add to plant list
-            mPlantDoc = doc
             val journal = ArrayList<Journal>()
             val tasks = ArrayList<Task>()
-            val docTasks = mPlantDoc["tasks"] as ArrayList<HashMap<*, *>>
-            val docJournal = mPlantDoc["journal"] as ArrayList<HashMap<*, *>>
+            val docTasks = doc["tasks"] as ArrayList<HashMap<*, *>>
+            val docJournal = doc["journal"] as ArrayList<HashMap<*, *>>
             for (t in docTasks) {
                 tasks.add(Task(
                     action=t["action"].toString(),
@@ -73,12 +72,12 @@ object PlantRepository: DBCallback {
             }
             plantList.add(Plant(
                 id,
-                imageUrl=mPlantDoc["imageUrl"].toString(),
+                imageUrl=doc["imageUrl"].toString(),
                 filePath="",
-                name=mPlantDoc["name"].toString(),
-                nickname=mPlantDoc["nickname"].toString(),
-                dateAdded=mPlantDoc["dateAdded"].toString(),
-                death=mPlantDoc["death"] as Boolean,
+                name=doc["name"].toString(),
+                nickname=doc["nickname"].toString(),
+                dateAdded=doc["dateAdded"].toString(),
+                death=doc["death"] as Boolean,
                 tasks,
                 journal
             ))

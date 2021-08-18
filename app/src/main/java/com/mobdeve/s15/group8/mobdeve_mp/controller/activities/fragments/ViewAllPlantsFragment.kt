@@ -75,7 +75,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 
-    override fun onDataFetched() {
+    override fun onRefreshSuccess() {
         swipeToRefreshLayout.isRefreshing = false
     }
 }
