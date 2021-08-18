@@ -31,7 +31,11 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.HashMap
 
 class ViewSinglePlantActivity :
     AppCompatActivity(),
@@ -170,11 +174,9 @@ class ViewSinglePlantActivity :
         fragment.show(supportFragmentManager, "add_journal")
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
-        val date = LocalDateTime.now().toString()
+        val date = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(Date())
         val toAdd: HashMap<*, *> = hashMapOf(
             "body" to body,
             "date" to date
@@ -196,7 +198,7 @@ class ViewSinglePlantActivity :
             .journal
             .add(Journal(body, date))
 
-        // update plant data, unnecessary but for consistency of data
+        // update plant data
         mPlantData = PlantRepository.plantList[index]
 
         // notify adapter of removal
@@ -229,50 +231,7 @@ class ViewSinglePlantActivity :
         fragment.show(supportFragmentManager, "plant_revival")
     }
 
-/**
-    private fun mShowPopup(view: View) {
-        val popup = PopupMenu(this, view)
-        val menu = popup.menu
-        val inflater = popup.menuInflater
-        inflater.inflate(R.menu.plant_menu, popup.menu)
-
-        if (mPlantData.death) {
-            menu.findItem(R.id.plant_menu_set_death).setVisible(false)
-        } else {
-            menu.findItem(R.id.plant_menu_revive).setVisible(false)
-        }
-
-        // TODO: define actions for edit plant
-
-        popup.setOnMenuItemClickListener {
-
-            when (it.itemId) {
-                R.id.plant_menu_delete_plant -> {
-                    val fragment = DeletePlantDialogFragment()
-                    fragment.show(supportFragmentManager, "delete_plant")
-                }
-                R.id.plant_menu_set_death -> {
-                    val fragment = PlantDeathDialogFragment()
-                    fragment.show(supportFragmentManager, "plant_death")
-                }
-                R.id.plant_menu_revive -> {
-                    mHandlePlantRevival()
-                }
-            }
-
-            true
-        }
-
-//        val helper = MenuPopupHelper(this, menu as MenuBuilder, view)
-//        helper.setForceShowIcon(true)
-//        helper.show()
-
-//        popup.setForceShowIcon(true)
-        popup.show()
-    }
-**/
-
-private fun mGotoViewAllJournalsActivity() {
+    private fun mGotoViewAllJournalsActivity() {
         val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
         intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
         mViewAllJournalsLauncher.launch(intent)

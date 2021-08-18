@@ -5,6 +5,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import kotlinx.parcelize.RawValue
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,7 +58,7 @@ object NewPlantInstance {
         plant["filePath"] = ""
         plant["name"] = ""
         plant["nickname"] = ""
-        plant["dateAdded"] = SimpleDateFormat("MM/dd/yyyy").format(Date())
+        plant["dateAdded"] = SimpleDateFormat.getDateInstance(DateFormat.LONG).format(Date())
         plant["death"] = false
         plant["tasks"] = ArrayList<Task>()
         plant["journal"] = ArrayList<Journal>()

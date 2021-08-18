@@ -28,7 +28,12 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ViewAllJournalsActivity :
     AppCompatActivity(),
@@ -198,10 +203,9 @@ class ViewAllJournalsActivity :
         fragment.show(supportFragmentManager, "delete_journal")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onJournalSave(dialog: DialogFragment, text: String) {
         val body = text
-        val date = LocalDateTime.now().toString()
+        val date = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(Date())
 
         val toAdd: HashMap<*, *> = hashMapOf(
             "body" to body,
