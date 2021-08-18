@@ -10,12 +10,12 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import java.io.File
 
-class PlantListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
     private val mImagePlant: ImageView = itemView.findViewById(R.id.iv_list_plant)
     private val mTvNick: TextView = itemView.findViewById(R.id.tv_list_plant_nick)
     private val mTvName: TextView = itemView.findViewById(R.id.tv_list_plant_name)
 
-    fun bindData(plant: Plant) {
+    override fun bindData(plant: Plant) {
         mLoadImage(plant)
         mTvNick.text = plant.nickname
         mTvName.text = plant.name

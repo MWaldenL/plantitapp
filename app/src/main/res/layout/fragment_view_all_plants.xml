@@ -70,25 +70,9 @@
                             app:layout_constraintStart_toEndOf="@+id/tv_alive"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.529"
-                            app:srcCompat="@drawable/ic_tasks_24"
+                            app:srcCompat="@drawable/ic_bento_24"
                             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-                        <ImageButton
-                            android:id="@+id/ib_listview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="#00FFFFFF"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ib_gridview"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toEndOf="@+id/tv_alive"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.529"
-                            app:srcCompat="@drawable/ic_fertilize_24"
-                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

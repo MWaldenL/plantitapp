@@ -7,7 +7,7 @@
     android:padding="4dp">
 
     <ImageView
-        android:id="@+id/image_plant"
+        android:id="@+id/iv_plant_grid"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="false"
