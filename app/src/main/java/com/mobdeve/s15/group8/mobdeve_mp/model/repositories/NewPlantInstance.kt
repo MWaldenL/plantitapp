@@ -46,10 +46,6 @@ object NewPlantInstance {
         (plant["tasks"] as ArrayList<Task>).add(task)
     }
 
-    fun setImageUrl(url: String) {
-        plant["imageUrl"] = url
-    }
-
     fun setStaticParams(id: String, name: String, nick: String, filePath: String, death: Boolean) {
         plant["id"] = id
         plant["name"] = name

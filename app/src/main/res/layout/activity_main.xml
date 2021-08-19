@@ -24,14 +24,6 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
-        <Button
-            android:id="@+id/btn_signout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="sign OUT TEMP"
-            app:layout_constraintEnd_toStartOf="@+id/nav_fragment"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_appbar"
             android:layout_width="match_parent"
