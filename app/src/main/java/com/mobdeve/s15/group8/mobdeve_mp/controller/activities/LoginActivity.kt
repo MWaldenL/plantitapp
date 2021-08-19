@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
     }
 
-    override fun onComplete() {
+    override fun onComplete(tag: String) {
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }

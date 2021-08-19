@@ -39,7 +39,7 @@ class AddTaskDialogFragment :
                 .setView(view)
                 .setPositiveButton("Add") { dialog, id ->
                     mRepeat = etRepeat.text.toString().toInt()
-                    NewPlantInstance.addTask(Task(mAction, mStartDate, mRepeat, mOccurrence))
+                    NewPlantInstance.addTask(Task(mAction, mStartDate, mRepeat, mOccurrence, Date()))
                 }
                 .setNegativeButton("Cancel") { dialog, id -> getDialog()?.cancel() }
                 .create()

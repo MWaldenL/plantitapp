@@ -1,27 +1,27 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class DashboardFragment : Fragment() {
-//    private lateinit var textGreeting: TextView
-//    private lateinit var buttonSignOut: Button
-
-    private lateinit var tasksChildren: HashMap<String, ArrayList<String>>
+class DashboardFragment : Fragment(), DBCallback {
+    private var mTasksChildren: HashMap<String, ArrayList<String>> = HashMap()
 
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
-
-    private val loginLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
     private fun mGenerateSampleTasksChildren(): HashMap<String, ArrayList<String>> {
         val sampleTaskGroup: HashMap<String, ArrayList<String>> = HashMap()
@@ -42,6 +42,12 @@ class DashboardFragment : Fragment() {
         return sampleTaskGroup
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        PlantRepository.setOnDataFetchedListener(this)
+//        PlantRepository.getData()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,16 +60,48 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
-        tasksChildren =
-            mGenerateSampleTasksChildren()  // store the data as a HashMap for ELV rendering
-        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), tasksChildren)
+        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasksChildren)
         elvTaskGroup.setAdapter(taskGroupAdapter)
         mExpandAllGroups()
     }
 
+    override fun onStart() {
+        super.onStart()
+        mLoadTasks()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun mLoadTasks() {
+        Log.d("DashboardFragment", "Load Tasks: " + PlantRepository.plantList.toString())
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val mDate = sdf.parse(sdf.format(Date()))
+
+        for (plant in PlantRepository.plantList) {
+            for (task in plant.tasks) {
+                if (task.lastCompleted.after(mDate)) {
+                    if (mTasksChildren[task.action] == null)
+                        mTasksChildren[task.action] = ArrayList()
+                    mTasksChildren[task.action]?.add(plant.name)
+                }
+            }
+        }
+
+        taskGroupAdapter.updateData(mTasksChildren)
+    }
+
     private fun mExpandAllGroups() {
-        for (i in 0 until tasksChildren.size) {
+        for (i in 0 until mTasksChildren.size) {
             elvTaskGroup.expandGroup(i)
         }
+    }
+
+    override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
+    }
+
+    override fun onComplete(tag: String) {
+        Log.d("DashboardFragment", "complete loading")
+
+        mLoadTasks()
     }
 }

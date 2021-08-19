@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.cloudinary.android.MediaManager
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
@@ -24,9 +25,14 @@ class SplashActivity : AppCompatActivity(), DBCallback {
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
     }
 
-    override fun onComplete() { // Once the plant repo has informed us, go to MainActivity
-        PlantRepository.setOnDataFetchedListener(null)
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        finish()
+    override fun onComplete(tag: String) { // Once the plant repo has informed us, go to MainActivity
+        Log.d("DashboardFragment", tag)
+        if (tag == "plants") {
+            Log.d("DashboardFragment", "complete " + PlantRepository.plantList.toString())
+            PlantRepository.setOnDataFetchedListener(null)
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish()
+        }
+
     }
 }

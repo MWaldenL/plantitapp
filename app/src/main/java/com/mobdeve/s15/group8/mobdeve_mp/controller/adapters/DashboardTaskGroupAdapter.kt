@@ -14,8 +14,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 
 class DashboardTaskGroupAdapter(
     private val context: Context,
-    private val tasksChildren: HashMap<String, ArrayList<String>>,
-    private val tasksTitles: ArrayList<String> = ArrayList(tasksChildren.keys)
+    private var tasksChildren: HashMap<String, ArrayList<String>>,
+    private var tasksTitles: ArrayList<String> = ArrayList(tasksChildren.keys)
 ) : BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int {
@@ -120,10 +120,7 @@ class DashboardTaskGroupAdapter(
             } else {
                 checkboxDashboardPlant.paintFlags = 0
             }
-            // TODO: dito ba ung pagupdate sa db?
             notifyDataSetChanged()
-
-            // TODO: snackbar for undo? o wag na hahahahhahaa
         }
 
         return cv
@@ -146,6 +143,12 @@ class DashboardTaskGroupAdapter(
         else
             cv.findViewById<ImageView>(R.id.iv_expand_group)
                 .setImageResource(R.drawable.ic_baseline_expand_more_24)
+    }
+
+    fun updateData(data: HashMap<String, ArrayList<String>>) {
+        tasksChildren = data
+        tasksTitles = ArrayList(tasksChildren.keys)
+        notifyDataSetChanged()
     }
 
 }
