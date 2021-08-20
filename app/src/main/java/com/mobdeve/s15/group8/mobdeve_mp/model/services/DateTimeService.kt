@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 object DateTimeService {
@@ -16,6 +17,10 @@ object DateTimeService {
 
     fun getCurrentDateTime(): String {
         return SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(Date())
+    }
+
+    fun stringToDate(string: String): Date {
+        return SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).parse(string) as Date
     }
 
 }

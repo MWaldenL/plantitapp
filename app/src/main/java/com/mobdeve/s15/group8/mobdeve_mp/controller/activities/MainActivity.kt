@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -16,7 +17,11 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MainActivity:
     AppCompatActivity(),
@@ -24,7 +29,6 @@ class MainActivity:
 {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
-    private lateinit var btnTrigger: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +45,51 @@ class MainActivity:
             startActivity(addPlantIntent)
         }
 
-        btnTrigger = findViewById(R.id.btn_trigger)
-        btnTrigger.setOnClickListener {
-            val fragment = AppFeedbackDialogFragment()
-            fragment.show(supportFragmentManager, "feedback")
+        mHandleFeedbackReady()
+    }
+
+    private fun mHandleFeedbackReady() {
+        val uid = F.auth.currentUser?.uid
+        if (uid != null) {
+            F.usersCollection
+                .document(uid)
+                .get()
+                .addOnSuccessListener {
+                    if (it != null) {
+                        val doc = it.data
+                        if (doc != null) {
+
+                            if (doc["feedbackLastSent"] == doc["dateJoined"]) {
+                                val then = DateTimeService.stringToDate(doc["dateJoined"].toString())
+                                val now = Date()
+                                val diff = now.time - then.time
+                                val hours = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS)
+                                
+                                if (hours >= 48) // two days
+                                    mTriggerFeedback()
+                            } else {
+                                if (doc["feedbackStop"] == false) {
+                                    val then = DateTimeService.stringToDate(doc["feedbackLastSent"].toString())
+                                    val now = Date()
+                                    val diff = now.time - then.time
+                                    val hours = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS)
+
+                                    if (hours >= 336) // one week
+                                        mTriggerFeedback()
+                                }
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("fail", it.toString())
+                }
         }
+    }
+
+    private fun mTriggerFeedback() {
+        val fragment = AppFeedbackDialogFragment()
+        fragment.show(supportFragmentManager, "feedback")
     }
 
     override fun onFeedbackContinue(
@@ -65,6 +109,20 @@ class MainActivity:
             "feedback",
             FieldValue.arrayUnion(toAdd)
         )
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "feedbackStop",
+            false
+        )
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "feedbackLastSent",
+            Date()
+        )
     }
 
     override fun onFeedbackStop(dialog: DialogFragment) {
@@ -73,8 +131,15 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedback_stop",
+            "feedbackStop",
             true
+        )
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "feedbackLastSent",
+            Date()
         )
     }
 
@@ -84,14 +149,14 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedback_stop",
+            "feedbackStop",
             false
         )
 
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedback_last_sent",
+            "feedbackLastSent",
             Date()
         )
     }
