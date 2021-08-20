@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
+import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
@@ -71,7 +72,7 @@ object PlantRepository: DBCallback {
                     startDate=t["startDate"].toString(),
                     repeat=t["repeat"].toString().toInt(),
                     occurrence=t["occurrence"].toString(),
-                    lastCompleted = Date()
+                    lastCompleted = (t["lastCompleted"] as Timestamp).toDate(),
                 ))
             }
             for (j in docJournal) {
