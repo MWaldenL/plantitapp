@@ -1,7 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
 import com.google.firebase.Timestamp
-import com.google.type.DateTime
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
@@ -10,6 +9,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -112,7 +112,7 @@ object PlantRepository: DBCallback {
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
         for (plant in plantList) {
             for (task in plant.tasks) {
-                val nextDue = mGetNextDue(task, task.lastCompleted)
+                val nextDue = PlantTaskService.getNextDueDate(task, task.lastCompleted)
                 if (!dateToday.before(nextDue)) {
                     if (tasksToday[plant.id] == null)
                         tasksToday[plant.id] = ArrayList()
@@ -120,22 +120,5 @@ object PlantRepository: DBCallback {
                 }
             }
         }
-    }
-
-    private fun mGetNextDue(task: Task, prevDate: Date): Calendar {
-        val cal = Calendar.getInstance()
-        cal.time = prevDate
-        DateTimeService.removeCalendarTime(cal)
-        when (task.occurrence) {
-            "Day" ->
-                cal.add(Calendar.DATE, task.repeat)
-            "Week" ->
-                cal.add(Calendar.DATE, task.repeat * 7)
-            "Month" ->
-                cal.add(Calendar.MONTH, task.repeat)
-            "Year" ->
-                cal.add(Calendar.YEAR, task.repeat)
-        }
-        return cal
     }
 }

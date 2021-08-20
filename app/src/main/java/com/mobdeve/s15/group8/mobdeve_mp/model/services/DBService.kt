@@ -48,13 +48,6 @@ object DBService: CoroutineScope {
         }
     }
 
-    fun updateDocument(collection: CollectionReference, id: String?, value: Any) {
-        if (id == null) return
-        launch(Dispatchers.IO) {
-            collection.document(id).update(value as MutableMap<String, Any>)
-        }
-    }
-
     fun deleteDocument(collection: CollectionReference, id: String?) {
         if (id == null) return
         launch(Dispatchers.IO) {

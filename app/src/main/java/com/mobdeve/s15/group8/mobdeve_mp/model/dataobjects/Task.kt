@@ -1,7 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects
 
 import android.os.Parcelable
-import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
