@@ -72,7 +72,6 @@ class DashboardFragment : Fragment(), DBCallback {
 
     @SuppressLint("SimpleDateFormat")
     private fun mLoadTasks() {
-        Log.d("DashboardFragment", "Load Tasks: " + PlantRepository.plantList.toString())
 
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val mDate = sdf.parse(sdf.format(Date()))
@@ -100,8 +99,6 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     override fun onComplete(tag: String) {
-        Log.d("DashboardFragment", "complete loading")
-
         mLoadTasks()
     }
 }

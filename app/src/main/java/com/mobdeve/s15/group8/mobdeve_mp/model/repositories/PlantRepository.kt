@@ -1,6 +1,5 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
-import android.util.Log
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
@@ -17,6 +16,9 @@ import kotlin.collections.HashMap
  * memory for viewing and interacting. Call getData to make a fetch request to Firebase
  */
 object PlantRepository: DBCallback {
+    const val USERS_TYPE = "users"
+    const val PLANTS_TYPE = "plants"
+
     private var mDBListener: DBCallback? = null
     private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
@@ -34,7 +36,6 @@ object PlantRepository: DBCallback {
     }
 
     fun getData() {
-        Log.d("DashboardFragment", "get data")
         plantList = ArrayList()
         F.auth.currentUser?.uid?.let {
             DBService.readDocument(
@@ -44,9 +45,8 @@ object PlantRepository: DBCallback {
     }
 
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
-        Log.d("DashboardFragment", "onDataRetrieved")
         // DBService will inform us of what kind of data was retrieved - either user or plant
-        if (type == "users") { // Fetch the user's plants
+        if (type == USERS_TYPE) { // Fetch the user's plants
             val plants = doc["plants"] as ArrayList<String>
 
             // Create a plant object for each id
@@ -90,7 +90,6 @@ object PlantRepository: DBCallback {
                 tasks,
                 journal
             ))
-            Log.d("DashboardFragment", "plant list completed")
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
         }
