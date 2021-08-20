@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 
 object PlantTaskService {
@@ -17,6 +18,13 @@ object PlantTaskService {
             if (plant.name == name)
                 return plant
         }
+        return null
+    }
+
+    fun findTaskByAction(action: String, plant: Plant): Task? {
+        for (task in plant.tasks)
+            if (task.action == action)
+                return task
         return null
     }
 }

@@ -1,7 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,14 @@ import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class DashboardFragment : Fragment(), DBCallback {
-    private var mTasksChildren: HashMap<String, ArrayList<String>> = HashMap()
+    private var mTasks: HashMap<String, ArrayList<Plant?>> = HashMap()
 
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
@@ -57,7 +57,7 @@ class DashboardFragment : Fragment(), DBCallback {
         super.onViewCreated(view, savedInstanceState)
 
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
-        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasksChildren)
+        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasks)
         elvTaskGroup.setAdapter(taskGroupAdapter)
     }
 
@@ -67,25 +67,23 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     private fun mLoadTasks() {
-        mTasksChildren = HashMap()
+        mTasks = HashMap()
         for ((plantId, tasks) in PlantRepository.tasksToday) {
             val plant = PlantTaskService.findPlantById(plantId)
             for (task in tasks) {
-                if (mTasksChildren[task.action] == null)
-                    mTasksChildren[task.action] = ArrayList()
-                // TODO: use nickname if it exists
-                if (plant!!.nickname == "")
-                    mTasksChildren[task.action]?.add(plant.name)
-                else
-                    mTasksChildren[task.action]?.add("${plant.name} (${plant.nickname})")
+                // create a new arraylist of plants associated with the task
+                if (mTasks[task.action] == null)
+                    mTasks[task.action] = ArrayList()
+
+                mTasks[task.action]?.add(plant)
             }
         }
-        taskGroupAdapter.updateData(mTasksChildren)
+        taskGroupAdapter.updateTaskData(mTasks)
         mExpandAllGroups()
     }
 
     private fun mExpandAllGroups() {
-        for (i in 0 until mTasksChildren.size) {
+        for (i in 0 until mTasks.size) {
             elvTaskGroup.expandGroup(i)
         }
     }

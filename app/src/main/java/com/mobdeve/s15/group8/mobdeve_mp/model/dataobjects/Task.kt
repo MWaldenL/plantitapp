@@ -11,5 +11,5 @@ data class Task(
     val startDate: String,
     val repeat: Int,
     val occurrence: String,
-    val lastCompleted: Date
+    var lastCompleted: Date
 ): Parcelable

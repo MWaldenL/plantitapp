@@ -10,28 +10,52 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 
 class DashboardTaskGroupAdapter(
-    private val context: Context,
-    private var tasksChildren: HashMap<String, ArrayList<String>>,
-    private var tasksTitles: ArrayList<String> = ArrayList(tasksChildren.keys)
+    private var context: Context,
+    private var tasks: HashMap<String, ArrayList<Plant?>>
 ) : BaseExpandableListAdapter() {
 
+    private lateinit var taskDetails: HashMap<String, ArrayList<String>>
+    private lateinit var taskTitles: ArrayList<String>
+
+    init {
+        mLoadTasks()
+    }
+
+    private fun mLoadTasks() {
+        taskDetails = HashMap()
+        for ((task, plants) in tasks) {
+            taskDetails[task] = ArrayList()
+            for (plant in plants)
+                taskDetails[task]?.add(plant!!.name)
+        }
+
+        taskTitles = ArrayList(tasks.keys)
+    }
+
     override fun getGroupCount(): Int {
-        return tasksTitles.size
+        return taskTitles.size
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return tasksChildren[tasksTitles[groupPosition]]!!.size
+        return taskDetails[taskTitles[groupPosition]]!!.size
     }
 
     override fun getGroup(groupPosition: Int): Any {
-        return tasksTitles[groupPosition]
+        return taskTitles[groupPosition]
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): String {
-        return tasksChildren[tasksTitles[groupPosition]]!![childPosition]
+        return taskDetails[taskTitles[groupPosition]]!![childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -43,7 +67,7 @@ class DashboardTaskGroupAdapter(
     }
 
     override fun hasStableIds(): Boolean {
-        return false
+        return true
     }
 
     override fun getGroupView(
@@ -117,6 +141,37 @@ class DashboardTaskGroupAdapter(
                     tasksTitles.remove(key)
                 }
                 checkboxDashboardPlant.isChecked = false*/
+
+                Log.d("Dashboard", "[$groupPosition, $childPosition]")
+                val plant = tasks[taskTitles[groupPosition]]!![childPosition]
+                val taskToComplete = PlantTaskService.findTaskByAction(taskTitles[groupPosition], plant!!)
+
+                val toUpdate: HashMap<*,*> = hashMapOf(
+                    "action" to taskToComplete!!.action,
+                    "lastCompleted" to taskToComplete.lastCompleted,
+                    "occurrence" to taskToComplete.occurrence,
+                    "repeat" to taskToComplete.repeat,
+                    "startDate" to taskToComplete.startDate
+                )
+
+                DBService.updateDocument(
+                    collection = F.plantsCollection,
+                    id = plant.id,
+                    field = "tasks",
+                    value = FieldValue.arrayRemove(toUpdate)
+                )
+                taskToComplete.lastCompleted = DateTimeService.getCurrentDateWithoutTime().time
+                DBService.updateDocument(
+                    collection = F.plantsCollection,
+                    id = plant.id,
+                    field = "tasks",
+                    value = FieldValue.arrayUnion(taskToComplete)
+                )
+
+                Log.d("Dashboard", plant.toString())
+
+                // TODO: undo
+
             } else {
                 checkboxDashboardPlant.paintFlags = 0
             }
@@ -131,7 +186,7 @@ class DashboardTaskGroupAdapter(
     }
 
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
-        val plantsLeftString = tasksChildren[getGroup(groupPosition) as String]?.size.toString()
+        val plantsLeftString = taskDetails[getGroup(groupPosition) as String]?.size.toString()
         val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
         tvPlantsLeft.text = plantsLeftString
     }
@@ -145,9 +200,9 @@ class DashboardTaskGroupAdapter(
                 .setImageResource(R.drawable.ic_baseline_expand_more_24)
     }
 
-    fun updateData(data: HashMap<String, ArrayList<String>>) {
-        tasksChildren = data
-        tasksTitles = ArrayList(tasksChildren.keys)
+    fun updateTaskData(data: HashMap<String, ArrayList<Plant?>>) {
+        tasks = data
+        mLoadTasks()
         notifyDataSetChanged()
     }
 
