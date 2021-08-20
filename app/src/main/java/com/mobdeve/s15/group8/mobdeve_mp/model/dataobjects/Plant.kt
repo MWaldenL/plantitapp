@@ -14,4 +14,5 @@ data class Plant(
     val dateAdded: String,
     var death: Boolean,
     val tasks: @RawValue ArrayList<Task>,
-    val journal: @RawValue ArrayList<Journal>): Parcelable
+    val journal: @RawValue ArrayList<Journal>
+): Parcelable

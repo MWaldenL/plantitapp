@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -65,7 +67,19 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     private fun mLoadTasks() {
-        mTasksChildren = PlantRepository.tasksToday
+        mTasksChildren = HashMap()
+        for ((plantId, tasks) in PlantRepository.tasksToday) {
+            val plant = PlantTaskService.findPlantById(plantId)
+            for (task in tasks) {
+                if (mTasksChildren[task.action] == null)
+                    mTasksChildren[task.action] = ArrayList()
+                // TODO: use nickname if it exists
+                if (plant!!.nickname == "")
+                    mTasksChildren[task.action]?.add(plant.name)
+                else
+                    mTasksChildren[task.action]?.add("${plant.name} (${plant.nickname})")
+            }
+        }
         taskGroupAdapter.updateData(mTasksChildren)
         mExpandAllGroups()
     }
@@ -80,7 +94,9 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     override fun onComplete(tag: String) {
-        PlantRepository.setOnDataFetchedListener(null)
-        mLoadTasks()
+        if (tag == PlantRepository.PLANTS_TYPE) {
+            PlantRepository.setOnDataFetchedListener(null)
+            mLoadTasks()
+        }
     }
 }
