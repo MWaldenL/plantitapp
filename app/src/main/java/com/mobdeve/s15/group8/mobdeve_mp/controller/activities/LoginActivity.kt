@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
     }
 
     override fun onComplete(tag: String) {
+        PlantRepository.setOnDataFetchedListener(null)
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }

@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
@@ -23,6 +24,7 @@ object PlantRepository: DBCallback {
     private var mDBListener: DBCallback? = null
     private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
+    var tasksToday: HashMap<String, ArrayList<String>> = HashMap()
 
     init {
         DBService.setDBCallbackListener(this)
@@ -91,11 +93,61 @@ object PlantRepository: DBCallback {
                 tasks,
                 journal
             ))
+
+            // update the list of tasks for today
+            mUpdateTasksToday()
+
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
         }
     }
 
     override fun onComplete(tag: String) {
+    }
+
+    private fun mUpdateTasksToday() {
+        tasksToday = HashMap()
+
+        val dateToday = mGetCurrentDateWithoutTime()
+        for (plant in plantList) {
+            for (task in plant.tasks) {
+                val nextDue = mGetNextDue(task, task.lastCompleted)
+                if (!dateToday.before(nextDue)) {
+                    if (tasksToday[task.action] == null)
+                        tasksToday[task.action] = ArrayList()
+                    tasksToday[task.action]?.add(plant.name)
+                }
+            }
+        }
+    }
+
+    private fun mGetCurrentDateWithoutTime(): Calendar {
+        val cal = Calendar.getInstance()
+        mCalendarRemoveTime(cal)
+        return cal
+    }
+
+    private fun mCalendarRemoveTime(cal: Calendar) {
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+    }
+
+    private fun mGetNextDue(task: Task, prevDate: Date): Calendar {
+        val cal = Calendar.getInstance()
+        cal.time = prevDate
+        mCalendarRemoveTime(cal)
+        when (task.occurrence) {
+            "Day" ->
+                cal.add(Calendar.DATE, task.repeat)
+            "Week" ->
+                cal.add(Calendar.DATE, task.repeat * 7)
+            "Month" ->
+                cal.add(Calendar.MONTH, task.repeat)
+            "Year" ->
+                cal.add(Calendar.YEAR, task.repeat)
+        }
+        return cal
     }
 }
