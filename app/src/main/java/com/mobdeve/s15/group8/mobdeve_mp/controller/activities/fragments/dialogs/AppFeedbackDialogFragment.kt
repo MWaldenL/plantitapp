@@ -3,6 +3,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import androidx.fragment.app.DialogFragment
 import android.os.Bundle
 import android.text.Editable
@@ -53,7 +54,7 @@ class AppFeedbackDialogFragment :
 
                     listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
                 }
-                .setNegativeButton("Don't show this again") { dialog, id ->
+                .setNegativeButton("Don't show again") { dialog, id ->
                     listener.onFeedbackStop(this)
                     getDialog()?.cancel()
                 }
@@ -63,5 +64,10 @@ class AppFeedbackDialogFragment :
                 }
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        listener.onFeedbackCancel(this)
+        super.onCancel(dialog)
     }
 }

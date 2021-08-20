@@ -64,7 +64,7 @@ class MainActivity:
                                 val now = Date()
                                 val diff = now.time - then.time
                                 val hours = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS)
-                                
+
                                 if (hours >= 48) // two days
                                     mTriggerFeedback()
                             } else {
@@ -121,7 +121,7 @@ class MainActivity:
             F.usersCollection,
             id,
             "feedbackLastSent",
-            Date()
+            DateTimeService.getCurrentDateTime()
         )
     }
 
@@ -139,7 +139,7 @@ class MainActivity:
             F.usersCollection,
             id,
             "feedbackLastSent",
-            Date()
+            DateTimeService.getCurrentDateTime()
         )
     }
 
@@ -157,7 +157,7 @@ class MainActivity:
             F.usersCollection,
             id,
             "feedbackLastSent",
-            Date()
+            DateTimeService.getCurrentDateTime()
         )
     }
 }
