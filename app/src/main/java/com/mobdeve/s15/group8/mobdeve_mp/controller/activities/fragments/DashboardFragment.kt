@@ -10,21 +10,14 @@ import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class DashboardFragment : Fragment(), DBCallback {
-    private var mTasks: HashMap<String, ArrayList<Plant?>> = HashMap()
-
-    private var tasksLoaded = false
-    private var plantsLoaded = false
-
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
+    private var mTasks = ArrayList<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,22 +47,13 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     private fun mLoadTasks() {
-        mTasks = HashMap()
-        val tasksToday = TaskService.getTasksToday()
-        Log.d("Dashboard", "tasksToday: $tasksToday")
-        for (task in tasksToday) {
-            val plant = PlantService.findPlantById(task.plantId)
-            // create a new arraylist of plants associated with the task
-            if (mTasks[task.action] == null)
-                mTasks[task.action] = ArrayList()
-            mTasks[task.action]?.add(plant)
-        }
-        taskGroupAdapter.updateTaskData(mTasks)
+        mTasks = PlantRepository.taskList
+        taskGroupAdapter.updateData(mTasks)
         mExpandAllGroups()
     }
 
     private fun mExpandAllGroups() {
-        for (i in 0 until mTasks.size) {
+        for (i in 0 until taskGroupAdapter.taskKeys.size) {
             elvTaskGroup.expandGroup(i)
         }
     }

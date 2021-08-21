@@ -254,6 +254,19 @@ class ViewSinglePlantActivity :
             .plantList
             .remove(mPlantData)
 
+        // delete plant's tasks
+        for (taskId in mPlantData.tasks) {
+            // remove from local
+            PlantRepository.taskList.remove(TaskService.findTaskById(taskId))
+            // remove from db
+            DBService.deleteDocument(
+                F.tasksCollection,
+                taskId
+            )
+        }
+
+        // TODO: Delete the corresponding plantId from the user doc
+
         Toast.makeText(
             this,
             "${name} has been deleted. Returning to the home screen.",

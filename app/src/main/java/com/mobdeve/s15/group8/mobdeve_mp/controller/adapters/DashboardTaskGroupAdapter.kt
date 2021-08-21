@@ -15,52 +15,53 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class DashboardTaskGroupAdapter(
-    private var context: Context,
-    private var tasks: HashMap<String, ArrayList<Plant?>>
+    private var mContext: Context,
+    private var mTasks: ArrayList<Task>
 ) : BaseExpandableListAdapter() {
 
-    private lateinit var taskDetails: HashMap<String, ArrayList<String>>
-    private lateinit var taskTitles: ArrayList<String>
+    lateinit var taskMaps: HashMap<String, ArrayList<String>>
+    lateinit var taskKeys: ArrayList<String>
 
     init {
         mLoadTaskMaps()
     }
 
     private fun mLoadTaskMaps() {
-        taskDetails = HashMap()
-        Log.d("Dashboard", tasks.toString())
-        for ((task, plants) in tasks) {
-            taskDetails[task] = ArrayList()
-            for (plant in plants)
-                if (plant != null)
-                    taskDetails[task]?.add(plant.name)
+
+        taskMaps = HashMap()
+
+        for (task in mTasks) {
+            PlantService.findPlantById(task.plantId)?.let{
+                if (taskMaps[task.action] == null)
+                    taskMaps[task.action] = ArrayList()
+                taskMaps[task.action]!!.add(it.id)
+            }
         }
 
-        taskTitles = ArrayList(tasks.keys)
-
-        Log.d("Dashboard", "taskDetails: $taskDetails")
+        taskKeys = ArrayList(taskMaps.keys)
     }
 
     override fun getGroupCount(): Int {
-        return taskTitles.size
+        return taskKeys.size
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return taskDetails[taskTitles[groupPosition]]!!.size
+        return taskMaps[taskKeys[groupPosition]]!!.size
     }
 
     override fun getGroup(groupPosition: Int): Any {
-        return taskTitles[groupPosition]
+        return taskKeys[groupPosition]
     }
 
     override fun getChild(groupPosition: Int, childPosition: Int): String {
-        return taskDetails[taskTitles[groupPosition]]!![childPosition]
+        return taskMaps[taskKeys[groupPosition]]!![childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -85,7 +86,7 @@ class DashboardTaskGroupAdapter(
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.group_dashboard_tasks, null)
         }
 
@@ -97,17 +98,17 @@ class DashboardTaskGroupAdapter(
 
         val ivTaskIcon: ImageView = cv.findViewById(R.id.iv_task_icon)
         when (groupListText) {
-            context.resources.getStringArray(R.array.actions_array)[0] ->
+            mContext.resources.getStringArray(R.array.actions_array)[0] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_water_filled_24)
-            context.resources.getStringArray(R.array.actions_array)[1] ->
+            mContext.resources.getStringArray(R.array.actions_array)[1] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_shovel_24)
-            context.resources.getStringArray(R.array.actions_array)[2] ->
+            mContext.resources.getStringArray(R.array.actions_array)[2] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_prune_24)
-            context.resources.getStringArray(R.array.actions_array)[3] ->
+            mContext.resources.getStringArray(R.array.actions_array)[3] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_sunlight_24)
-            context.resources.getStringArray(R.array.actions_array)[4] ->
+            mContext.resources.getStringArray(R.array.actions_array)[4] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_dark_24)
-            context.resources.getStringArray(R.array.actions_array)[5] ->
+            mContext.resources.getStringArray(R.array.actions_array)[5] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
         }
 
@@ -125,7 +126,7 @@ class DashboardTaskGroupAdapter(
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
@@ -137,6 +138,8 @@ class DashboardTaskGroupAdapter(
         checkboxDashboardPlant.setOnClickListener {
             if (checkboxDashboardPlant.isChecked) {
                 checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+
+                
 
                 /*val currDate = DateTimeService.getCurrentDateWithoutTime().time
                 val plant = tasks[taskTitles[groupPosition]]!![childPosition]
@@ -210,7 +213,7 @@ class DashboardTaskGroupAdapter(
 //
 //        }
 
-        val plantsLeftString = taskDetails[getGroup(groupPosition) as String]?.size.toString()
+        val plantsLeftString = taskMaps[getGroup(groupPosition) as String]?.size.toString()
         val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
         tvPlantsLeft.text = plantsLeftString
     }
@@ -224,8 +227,8 @@ class DashboardTaskGroupAdapter(
                 .setImageResource(R.drawable.ic_baseline_expand_more_24)
     }
 
-    fun updateTaskData(data: HashMap<String, ArrayList<Plant?>>) {
-        tasks = data
+    fun updateData(data: ArrayList<Task>) {
+        mTasks = data
         mLoadTaskMaps()
         notifyDataSetChanged()
     }
