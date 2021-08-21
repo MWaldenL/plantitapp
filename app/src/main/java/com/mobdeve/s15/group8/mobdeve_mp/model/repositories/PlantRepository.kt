@@ -44,7 +44,6 @@ object PlantRepository: DBCallback {
     }
 
     fun getData() {
-        plantList = ArrayList()
         F.auth.currentUser?.uid?.let {
             DBService.readDocument(
                 collection = F.usersCollection,
@@ -61,40 +60,13 @@ object PlantRepository: DBCallback {
 
             // Create a plant object for each id
             val plants = doc["plants"] as ArrayList<String>
-            for (plantId in plants) {
-                DBService.readDocument(
-                    collection= F.plantsCollection,
-                    id=plantId)
-            }
 
-            mRefreshListener?.onRefreshSuccess()
-
-        } else if (type == PLANTS_TYPE) { // Fetch the plant and add to plant list
-
-            Log.d("DashboardFragment", id)
-
-            val journal = ArrayList<Journal>()
-            val tasks = ArrayList<String>()
-            val docTasks = doc["tasks"] as ArrayList<String>
-            val docJournal = doc["journal"] as ArrayList<HashMap<*, *>>
-            for (t in docTasks)
-                tasks.add(t)
-            for (j in docJournal)
-                journal.add(Journal(
-                    body=j["body"].toString(),
-                    date=j["date"].toString()))
-            plantList.add(Plant(
-                id=id,
-                userId=F.auth.uid!!,
-                imageUrl=doc["imageUrl"].toString(),
-                filePath="",
-                name=doc["name"].toString(),
-                nickname=doc["nickname"].toString(),
-                dateAdded=doc["dateAdded"].toString(),
-                death=doc["death"] as Boolean,
-                tasks,
-                journal
-            ))
+            // Fetch plants
+            DBService.readDocuments(
+                collection = F.plantsCollection,
+                where = "userId",
+                equalTo = F.auth.uid!!
+            )
 
             // Fetch tasks
             DBService.readDocuments(
@@ -103,30 +75,54 @@ object PlantRepository: DBCallback {
                 equalTo = F.auth.uid!!
             )
 
-            if (mDBListener != null)
-                mDBListener?.onComplete(type)
+            mRefreshListener?.onRefreshSuccess()
         }
     }
 
     override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
         if (type == TASKS_TYPE) {
+            taskList = ArrayList()
             for (doc in docs) {
                 taskList.add(Task(
-                    doc["id"].toString(),
-                    doc["plantId"].toString(),
-                    doc["userId"].toString(),
-                    doc["action"].toString(),
-                    doc["startDate"].toString(),
-                    doc["repeat"].toString().toInt(),
-                    doc["occurrence"].toString(),
-                    (doc["lastCompleted"] as Timestamp).toDate()
+                    id = doc["id"].toString(),
+                    plantId = doc["plantId"].toString(),
+                    userId = doc["userId"].toString(),
+                    action = doc["action"].toString(),
+                    startDate = doc["startDate"].toString(),
+                    repeat = doc["repeat"].toString().toInt(),
+                    occurrence = doc["occurrence"].toString(),
+                    lastCompleted = (doc["lastCompleted"] as Timestamp).toDate()
                 ))
             }
-
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
-            else
-                Log.d("Dashboard", "null $type")
+
+        } else if (type == PLANTS_TYPE) {
+            plantList = ArrayList()
+            for (doc in docs) {
+                val newPlant = Plant(
+                    id = doc["id"].toString(),
+                    userId = doc["userId"].toString(),
+                    imageUrl = doc["imageUrl"].toString(),
+                    filePath = "",
+                    name = doc["name"].toString(),
+                    nickname = doc["nickname"].toString(),
+                    dateAdded = doc["dateAdded"].toString(),
+                    death = doc["death"] as Boolean,
+                    tasks = ArrayList(),
+                    journal = ArrayList()
+                )
+                for (task in doc["tasks"] as ArrayList<String>)
+                    newPlant.tasks.add(task)
+                for (journalEntry in (doc["journal"] as ArrayList<HashMap<*, *>>))
+                    newPlant.journal.add(Journal(
+                        body = journalEntry["body"].toString(),
+                        date = journalEntry["date"].toString()
+                    ))
+                plantList.add(newPlant)
+            }
+            if (mDBListener != null)
+                mDBListener?.onComplete(type)
         }
     }
 

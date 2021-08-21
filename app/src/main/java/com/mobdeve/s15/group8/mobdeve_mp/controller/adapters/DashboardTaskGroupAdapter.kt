@@ -14,11 +14,7 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,10 +29,10 @@ class DashboardTaskGroupAdapter(
     private lateinit var taskTitles: ArrayList<String>
 
     init {
-        mLoadTasks()
+        mLoadTaskMaps()
     }
 
-    private fun mLoadTasks() {
+    private fun mLoadTaskMaps() {
         taskDetails = HashMap()
         Log.d("Dashboard", tasks.toString())
         for ((task, plants) in tasks) {
@@ -179,6 +175,8 @@ class DashboardTaskGroupAdapter(
     }
 
     private fun mUpdateLastCompletedTask(newDate: Date, plant: Plant, completedTask: Task) {
+        // TODO: update
+
         val toUpdate: HashMap<*,*> = hashMapOf(
             "action" to completedTask.action,
             "lastCompleted" to completedTask.lastCompleted,
@@ -204,6 +202,8 @@ class DashboardTaskGroupAdapter(
 
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
 
+        // TODO: update
+
 //        val plantsLeft = 0
 //        PlantRepository.tasksToday[taskTitles[groupPosition]]
 //        for (task in PlantRepository.tasksToday) {
@@ -226,7 +226,7 @@ class DashboardTaskGroupAdapter(
 
     fun updateTaskData(data: HashMap<String, ArrayList<Plant?>>) {
         tasks = data
-        mLoadTasks()
+        mLoadTaskMaps()
         notifyDataSetChanged()
     }
 

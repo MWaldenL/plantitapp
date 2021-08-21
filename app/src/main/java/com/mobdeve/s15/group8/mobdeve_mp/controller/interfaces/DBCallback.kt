@@ -7,4 +7,5 @@ interface DBCallback {
     fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String)
     fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String)
     fun onComplete(tag: String)
+    // TODO: add a function to handle empty results
 }

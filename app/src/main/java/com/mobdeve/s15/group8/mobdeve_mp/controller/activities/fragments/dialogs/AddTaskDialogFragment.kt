@@ -3,6 +3,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
@@ -40,10 +41,11 @@ class AddTaskDialogFragment :
                 .setView(view)
                 .setPositiveButton("Add") { dialog, id ->
                     mRepeat = etRepeat.text.toString().toInt()
+                    Log.d("Dashboard", "add task plant id: ${NewPlantInstance.plantObject}")
                     NewPlantInstance.addTask(
                         Task(
                             UUID.randomUUID().toString(),
-                            NewPlantInstance.plantObject.id,
+                            "",
                             F.auth.uid!!,
                             mAction,
                             mStartDate,

@@ -22,16 +22,16 @@ object NewPlantInstance {
     val plantObject: Plant
         get() {
             return Plant(
-                plant["id"].toString(),
-                plant["userId"].toString(),
-                plant["imageUrl"].toString(),
-                plant["filePath"].toString(),
-                plant["name"].toString(),
-                plant["nickname"].toString(),
-                plant["dateAdded"].toString(),
-                plant["death"] as Boolean,
-                plant["tasks"] as ArrayList<String>,
-                plant["journal"] as ArrayList<Journal>)
+                id = plant["id"].toString(),
+                userId = plant["userId"].toString(),
+                imageUrl = plant["imageUrl"].toString(),
+                filePath = plant["filePath"].toString(),
+                name = plant["name"].toString(),
+                nickname = plant["nickname"].toString(),
+                dateAdded = plant["dateAdded"].toString(),
+                death = plant["death"] as Boolean,
+                tasks = plant["tasks"] as ArrayList<String>,
+                journal = plant["journal"] as ArrayList<Journal>)
         }
     val tasksObject: ArrayList<Task>
         get() {
@@ -79,8 +79,9 @@ object NewPlantInstance {
         plant["imageUrl"] = url
     }
 
-    fun setStaticParams(id: String, name: String, nick: String, filePath: String, death: Boolean) {
+    fun setStaticParams(id: String, userId: String, name: String, nick: String, filePath: String, death: Boolean) {
         plant["id"] = id
+        plant["userId"] = userId
         plant["name"] = name
         plant["nickname"] = nick
         plant["filePath"] = filePath
@@ -89,6 +90,7 @@ object NewPlantInstance {
 
     fun resetPlant() {
         plant["id"] = ""
+        plant["userId"] = ""
         plant["imageUrl"] = ""
         plant["filePath"] = ""
         plant["name"] = ""

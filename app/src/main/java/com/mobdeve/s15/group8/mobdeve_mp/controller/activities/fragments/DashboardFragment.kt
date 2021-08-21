@@ -20,27 +20,11 @@ import kotlin.collections.HashMap
 class DashboardFragment : Fragment(), DBCallback {
     private var mTasks: HashMap<String, ArrayList<Plant?>> = HashMap()
 
+    private var tasksLoaded = false
+    private var plantsLoaded = false
+
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
-
-    private fun mGenerateSampleTasksChildren(): HashMap<String, ArrayList<String>> {
-        val sampleTaskGroup: HashMap<String, ArrayList<String>> = HashMap()
-
-        val grpKeys = arrayListOf(*resources.getStringArray(R.array.actions_array))
-        for (key in grpKeys) {
-
-            val plants: ArrayList<String> = ArrayList()
-            plants.add("Snake Plant")
-            plants.add("Oregano")
-            plants.add("Basil")
-            plants.add("San Francisco")
-            plants.add("Johnny")
-
-            sampleTaskGroup[key] = plants
-        }
-
-        return sampleTaskGroup
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +37,12 @@ class DashboardFragment : Fragment(), DBCallback {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty())
+            mLoadTasks()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,14 +82,7 @@ class DashboardFragment : Fragment(), DBCallback {
 
     override fun onComplete(tag: String) {
         Log.d("Dashboard", "DashboardFragment: onComplete $tag")
-        if (tag == PlantRepository.TASKS_TYPE) {
-
-            Log.d("Dashboard", PlantRepository.taskList.toString())
-            Log.d("Dashboard", "Loaded")
-
-            /*PlantRepository.setOnDataFetchedListener(null)
-            */
+        if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty())
             mLoadTasks()
-        }
     }
 }

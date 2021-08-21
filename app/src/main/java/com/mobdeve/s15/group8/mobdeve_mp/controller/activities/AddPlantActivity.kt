@@ -93,6 +93,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         // Compile final map to write to firebase
         NewPlantInstance.setStaticParams(
             id=mPlantId,
+            userId=F.auth.uid!!,
             name=etPlantName.text.toString(),
             nick=etPlantNickname.text.toString(),
             filePath=mPhotoFilename,
@@ -110,12 +111,15 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
             value=FieldValue.arrayUnion(mPlantId))
 
         // Write the tasks to firebase
-        for (task in NewPlantInstance.tasks)
+        for (task in NewPlantInstance.tasks) {
+            // update the plantId first
+            task["plantId"] = mPlantId
             DBService.addDocument(
                 collection = F.tasksCollection,
                 id = task["id"].toString(),
                 data = task
             )
+        }
 
         // Notify the ViewAllPlantsAdapter of a dataset change
         PlantRepository.plantList.add(NewPlantInstance.plantObject)
