@@ -18,4 +18,21 @@ object TaskService {
                 tasks.add(task)
         return tasks
     }
+
+    fun getTasksToday(): ArrayList<Task> {
+        val tasksToday = ArrayList<Task>()
+        val dateToday = DateTimeService.getCurrentDateWithoutTime()
+
+        for (task in PlantRepository.taskList) {
+            val nextDue = DateTimeService.getNextDueDate(
+                task.occurrence,
+                task.repeat,
+                task.lastCompleted
+            )
+            if (!dateToday.before(nextDue))
+                tasksToday.add(task)
+        }
+
+        return tasksToday
+    }
 }

@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
+import android.util.Log
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -11,6 +12,7 @@ object PlantService {
             if (plant.id == id)
                 return plant
         }
+        Log.d("Dashboard", "plant not found")
         return null
     }
 

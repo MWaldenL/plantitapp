@@ -130,7 +130,6 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         finish()
     }
 
-
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val uri = Uri.fromFile(File(mPhotoFilename))

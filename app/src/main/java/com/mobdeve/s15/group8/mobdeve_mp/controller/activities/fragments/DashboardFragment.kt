@@ -13,6 +13,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -62,22 +63,16 @@ class DashboardFragment : Fragment(), DBCallback {
         elvTaskGroup.setAdapter(taskGroupAdapter)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mLoadTasks()
-    }
-
     private fun mLoadTasks() {
         mTasks = HashMap()
-        for ((plantId, tasks) in PlantRepository.tasksToday) {
-            val plant = PlantService.findPlantById(plantId)
-            for (task in tasks) {
-                // create a new arraylist of plants associated with the task
-                if (mTasks[task.action] == null)
-                    mTasks[task.action] = ArrayList()
-
-                mTasks[task.action]?.add(plant)
-            }
+        val tasksToday = TaskService.getTasksToday()
+        Log.d("Dashboard", "tasksToday: $tasksToday")
+        for (task in tasksToday) {
+            val plant = PlantService.findPlantById(task.plantId)
+            // create a new arraylist of plants associated with the task
+            if (mTasks[task.action] == null)
+                mTasks[task.action] = ArrayList()
+            mTasks[task.action]?.add(plant)
         }
         taskGroupAdapter.updateTaskData(mTasks)
         mExpandAllGroups()
@@ -96,13 +91,15 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     override fun onComplete(tag: String) {
+        Log.d("Dashboard", "DashboardFragment: onComplete $tag")
         if (tag == PlantRepository.TASKS_TYPE) {
 
             Log.d("Dashboard", PlantRepository.taskList.toString())
             Log.d("Dashboard", "Loaded")
 
             /*PlantRepository.setOnDataFetchedListener(null)
-            mLoadTasks()*/
+            */
+            mLoadTasks()
         }
     }
 }

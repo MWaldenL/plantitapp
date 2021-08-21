@@ -30,7 +30,7 @@ class SplashActivity : AppCompatActivity(), DBCallback {
 
 
     override fun onComplete(tag: String) { // Once the plant repo has informed us, go to MainActivity
-        Log.d("Dashboard", "onComplete called: $tag")
+        Log.d("Dashboard", "SplashActivity: onComplete $tag")
         if (tag == PlantRepository.USERS_TYPE) {
             PlantRepository.setOnDataFetchedListener(null)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))

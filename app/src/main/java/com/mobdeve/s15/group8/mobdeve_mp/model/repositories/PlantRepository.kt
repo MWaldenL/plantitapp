@@ -30,7 +30,6 @@ object PlantRepository: DBCallback {
     private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
     var taskList: ArrayList<Task> = ArrayList()
-    var tasksToday: HashMap<String, ArrayList<Task>> = HashMap()
 
     init {
         DBService.setDBCallbackListener(this)
@@ -50,31 +49,28 @@ object PlantRepository: DBCallback {
             DBService.readDocument(
                 collection = F.usersCollection,
                 id = it)
-            DBService.readDocuments(
-                collection = F.tasksCollection,
-                where = "userId",
-                equalTo = it
-            )
         }
     }
 
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
         // DBService will inform us of what kind of data was retrieved - either user or plant
         if (type == USERS_TYPE) { // Fetch the user's plants
-            val plants = doc["plants"] as ArrayList<String>
+            // Notify listeners on user fetch completion
+            if (mDBListener != null)
+                mDBListener?.onComplete(type)
 
             // Create a plant object for each id
+            val plants = doc["plants"] as ArrayList<String>
             for (plantId in plants) {
                 DBService.readDocument(
                     collection= F.plantsCollection,
                     id=plantId)
             }
 
-            // Notify listeners on data fetch completion
-            if (mDBListener != null)
-                mDBListener?.onComplete(type)
             mRefreshListener?.onRefreshSuccess()
+
         } else if (type == PLANTS_TYPE) { // Fetch the plant and add to plant list
+
             val journal = ArrayList<Journal>()
             val tasks = ArrayList<String>()
             val docTasks = doc["tasks"] as ArrayList<String>
@@ -97,8 +93,12 @@ object PlantRepository: DBCallback {
                 journal
             ))
 
-            // TODO: update the list of tasks for today
-            //mUpdateTasksToday()
+            // Fetch tasks
+            DBService.readDocuments(
+                collection = F.tasksCollection,
+                where = "userId",
+                equalTo = F.auth.uid!!
+            )
 
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
@@ -122,26 +122,11 @@ object PlantRepository: DBCallback {
 
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
+            else
+                Log.d("Dashboard", "null $type")
         }
     }
 
     override fun onComplete(tag: String) {
-    }
-
-    private fun mUpdateTasksToday() {
-        tasksToday = HashMap()
-
-        val dateToday = DateTimeService.getCurrentDateWithoutTime()
-        for (plant in plantList) {
-            for (taskId in plant.tasks) {
-                val task = TaskService.findTaskById(taskId)!!
-                val nextDue = DateTimeService.getNextDueDate(task, task.lastCompleted)
-                if (!dateToday.before(nextDue)) {
-                    if (tasksToday[plant.id] == null)
-                        tasksToday[plant.id] = ArrayList()
-                    tasksToday[plant.id]?.add(task)
-                }
-            }
-        }
     }
 }

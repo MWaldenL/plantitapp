@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.content.Context
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,13 +38,17 @@ class DashboardTaskGroupAdapter(
 
     private fun mLoadTasks() {
         taskDetails = HashMap()
+        Log.d("Dashboard", tasks.toString())
         for ((task, plants) in tasks) {
             taskDetails[task] = ArrayList()
             for (plant in plants)
-                taskDetails[task]?.add(plant!!.name)
+                if (plant != null)
+                    taskDetails[task]?.add(plant.name)
         }
 
         taskTitles = ArrayList(tasks.keys)
+
+        Log.d("Dashboard", "taskDetails: $taskDetails")
     }
 
     override fun getGroupCount(): Int {
@@ -199,15 +204,15 @@ class DashboardTaskGroupAdapter(
 
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
 
-        val plantsLeft = 0
-        PlantRepository.tasksToday[taskTitles[groupPosition]]
-        for (task in PlantRepository.tasksToday) {
+//        val plantsLeft = 0
+//        PlantRepository.tasksToday[taskTitles[groupPosition]]
+//        for (task in PlantRepository.tasksToday) {
+//
+//        }
 
-        }
-
-//        val plantsLeftString = taskDetails[getGroup(groupPosition) as String]?.size.toString()
-//        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
-//        tvPlantsLeft.text = plantsLeftString
+        val plantsLeftString = taskDetails[getGroup(groupPosition) as String]?.size.toString()
+        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
+        tvPlantsLeft.text = plantsLeftString
     }
 
     private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
