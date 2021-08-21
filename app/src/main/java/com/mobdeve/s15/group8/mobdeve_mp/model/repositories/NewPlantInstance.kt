@@ -23,6 +23,7 @@ object NewPlantInstance {
         get() {
             return Plant(
                 plant["id"].toString(),
+                plant["userId"].toString(),
                 plant["imageUrl"].toString(),
                 plant["filePath"].toString(),
                 plant["name"].toString(),

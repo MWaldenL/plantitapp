@@ -122,7 +122,7 @@ class ViewSinglePlantActivity :
     private fun mBindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
-        val (id, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
+        val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
         val tasks = TaskService.findTasksByPlantId(id)
 
         if (nickname == "") {

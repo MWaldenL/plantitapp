@@ -71,6 +71,8 @@ object PlantRepository: DBCallback {
 
         } else if (type == PLANTS_TYPE) { // Fetch the plant and add to plant list
 
+            Log.d("DashboardFragment", id)
+
             val journal = ArrayList<Journal>()
             val tasks = ArrayList<String>()
             val docTasks = doc["tasks"] as ArrayList<String>
@@ -82,7 +84,8 @@ object PlantRepository: DBCallback {
                     body=j["body"].toString(),
                     date=j["date"].toString()))
             plantList.add(Plant(
-                id,
+                id=id,
+                userId=F.auth.uid!!,
                 imageUrl=doc["imageUrl"].toString(),
                 filePath="",
                 name=doc["name"].toString(),

@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Plant(
     val id: String,
+    val userId: String,
     val imageUrl: String,
     val filePath: String,
     var name: String,
