@@ -128,14 +128,14 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val uri = Uri.fromFile(File(mPhotoFilename))
-            try {
+            try { // create the bitmap from uri
                 val bitmap = if (Build.VERSION.SDK_INT < 28) {
                     MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 } else {
                     val source = ImageDecoder.createSource(contentResolver, uri)
                     ImageDecoder.decodeBitmap(source)
                 }
-                // Show the image
+                // show the image
                 groupNoPic.visibility = View.GONE
                 ivPlant.visibility = View.VISIBLE
                 ivPlant.setImageBitmap(bitmap)

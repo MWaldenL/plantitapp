@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,19 +28,13 @@ class AddPlantTasksAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repeatStringBuilder = StringBuilder()
-        repeatStringBuilder.append(data[position].repeat)
-                            .append(" times ")
-                            .append(data[position].occurrence)
-
-        holder.actionTV.text = data[position].action
-        holder.startDateTV.text = data[position].startDate
-        holder.repeatTV.text = repeatStringBuilder.toString()
-
+        val (action, startDate, repeat, occurrence) = data[position]
+        holder.actionTV.text = action
+        holder.startDateTV.text = startDate
+        holder.repeatTV.text = "$repeat times $occurrence"
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
-            // TODO: connect sa logic
             notifyItemRemoved(holder.adapterPosition)
         }
     }
