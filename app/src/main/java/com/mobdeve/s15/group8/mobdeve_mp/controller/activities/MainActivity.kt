@@ -1,5 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +19,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.receivers.AlarmReceiver
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.util.*
@@ -25,10 +30,14 @@ import kotlin.collections.HashMap
 
 class MainActivity:
     AppCompatActivity(),
-    AppFeedbackDialogFragment.AppFeedbackDialogListener
+    AppFeedbackDialogFragment.AppFeedbackDialogListener,
+    DailyNotificationsDialogFragment.DailyNotificationsDialogListener
 {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
+
+    private lateinit var btnSetAlarm: Button
+    private lateinit var btnCancel: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +55,35 @@ class MainActivity:
         }
 
         mHandleFeedbackReady()
+        mHandleDailyNotificationsReady()
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+
+        btnSetAlarm = findViewById(R.id.btn_set_alarm)
+        btnSetAlarm.setOnClickListener {
+            val c = Calendar.getInstance()
+
+            c.set(Calendar.HOUR_OF_DAY, 10)
+            c.set(Calendar.MINUTE, 0)
+            c.set(Calendar.SECOND, 0)
+
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent)
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY,pendingIntent)
+        }
+    }
+
+    private fun mHandleDailyNotificationsReady() {
+
+    }
+
+    override fun onPushAccept(dialog: DialogFragment) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPushDecline(dialog: DialogFragment) {
+        TODO("Not yet implemented")
     }
 
     private fun mHandleFeedbackReady() {
@@ -59,7 +97,7 @@ class MainActivity:
                         val doc = it.data
                         if (doc != null) {
 
-                            if (doc["feedbackLastSent"] == doc["dateJoined"]) {
+                            if (doc["feedbackLastSent"] == doc["dateJoined"]) { // first time receiving the prompt
                                 val then = DateTimeService.stringToDate(doc["dateJoined"].toString())
                                 val now = Date()
                                 val diff = now.time - then.time
@@ -67,7 +105,7 @@ class MainActivity:
 
                                 if (hours >= 48) // two days
                                     mTriggerFeedback()
-                            } else {
+                            } else { // further times
                                 if (doc["feedbackStop"] == false) {
                                     val then = DateTimeService.stringToDate(doc["feedbackLastSent"].toString())
                                     val now = Date()
