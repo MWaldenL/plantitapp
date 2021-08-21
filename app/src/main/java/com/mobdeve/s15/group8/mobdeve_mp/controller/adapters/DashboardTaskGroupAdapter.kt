@@ -146,9 +146,6 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-
-        Log.d("Dashboard", "expanded $groupPosition, $childPosition")
-
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
         val child = getChild(groupPosition, childPosition)
         val plant = child["plantId"]?.let { PlantService.findPlantById(it) }
@@ -165,7 +162,6 @@ class DashboardTaskGroupAdapter(
         checkboxDashboardPlant.text = plant?.name
         // check if task has been completed
         if (dateToday.time == task!!.lastCompleted) {
-            Log.d("Dashboard", "checking ${plant?.name} action ${task.action}")
             checkboxDashboardPlant.isChecked = true
             checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         } else {

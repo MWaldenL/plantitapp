@@ -45,7 +45,7 @@ class DashboardFragment : Fragment(), DBCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnSignout = view.findViewById(R.id.btn_signout)
+        // btnSignout = view.findViewById(R.id.btn_signout)
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
         taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasks)
         elvTaskGroup.setAdapter(taskGroupAdapter)
@@ -55,12 +55,12 @@ class DashboardFragment : Fragment(), DBCallback {
         mTasks = TaskService.getTasksToday()
         taskGroupAdapter.updateData(mTasks)
         mExpandAllGroups()
-        btnSignout.setOnClickListener { // sign out from both firebase and google
+        /*btnSignout.setOnClickListener { // sign out from both firebase and google
             F.auth.signOut()
             GoogleSignIn.getClient(this.activity, GoogleSingleton.googleSigninOptions).signOut()
             startActivity(Intent(this@DashboardFragment.context, LoginActivity::class.java))
             this.activity?.finish()
-        }
+        }*/
     }
 
     private fun mExpandAllGroups() {

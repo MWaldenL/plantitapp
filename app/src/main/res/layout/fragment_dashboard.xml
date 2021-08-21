@@ -44,12 +44,6 @@
 
             </com.mobdeve.s15.group8.mobdeve_mp.view.UnscrollableExpandableListView>
 
-            <Button
-                android:id="@+id/btn_signout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign Out Temp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
