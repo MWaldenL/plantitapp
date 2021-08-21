@@ -1,6 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
+import android.util.Log
 import com.google.firebase.Timestamp
+import com.google.type.DateTime
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
@@ -9,7 +11,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -21,10 +24,12 @@ import kotlin.collections.HashMap
 object PlantRepository: DBCallback {
     const val USERS_TYPE = "users"
     const val PLANTS_TYPE = "plants"
+    const val TASKS_TYPE = "tasks"
 
     private var mDBListener: DBCallback? = null
     private var mRefreshListener: RefreshCallback? = null
     var plantList: ArrayList<Plant> = ArrayList()
+    var taskList: ArrayList<Task> = ArrayList()
     var tasksToday: HashMap<String, ArrayList<Task>> = HashMap()
 
     init {
@@ -43,8 +48,13 @@ object PlantRepository: DBCallback {
         plantList = ArrayList()
         F.auth.currentUser?.uid?.let {
             DBService.readDocument(
-                collection= F.usersCollection,
-                id=it)
+                collection = F.usersCollection,
+                id = it)
+            DBService.readDocuments(
+                collection = F.tasksCollection,
+                where = "userId",
+                equalTo = it
+            )
         }
     }
 
@@ -64,25 +74,17 @@ object PlantRepository: DBCallback {
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
             mRefreshListener?.onRefreshSuccess()
-        } else { // Fetch the plant and add to plant list
+        } else if (type == PLANTS_TYPE) { // Fetch the plant and add to plant list
             val journal = ArrayList<Journal>()
-            val tasks = ArrayList<Task>()
-            val docTasks = doc["tasks"] as ArrayList<HashMap<*, *>>
+            val tasks = ArrayList<String>()
+            val docTasks = doc["tasks"] as ArrayList<String>
             val docJournal = doc["journal"] as ArrayList<HashMap<*, *>>
-            for (t in docTasks) {
-                tasks.add(Task(
-                    action=t["action"].toString(),
-                    startDate=t["startDate"].toString(),
-                    repeat=t["repeat"].toString().toInt(),
-                    occurrence=t["occurrence"].toString(),
-                    lastCompleted = (t["lastCompleted"] as Timestamp).toDate(),
-                ))
-            }
-            for (j in docJournal) {
+            for (t in docTasks)
+                tasks.add(t)
+            for (j in docJournal)
                 journal.add(Journal(
                     body=j["body"].toString(),
                     date=j["date"].toString()))
-            }
             plantList.add(Plant(
                 id,
                 imageUrl=doc["imageUrl"].toString(),
@@ -95,8 +97,28 @@ object PlantRepository: DBCallback {
                 journal
             ))
 
-            // update the list of tasks for today
-            mUpdateTasksToday()
+            // TODO: update the list of tasks for today
+            //mUpdateTasksToday()
+
+            if (mDBListener != null)
+                mDBListener?.onComplete(type)
+        }
+    }
+
+    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
+        if (type == TASKS_TYPE) {
+            for (doc in docs) {
+                taskList.add(Task(
+                    doc["id"].toString(),
+                    doc["plantId"].toString(),
+                    doc["userId"].toString(),
+                    doc["action"].toString(),
+                    doc["startDate"].toString(),
+                    doc["repeat"].toString().toInt(),
+                    doc["occurrence"].toString(),
+                    (doc["lastCompleted"] as Timestamp).toDate()
+                ))
+            }
 
             if (mDBListener != null)
                 mDBListener?.onComplete(type)
@@ -111,8 +133,9 @@ object PlantRepository: DBCallback {
 
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
         for (plant in plantList) {
-            for (task in plant.tasks) {
-                val nextDue = PlantTaskService.getNextDueDate(task, task.lastCompleted)
+            for (taskId in plant.tasks) {
+                val task = TaskService.findTaskById(taskId)!!
+                val nextDue = DateTimeService.getNextDueDate(task, task.lastCompleted)
                 if (!dateToday.before(nextDue)) {
                     if (tasksToday[plant.id] == null)
                         tasksToday[plant.id] = ArrayList()

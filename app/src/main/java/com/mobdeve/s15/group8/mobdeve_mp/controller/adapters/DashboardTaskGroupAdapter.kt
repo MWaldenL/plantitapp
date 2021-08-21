@@ -2,7 +2,6 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.content.Context
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
@@ -18,7 +16,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 import kotlin.collections.ArrayList
@@ -138,9 +137,9 @@ class DashboardTaskGroupAdapter(
             if (checkboxDashboardPlant.isChecked) {
                 checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
-                val currDate = DateTimeService.getCurrentDateWithoutTime().time
+                /*val currDate = DateTimeService.getCurrentDateWithoutTime().time
                 val plant = tasks[taskTitles[groupPosition]]!![childPosition]
-                val completedTask = PlantTaskService.findTaskByAction(taskTitles[groupPosition], plant!!)
+                val completedTask = PlantService.findTaskByAction(taskTitles[groupPosition], plant!!)*/
 
                 /*mUpdateLastCompletedTask(
                     currDate,
@@ -154,13 +153,13 @@ class DashboardTaskGroupAdapter(
             } else {
                 checkboxDashboardPlant.paintFlags = 0
 
-                val plant = tasks[taskTitles[groupPosition]]!![childPosition]
-                val revertedTask = PlantTaskService.findTaskByAction(taskTitles[groupPosition], plant!!)
+                /*val plant = tasks[taskTitles[groupPosition]]!![childPosition]!!
+                val revertedTask = TaskService.findTaskById(plant.tasks)
                 mUpdateLastCompletedTask(
-                    PlantTaskService.getLastDueDate(revertedTask!!, Date()).time,
+                    DateTimeService.getLastDueDate(revertedTask!!, Date()).time,
                     plant,
                     revertedTask
-                )
+                )*/
             }
             // TODO: update plantrepo?
 

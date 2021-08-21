@@ -26,12 +26,26 @@ object DBService: CoroutineScope {
                 if (doc != null) {
                     doc.data?.let { mListener.onDataRetrieved(it, id, collection.id) }
                 } else {
-                    Log.d("DBService", "No doc")
+                    Log.d("Dashboard", "No doc")
                 }
             }
         }
     }
 
+    fun readDocuments(collection: CollectionReference, where: String, equalTo: Any) {
+        launch(coroutineContext) {
+            collection.whereEqualTo(where, equalTo).get().addOnSuccessListener { docs ->
+                if (docs != null) {
+                    val data: ArrayList<MutableMap<String, Any>> = ArrayList()
+                    for (doc in docs)
+                        data.add(doc.data)
+                    mListener.onDataRetrieved(data, collection.id)
+                } else {
+                    Log.d("DBService", "No docs")
+                }
+            }
+        }
+    }
     fun addDocument(collection: CollectionReference, id: String="", data: Any) {
         launch(Dispatchers.IO) {
             when (id) {

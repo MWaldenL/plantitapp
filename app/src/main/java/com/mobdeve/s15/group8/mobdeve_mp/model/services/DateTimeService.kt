@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -30,5 +31,39 @@ object DateTimeService {
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
+    }
+
+    fun getNextDueDate(task: Task, prevDate: Date): Calendar {
+        val cal = Calendar.getInstance()
+        cal.time = prevDate
+        DateTimeService.removeCalendarTime(cal)
+        when (task.occurrence) {
+            "Day" ->
+                cal.add(Calendar.DATE, task.repeat)
+            "Week" ->
+                cal.add(Calendar.DATE, task.repeat * 7)
+            "Month" ->
+                cal.add(Calendar.MONTH, task.repeat)
+            "Year" ->
+                cal.add(Calendar.YEAR, task.repeat)
+        }
+        return cal
+    }
+
+    fun getLastDueDate(task: Task, currDate: Date): Calendar {
+        val cal = Calendar.getInstance()
+        cal.time = currDate
+        DateTimeService.removeCalendarTime(cal)
+        when (task.occurrence) {
+            "Day" ->
+                cal.add(Calendar.DATE, -task.repeat)
+            "Week" ->
+                cal.add(Calendar.DATE, -task.repeat * 7)
+            "Month" ->
+                cal.add(Calendar.MONTH, -task.repeat)
+            "Year" ->
+                cal.add(Calendar.YEAR, -task.repeat)
+        }
+        return cal
     }
 }

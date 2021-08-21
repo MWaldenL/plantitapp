@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.text.DateFormatSymbols
 import java.util.*
 
@@ -41,6 +42,9 @@ class AddTaskDialogFragment :
                     mRepeat = etRepeat.text.toString().toInt()
                     NewPlantInstance.addTask(
                         Task(
+                            UUID.randomUUID().toString(),
+                            NewPlantInstance.plantObject.id,
+                            F.auth.uid!!,
                             mAction,
                             mStartDate,
                             mRepeat,

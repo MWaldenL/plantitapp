@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupA
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantTaskService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -69,7 +70,7 @@ class DashboardFragment : Fragment(), DBCallback {
     private fun mLoadTasks() {
         mTasks = HashMap()
         for ((plantId, tasks) in PlantRepository.tasksToday) {
-            val plant = PlantTaskService.findPlantById(plantId)
+            val plant = PlantService.findPlantById(plantId)
             for (task in tasks) {
                 // create a new arraylist of plants associated with the task
                 if (mTasks[task.action] == null)
@@ -91,10 +92,17 @@ class DashboardFragment : Fragment(), DBCallback {
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
     }
 
+    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
+    }
+
     override fun onComplete(tag: String) {
-        if (tag == PlantRepository.PLANTS_TYPE) {
-            PlantRepository.setOnDataFetchedListener(null)
-            mLoadTasks()
+        if (tag == PlantRepository.TASKS_TYPE) {
+
+            Log.d("Dashboard", PlantRepository.taskList.toString())
+            Log.d("Dashboard", "Loaded")
+
+            /*PlantRepository.setOnDataFetchedListener(null)
+            mLoadTasks()*/
         }
     }
 }

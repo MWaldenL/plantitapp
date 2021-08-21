@@ -43,7 +43,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private lateinit var etPlantNickname: EditText
     private lateinit var ibtnDelete: Button
     private lateinit var mPhotoFilename: String
-    private val mTasks = NewPlantInstance.plant["tasks"] as ArrayList<Task>
+    private val mTasks = NewPlantInstance.tasksObject as ArrayList<String>
     private val mPlantId = UUID.randomUUID().toString()
     private val launcher =
         registerForActivityResult(StartActivityForResult()) { result -> }
@@ -60,7 +60,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         btnAddTask = findViewById(R.id.btn_add_task)
         btnSave = findViewById(R.id.btn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
-        tasksRV.adapter = AddPlantTasksAdapter(mTasks)
+        tasksRV.adapter = AddPlantTasksAdapter(NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
         btnAddPhoto.setOnClickListener { mOpenCamera() }
@@ -108,6 +108,14 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
             id= F.auth.currentUser?.uid,
             field="plants",
             value=FieldValue.arrayUnion(mPlantId))
+
+        // Write the tasks to firebase
+        for (task in NewPlantInstance.tasks)
+            DBService.addDocument(
+                collection = F.tasksCollection,
+                id = task["id"].toString(),
+                data = task
+            )
 
         // Notify the ViewAllPlantsAdapter of a dataset change
         PlantRepository.plantList.add(NewPlantInstance.plantObject)

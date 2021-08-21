@@ -13,6 +13,6 @@ data class Plant(
     var nickname: String,
     val dateAdded: String,
     var death: Boolean,
-    val tasks: @RawValue ArrayList<Task>,
+    val tasks: @RawValue ArrayList<String>,
     val journal: @RawValue ArrayList<Journal>
 ): Parcelable

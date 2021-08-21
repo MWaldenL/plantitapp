@@ -31,6 +31,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -121,7 +122,8 @@ class ViewSinglePlantActivity :
     private fun mBindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
-        val (id, imageUrl, filePath, name, nickname, datePurchased, death, tasks, journal) = mPlantData
+        val (id, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
+        val tasks = TaskService.findTasksByPlantId(id)
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
