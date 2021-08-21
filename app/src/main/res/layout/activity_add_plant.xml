@@ -23,53 +23,80 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif"
+                android:layout_marginBottom="16dp"
                 android:text="Add a new plant"
-                android:textColor="#1E1E1E"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
+                android:textColor="@color/primary_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="#E4E4E4"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardCornerRadius="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_header">
 
-                <ImageView
-                    android:id="@+id/img_plant"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/group_no_pic"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_no_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="275dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/ic_8_25_52_pm_camera_24"
+                        app:tint="@color/dark_gray" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        style="@style/TextAppearance.MOBDEVEMP.Headline3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add a Photo"
+                        android:textColor="@color/dark_gray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/iv_no_pic"
+                        app:layout_constraintVertical_bias="0.861" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/iv_add_plant"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sample" />
+                    android:src="@drawable/sample"
+                    android:visibility="gone" />
 
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/btn_add_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
-                android:text="Add Photo"
-                app:cornerRadius="100dp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                app:layout_constraintEnd_toEndOf="@+id/cardView" />
-
             <TextView
                 android:id="@+id/tv_gen_info"
+                style="@style/TextAppearance.MOBDEVEMP.Headline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="General Information"
+                android:textColor="@color/primary_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -83,6 +110,7 @@
                 android:hint="Name of Plant"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />
@@ -98,6 +126,7 @@
                 android:hint="Nickname (optional)"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/et_plant_name"
@@ -105,11 +134,13 @@
 
             <TextView
                 android:id="@+id/tv_care_methods"
+                style="@style/TextAppearance.MOBDEVEMP.Headline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="Care Methods"
+                android:textColor="@color/primary_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_plant_nickname" />
 
@@ -120,12 +151,13 @@
                 android:layout_marginTop="8dp"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_care_methods" />
 
             <Button
                 android:id="@+id/btn_add_task"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/Widget.MOBDEVEMP.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -139,12 +171,16 @@
 
             <Button
                 android:id="@+id/btn_save_plant"
-                android:layout_width="wrap_content"
+                style="@style/Widget.MOBDEVEMP.Button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Save"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal|bottom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_add_task" />
 

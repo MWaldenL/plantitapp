@@ -22,8 +22,18 @@
         <item name="android:textSize">32sp</item>
     </style>
 
+    <style name="TextAppearance.MOBDEVEMP.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/work_sans_bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
     <style name="TextAppearance.MOBDEVEMP.Body1" parent="TextAppearance.AppCompat.Body1">
         <item name="fontFamily">@font/source_sans_pro</item>
+    </style>
+
+    <style name="TextAppearance.MOBDEVEMP.Body2" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!--  Widgets  -->
@@ -34,6 +44,19 @@
 
     <style name="Widget.MOBDEVEMP.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="buttonTint">@color/checkbox_color</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="tint">@color/light_gray</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="tint">@color/light_gray</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Widget.MOBDEVEMP.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
