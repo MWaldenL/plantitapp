@@ -122,7 +122,7 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val childListText: String = getChild(groupPosition, childPosition)
+        val childListText = PlantService.findPlantById(getChild(groupPosition, childPosition))?.name
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
@@ -139,7 +139,7 @@ class DashboardTaskGroupAdapter(
             if (checkboxDashboardPlant.isChecked) {
                 checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
-                
+
 
                 /*val currDate = DateTimeService.getCurrentDateWithoutTime().time
                 val plant = tasks[taskTitles[groupPosition]]!![childPosition]

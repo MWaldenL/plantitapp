@@ -1,7 +1,10 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
+import android.util.Log
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import java.util.*
+import kotlin.collections.ArrayList
 
 object TaskService {
     fun findTaskById(id: String): Task? {
@@ -19,6 +22,9 @@ object TaskService {
         return tasks
     }
 
+    /*
+    * Retrieves a list of tasks for today, including those that have been completed
+    * */
     fun getTasksToday(): ArrayList<Task> {
         val tasksToday = ArrayList<Task>()
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
@@ -29,10 +35,10 @@ object TaskService {
                 task.repeat,
                 task.lastCompleted
             )
-            if (!dateToday.before(nextDue))
+            Log.d("Dashboard", "${task.action} next due: ${nextDue.time}")
+            if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday))
                 tasksToday.add(task)
         }
-
         return tasksToday
     }
 }

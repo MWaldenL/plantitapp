@@ -12,6 +12,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupA
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment(), DBCallback {
@@ -47,7 +48,7 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     private fun mLoadTasks() {
-        mTasks = PlantRepository.taskList
+        mTasks = TaskService.getTasksToday()
         taskGroupAdapter.updateData(mTasks)
         mExpandAllGroups()
     }

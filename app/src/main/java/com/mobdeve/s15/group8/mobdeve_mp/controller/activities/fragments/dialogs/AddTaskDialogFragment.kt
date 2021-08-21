@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.text.DateFormatSymbols
 import java.util.*
@@ -44,14 +45,18 @@ class AddTaskDialogFragment :
                     Log.d("Dashboard", "add task plant id: ${NewPlantInstance.plantObject}")
                     NewPlantInstance.addTask(
                         Task(
-                            UUID.randomUUID().toString(),
-                            "",
-                            F.auth.uid!!,
-                            mAction,
-                            mStartDate,
-                            mRepeat,
-                            mOccurrence,
-                            Date()
+                            id = UUID.randomUUID().toString(),
+                            plantId = "",
+                            userId = F.auth.uid!!,
+                            action = mAction,
+                            startDate = mStartDate,
+                            repeat = mRepeat,
+                            occurrence = mOccurrence,
+                            lastCompleted = DateTimeService.getLastDueDate(
+                                mOccurrence,
+                                mRepeat,
+                                DateTimeService.getCurrentDateWithoutTime().time
+                            ).time
                         )
                     )
                 }
