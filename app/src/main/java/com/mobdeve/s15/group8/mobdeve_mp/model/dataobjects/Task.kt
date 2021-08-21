@@ -7,7 +7,7 @@ import java.util.*
 @Parcelize
 data class Task(
     val id: String,
-    val plantId: String,
+    var plantId: String,
     val userId: String,
     val action: String,
     val startDate: String,

@@ -110,7 +110,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
             field="plants",
             value=FieldValue.arrayUnion(mPlantId))
 
-        // Write the tasks to firebase
+        // Write the tasks to firebase db
         for (task in NewPlantInstance.tasks) {
             // update the plantId first
             task["plantId"] = mPlantId
@@ -119,6 +119,12 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
                 id = task["id"].toString(),
                 data = task
             )
+        }
+
+        // Write to local
+        for (taskObj in NewPlantInstance.tasksObject) {
+            taskObj.plantId = mPlantId
+            PlantRepository.taskList.add(taskObj)
         }
 
         // Notify the ViewAllPlantsAdapter of a dataset change

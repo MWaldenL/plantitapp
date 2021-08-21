@@ -35,9 +35,9 @@ object NewPlantInstance {
         }
     val tasksObject: ArrayList<Task>
         get() {
-            val tasksObject: ArrayList<Task> = ArrayList()
+            val t: ArrayList<Task> = ArrayList()
             for (task in tasks)
-                tasksObject.add(Task(
+                t.add(Task(
                     task["id"].toString(),
                     task["plantId"].toString(),
                     task["userId"].toString(),
@@ -47,7 +47,7 @@ object NewPlantInstance {
                     task["occurrence"].toString(),
                     (task["lastCompleted"] as Timestamp).toDate()
                 ))
-            return tasksObject
+            return t
         }
     var mListener: NewPlantCallback? = null
 
