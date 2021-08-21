@@ -86,7 +86,8 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val groupListText: String = getGroup(groupPosition) as String
+        val dateToday = DateTimeService.getCurrentDateWithoutTime().time
+        val groupListText = getGroup(groupPosition) as String
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
@@ -98,8 +99,8 @@ class DashboardTaskGroupAdapter(
         val tvGroupTask: TextView = cv!!.findViewById(R.id.tv_group_task)
         tvGroupTask.text = groupListText
         mUpdateExpandedIndicator(isExpanded, cv)
-        mUpdatePlantsLeft(groupPosition, cv)
 
+        // change icons
         val ivTaskIcon: ImageView = cv.findViewById(R.id.iv_task_icon)
         when (groupListText) {
             mContext.resources.getStringArray(R.array.actions_array)[0] ->
@@ -114,6 +115,22 @@ class DashboardTaskGroupAdapter(
                 ivTaskIcon.setImageResource(R.drawable.ic_dark_24)
             mContext.resources.getStringArray(R.array.actions_array)[5] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
+        }
+
+        // update plants left
+        var plantsLeft = 0
+        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
+        for (plantTask in taskMaps[taskKeys[groupPosition]]!!) {
+            val task = plantTask["taskId"]?.let { TaskService.findTaskById(it) }
+            if (task != null)
+                if (task.lastCompleted != dateToday)
+                    plantsLeft += 1
+        }
+        if (plantsLeft > 0) {
+            tvPlantsLeft.visibility = View.VISIBLE
+            tvPlantsLeft.text = plantsLeft.toString()
+        } else {
+            tvPlantsLeft.visibility = View.INVISIBLE
         }
 
         return cv
@@ -224,6 +241,9 @@ class DashboardTaskGroupAdapter(
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
 
         // TODO: update
+
+        val plantsLeft = 0
+
 
 //        val plantsLeft = 0
 //        PlantRepository.tasksToday[taskTitles[groupPosition]]
