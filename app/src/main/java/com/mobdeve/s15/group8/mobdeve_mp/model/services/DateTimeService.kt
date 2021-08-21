@@ -3,6 +3,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.model.services
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 object DateTimeService {
@@ -65,4 +66,9 @@ object DateTimeService {
         }
         return cal
     }
+    
+    fun stringToDate(string: String): Date {
+        return SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).parse(string) as Date
+    }
+
 }

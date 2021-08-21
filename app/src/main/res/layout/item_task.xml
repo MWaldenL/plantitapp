@@ -80,7 +80,7 @@
                 android:layout_gravity="top"
                 android:backgroundTint="#00000000"
                 android:contentDescription="delete task"
-                app:srcCompat="@drawable/ic_delete"
+                app:srcCompat="@drawable/ic_cross_24"
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

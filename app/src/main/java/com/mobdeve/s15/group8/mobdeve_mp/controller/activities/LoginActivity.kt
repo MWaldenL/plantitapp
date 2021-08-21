@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                     val user = F.auth.currentUser
                     val userId = user?.uid.toString()
                     val userDoc = F.usersCollection.document(userId)
-                    val now: String = DateTimeService.getCurrentDate()
+                    val now = DateTimeService.getCurrentDateTime()
                     userDoc.get().addOnSuccessListener { doc -> // if the user doesn't exist yet in firestore,
                         if (doc.data == null) {
                             DBService.addDocument( // create a new user document
@@ -65,7 +65,11 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                                 data=hashMapOf(
                                     "name" to user?.displayName,
                                     "dateJoined" to now,
-                                    "plants" to ArrayList<String>()))
+                                    "plants" to ArrayList<String>(),
+                                    "feedbackStop" to false,
+                                    "feedbackLastSent" to now
+                                )
+                            )
                         }
                     }
                     PlantRepository.getData() // fetch the user's plants

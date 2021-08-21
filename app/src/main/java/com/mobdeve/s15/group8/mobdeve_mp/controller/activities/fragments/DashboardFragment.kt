@@ -1,13 +1,17 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ExpandableListView
 import androidx.fragment.app.Fragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -41,7 +45,7 @@ class DashboardFragment : Fragment(), DBCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        btnSignout = view.findViewById(R.id.btn_signout)
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
         taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasks)
         elvTaskGroup.setAdapter(taskGroupAdapter)
@@ -51,6 +55,12 @@ class DashboardFragment : Fragment(), DBCallback {
         mTasks = TaskService.getTasksToday()
         taskGroupAdapter.updateData(mTasks)
         mExpandAllGroups()
+        btnSignout.setOnClickListener { // sign out from both firebase and google
+            F.auth.signOut()
+            GoogleSignIn.getClient(this.activity, GoogleSingleton.googleSigninOptions).signOut()
+            startActivity(Intent(this@DashboardFragment.context, LoginActivity::class.java))
+            this.activity?.finish()
+        }
     }
 
     private fun mExpandAllGroups() {
