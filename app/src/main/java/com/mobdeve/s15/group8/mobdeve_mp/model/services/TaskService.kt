@@ -35,8 +35,8 @@ object TaskService {
                 task.repeat,
                 task.lastCompleted
             )
-            Log.d("Dashboard", "${task.action} next due: ${nextDue.time}")
-            if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday))
+            Log.d("Dashboard", "${task.lastCompleted} lc vs dt ${dateToday.time}")
+            if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday.time))
                 tasksToday.add(task)
         }
         return tasksToday
