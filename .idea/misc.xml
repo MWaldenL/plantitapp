@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.4898148148148148" />
         <entry key="app/src/main/res/drawable-v24/baseline_cached_24.xml" value="0.23782894736842106" />
         <entry key="app/src/main/res/drawable/baseline_delete_outline_24.xml" value="0.1355263157894737" />
         <entry key="app/src/main/res/drawable/baseline_more_vert_36.xml" value="0.23782894736842106" />
@@ -21,7 +22,9 @@
         <entry key="app/src/main/res/layout/activity_view_single_plant.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_add_journal.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_add_task.xml" value="0.1730263157894737" />
+        <entry key="app/src/main/res/layout/dialog_app_feedback.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/dialogue_add_journal.xml" value="0.12532894736842104" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/fragment_view_all_plants.xml" value="0.12532894736842104" />
         <entry key="app/src/main/res/layout/item_journal.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/item_journal_all.xml" value="0.5" />
