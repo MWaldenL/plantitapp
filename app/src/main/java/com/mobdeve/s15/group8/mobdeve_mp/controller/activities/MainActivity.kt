@@ -1,5 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +19,8 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.receivers.AlarmReceiver
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.util.*
@@ -25,10 +30,19 @@ import kotlin.collections.HashMap
 
 class MainActivity:
     AppCompatActivity(),
-    AppFeedbackDialogFragment.AppFeedbackDialogListener
+    AppFeedbackDialogFragment.AppFeedbackDialogListener,
+    DailyNotificationsDialogFragment.DailyNotificationsDialogListener
 {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
+
+    private lateinit var btnSetAlarm: Button
+    private lateinit var btnCancel: Button
+
+    // TODO: Remove these in final impl, only here for manual cancel
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var notificationIntent: Intent
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +59,101 @@ class MainActivity:
             startActivity(addPlantIntent)
         }
 
+        mHandleDailyNotificationsReady()
+
+        // TODO: Remove these in final impl, only here for manual cancel
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        notificationIntent = Intent(this, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, 0)
+
+        btnSetAlarm = findViewById(R.id.btn_set_alarm)
+        btnSetAlarm.setOnClickListener {
+            mSetAlarm()
+        }
+
+        btnCancel = findViewById(R.id.btn_cancel)
+        btnCancel.setOnClickListener {
+            alarmManager.cancel(pendingIntent)
+        }
+    }
+
+    // push notifications function
+
+    private fun mHandleDailyNotificationsReady() {
+        val uid = F.auth.currentUser?.uid
+        if (uid != null) {
+            F.usersCollection
+                .document(uid)
+                .get()
+                .addOnSuccessListener {
+                    if (it != null) {
+                        val doc = it.data
+                        if (doc != null) {
+                            if (doc["pushAsked"] == false) {
+                                val fragment = DailyNotificationsDialogFragment()
+                                fragment.show(supportFragmentManager, "daily_notifications")
+                            } else {
+                                mHandleFeedbackReady()
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("fail", it.toString())
+                }
+        }
+    }
+
+    override fun onPushAccept(dialog: DialogFragment) {
+        val id = F.auth.currentUser?.uid
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            hashMapOf (
+                "pushAsked" to true,
+                "pushAllowed" to true
+            )
+        )
+
+        mSetAlarm()
         mHandleFeedbackReady()
     }
+
+    override fun onPushDecline(dialog: DialogFragment) {
+        val id = F.auth.currentUser?.uid
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            hashMapOf (
+                "pushAsked" to true,
+                "pushAllowed" to false
+            )
+        )
+
+        mHandleFeedbackReady()
+    }
+
+    private fun mSetAlarm() {
+        val c = Calendar.getInstance()
+
+        // uncomment for final impl
+//        c.set(Calendar.HOUR_OF_DAY, 10)
+//        c.set(Calendar.MINUTE, 0)
+//        c.set(Calendar.SECOND, 0)
+//
+//        if (c.before(Calendar.getInstance()))
+//            c.add(Calendar.DATE, 1)
+//
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent) // change third arg to millis (min 60000) to test repeated
+
+        // code for testing
+        c.add(Calendar.SECOND, 30)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent) // use this to check for exact time
+    }
+
+    // feedback functions
 
     private fun mHandleFeedbackReady() {
         val uid = F.auth.currentUser?.uid
@@ -59,7 +166,7 @@ class MainActivity:
                         val doc = it.data
                         if (doc != null) {
 
-                            if (doc["feedbackLastSent"] == doc["dateJoined"]) {
+                            if (doc["feedbackLastSent"] == doc["dateJoined"]) { // first time receiving the prompt
                                 val then = DateTimeService.stringToDate(doc["dateJoined"].toString())
                                 val now = Date()
                                 val diff = now.time - then.time
@@ -67,7 +174,7 @@ class MainActivity:
 
                                 if (hours >= 48) // two days
                                     mTriggerFeedback()
-                            } else {
+                            } else { // further times
                                 if (doc["feedbackStop"] == false) {
                                     val then = DateTimeService.stringToDate(doc["feedbackLastSent"].toString())
                                     val now = Date()
@@ -92,11 +199,7 @@ class MainActivity:
         fragment.show(supportFragmentManager, "feedback")
     }
 
-    override fun onFeedbackContinue(
-        dialog: DialogFragment,
-        feedbackRating: Float,
-        feedbackComment: String
-    ) {
+    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Float, feedbackComment: String) {
         val id = F.auth.currentUser?.uid
         val toAdd = hashMapOf(
             "rating" to feedbackRating,
@@ -106,22 +209,11 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedback",
-            FieldValue.arrayUnion(toAdd)
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackStop",
-            false
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedback" to FieldValue.arrayUnion(toAdd),
+                "feedbackStop" to false,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 
@@ -131,15 +223,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedbackStop",
-            true
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedbackStop" to true,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 
@@ -149,15 +236,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedbackStop",
-            false
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedbackStop" to false,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 }

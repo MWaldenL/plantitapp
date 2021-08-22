@@ -6,5 +6,6 @@
     <string name="SAVED_PLANT_KEY">SAVED_PLANT_KEY</string>
     <string name="COMMON_NAME_KEY">COMMON_NAME_KEY</string>
     <string name="NICKNAME_KEY">NICKNAME_KEY</string>
+    <string name="JOURNAL_KEY">JOURNAL_KEY</string>
     <string name="ID_KEY">ID_KEY</string>
 </resources>
