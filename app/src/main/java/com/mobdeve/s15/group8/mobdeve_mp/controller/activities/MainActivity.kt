@@ -110,15 +110,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "pushAsked",
-            true
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "pushAllowed",
-            true
+            hashMapOf (
+                "pushAsked" to true,
+                "pushAllowed" to true
+            )
         )
 
         mSetAlarm()
@@ -131,15 +126,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "pushAsked",
-            true
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "pushAllowed",
-            false
+            hashMapOf (
+                "pushAsked" to true,
+                "pushAllowed" to false
+            )
         )
 
         mHandleFeedbackReady()
@@ -219,22 +209,11 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedback",
-            FieldValue.arrayUnion(toAdd)
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackStop",
-            false
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedback" to FieldValue.arrayUnion(toAdd),
+                "feedbackStop" to false,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 
@@ -244,15 +223,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedbackStop",
-            true
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedbackStop" to true,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 
@@ -262,15 +236,10 @@ class MainActivity:
         DBService.updateDocument(
             F.usersCollection,
             id,
-            "feedbackStop",
-            false
-        )
-
-        DBService.updateDocument(
-            F.usersCollection,
-            id,
-            "feedbackLastSent",
-            DateTimeService.getCurrentDateTime()
+            hashMapOf (
+                "feedbackStop" to false,
+                "feedbackLastSent" to DateTimeService.getCurrentDateTime()
+            )
         )
     }
 }
