@@ -1,16 +1,13 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +17,6 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.*
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AddJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeletePlantDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.PlantDeathDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.PlantRevivalDialogFragment
@@ -33,15 +29,11 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.io.File
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.HashMap
 
 class ViewSinglePlantActivity :
     AppCompatActivity(),
-    AddJournalDialogFragment.AddJournalDialogListener,
     DeletePlantDialogFragment.DeletePlantDialogListener,
     PlantDeathDialogFragment.PlantDeathDialogListener,
     PlantRevivalDialogFragment.PlantRevivalDialogListener
@@ -81,6 +73,16 @@ class ViewSinglePlantActivity :
             }
         }
 
+    private var mAddNewJournalLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val string = result.data?.getStringExtra(getString(R.string.JOURNAL_KEY))
+                if (string != null) {
+                    mOnJournalSave(string)
+                }
+            }
+        }
+
     private var mDashboardLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
@@ -107,7 +109,7 @@ class ViewSinglePlantActivity :
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
 
         ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
-        ibtnEditPlant.setOnClickListener { /**TODO**/ }
+        ibtnEditPlant.setOnClickListener {  } // TODO
         ibtnKillPlant.setOnClickListener { mHandlePlantDeath() }
         ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
         ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
@@ -170,16 +172,15 @@ class ViewSinglePlantActivity :
     }
 
     private fun mHandleNewJournalRequest() {
-        val fragment = AddJournalDialogFragment()
-        val bundle = Bundle()
-        bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
-        fragment.arguments = bundle
-        fragment.show(supportFragmentManager, "add_journal")
+        val intent = Intent(this, AddNewJournalActivity::class.java)
+        intent.putExtra(getString(R.string.NICKNAME_KEY), tvNickname.text)
+        mAddNewJournalLauncher.launch(intent)
     }
 
-    override fun onJournalSave(dialog: DialogFragment, text: String) {
+    private fun mOnJournalSave(text: String) {
         val body = text
         val date = DateTimeService.getCurrentDateTime()
+
         val toAdd: HashMap<*, *> = hashMapOf(
             "body" to body,
             "date" to date
@@ -213,10 +214,6 @@ class ViewSinglePlantActivity :
         // notify adapter of addition
         mJournalLimited.add(0, Journal(body, date))
         recyclerViewJournal.adapter?.notifyItemInserted(0)
-    }
-
-    override fun onJournalCancel(dialog: DialogFragment) {
-        // TODO: Notify user???
     }
 
     private fun mHandlePlantDelete() {

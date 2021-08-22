@@ -1,6 +1,7 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,16 +42,14 @@ class AddPlantTasksAdapter(
                             .append(" times ")
                             .append(data[position].occurrence)
 
-        holder.actionTV.text = data[position].action
         val f = SimpleDateFormat("MMM d, yyyy")
+        holder.actionTV.text = data[position].action
         holder.startDateTV.text = f.format(data[position].startDate)
         holder.repeatTV.text = repeatStringBuilder.toString()
-
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
             taskDeletedListener.notifyTaskDeleted(task)
-            notifyItemRemoved(holder.adapterPosition)
         }
 
         taskDeletedListener = holder.itemView.context as OnTaskDeletedListener

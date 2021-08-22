@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,11 +49,12 @@ class AddPlantActivity :
 
     private lateinit var tasksRV: RecyclerView
     private lateinit var ivPlant: ImageView
+    private lateinit var ivAddPlant: ImageView
     private lateinit var btnAddTask: Button
     private lateinit var btnSave: Button
-    private lateinit var btnAddPhoto: Button
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
+    private lateinit var groupNoPic: ConstraintLayout
     private lateinit var mPhotoFilename: String
     private val mPlantId = UUID.randomUUID().toString()
 
@@ -91,17 +94,19 @@ class AddPlantActivity :
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
 
-        ivPlant = findViewById(R.id.img_plant)
+        groupNoPic = findViewById(R.id.group_no_pic)
+        ivAddPlant = findViewById(R.id.iv_no_pic)
+        ivPlant = findViewById(R.id.iv_add_plant)
         etPlantName = findViewById(R.id.et_plant_name)
         etPlantNickname = findViewById(R.id.et_plant_nickname)
-        btnAddPhoto = findViewById(R.id.btn_add_photo)
         btnAddTask = findViewById(R.id.btn_add_task)
         btnSave = findViewById(R.id.btn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
         tasksRV.adapter = AddPlantTasksAdapter(NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
-        btnAddPhoto.setOnClickListener { mOpenCamera() }
+        ivAddPlant.setOnClickListener { mOpenCamera() }
+        ivPlant.setOnClickListener { mOpenCamera() }
         btnSave.setOnClickListener { mSavePlant() }
         btnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -189,13 +194,16 @@ class AddPlantActivity :
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val uri = Uri.fromFile(File(mPhotoFilename))
-            try {
+            try { // create the bitmap from uri
                 val bitmap = if (Build.VERSION.SDK_INT < 28) {
                     MediaStore.Images.Media.getBitmap(contentResolver, uri)
                 } else {
                     val source = ImageDecoder.createSource(contentResolver, uri)
                     ImageDecoder.decodeBitmap(source)
                 }
+                // show the image
+                groupNoPic.visibility = View.GONE
+                ivPlant.visibility = View.VISIBLE
                 ivPlant.setImageBitmap(bitmap)
             } catch (e: Exception) {
                 e.printStackTrace()

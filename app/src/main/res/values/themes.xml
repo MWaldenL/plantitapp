@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.MOBDEVEMP" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -22,8 +22,23 @@
         <item name="android:textSize">32sp</item>
     </style>
 
+    <style name="TextAppearance.MOBDEVEMP.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/work_sans_bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+      
+    <style name="TextAppearance.MOBDEVEMP.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/work_sans_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="TextAppearance.MOBDEVEMP.Body1" parent="TextAppearance.AppCompat.Body1">
         <item name="fontFamily">@font/source_sans_pro</item>
+    </style>
+
+    <style name="TextAppearance.MOBDEVEMP.Body2" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!--  Widgets  -->
@@ -49,7 +64,7 @@
         <item name="elevation">0dp</item>
     </style>
 
-    <style name="Widget.MOBDEVEMP.TextButton" parent="Widget.MaterialComponents.Button">
+    <style name="Widget.MOBDEVEMP.TextBoxButton" parent="Widget.MaterialComponents.Button">
         <item name="android:background">@drawable/rounded_rectangle_8</item>
         <item name="backgroundTint">@color/light_gray</item>
         <item name="android:textAppearance">@style/TextAppearance.MOBDEVEMP.Body1</item>
@@ -80,6 +95,19 @@
 
     <style name="Widget.MOBDEVEMP.Spinner" parent="Widget.AppCompat.Spinner">
         <item name="android:background">@drawable/widget_spinner</item>
+    </style>
+        
+    <style name="Widget.MOBDEVEMP.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/primary_color</item>
+        <item name="tint">@color/light_gray</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="tint">@color/light_gray</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Widget.MOBDEVEMP.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
