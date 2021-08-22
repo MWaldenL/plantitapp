@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.NotificationHelper
+import com.mobdeve.s15.group8.mobdeve_mp.model.helpers.NotificationHelper
 
 class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

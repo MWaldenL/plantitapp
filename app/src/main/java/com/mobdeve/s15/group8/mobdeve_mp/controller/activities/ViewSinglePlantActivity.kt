@@ -82,6 +82,13 @@ class ViewSinglePlantActivity :
             }
         }
 
+    private var mEditPlantLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // TODO(panget pa)
+            }
+        }
+
     private var mDashboardLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
 
@@ -94,6 +101,8 @@ class ViewSinglePlantActivity :
         mInitViews()
         mBindData()
     }
+
+    // activity init functions
 
     private fun mInitViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
@@ -108,7 +117,7 @@ class ViewSinglePlantActivity :
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
 
         ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
-        ibtnEditPlant.setOnClickListener {  } // TODO
+        ibtnEditPlant.setOnClickListener { mHandleEditPlant() }
         ibtnKillPlant.setOnClickListener { mHandlePlantDeath() }
         ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
         ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
@@ -169,49 +178,12 @@ class ViewSinglePlantActivity :
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
     }
 
-    private fun mHandleNewJournalRequest() {
-        val intent = Intent(this, AddNewJournalActivity::class.java)
-        intent.putExtra(getString(R.string.NICKNAME_KEY), tvNickname.text)
-        mAddNewJournalLauncher.launch(intent)
-    }
+    // plant option functions
 
-    private fun mOnJournalSave(text: String) {
-        val body = text
-        val date = DateTimeService.getCurrentDateTime()
-
-        val toAdd: HashMap<*, *> = hashMapOf(
-            "body" to body,
-            "date" to date
-        )
-
-        // add to firebase
-        DBService.updateDocument(
-            F.plantsCollection,
-            mPlantData.id,
-            "journal",
-            FieldValue.arrayUnion(toAdd)
-        )
-
-        val index = PlantRepository.plantList.indexOf(mPlantData)
-
-        // add to local repo
-        PlantRepository
-            .plantList[index]
-            .journal
-            .add(Journal(body, date))
-
-        // update plant data
-        mPlantData = PlantRepository.plantList[index]
-
-        // notify adapter of removal
-        if (mJournalLimited.size >= 3) {
-            mJournalLimited.removeAt(2)
-            recyclerViewJournal.adapter?.notifyItemRemoved(2)
-        }
-
-        // notify adapter of addition
-        mJournalLimited.add(0, Journal(body, date))
-        recyclerViewJournal.adapter?.notifyItemInserted(0)
+    private fun mHandleEditPlant() {
+//        val intent = Intent(this, EditPlantActivity::class.java)
+//        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+//        mEditPlantLauncher.launch(intent)
     }
 
     private fun mHandlePlantDelete() {
@@ -227,12 +199,6 @@ class ViewSinglePlantActivity :
     private fun mHandlePlantRevival() {
         val fragment = PlantRevivalDialogFragment()
         fragment.show(supportFragmentManager, "plant_revival")
-    }
-
-    private fun mGotoViewAllJournalsActivity() {
-        val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
-        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
-        mViewAllJournalsLauncher.launch(intent)
     }
 
     override fun onPlantDelete(dialog: DialogFragment) {
@@ -316,4 +282,62 @@ class ViewSinglePlantActivity :
 
         finish()
     }
+
+    // task functions
+
+
+
+    // journal functions
+
+    private fun mGotoViewAllJournalsActivity() {
+        val intent = Intent(this@ViewSinglePlantActivity, ViewAllJournalsActivity::class.java)
+        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+        mViewAllJournalsLauncher.launch(intent)
+    }
+
+    private fun mHandleNewJournalRequest() {
+        val intent = Intent(this, AddNewJournalActivity::class.java)
+        intent.putExtra(getString(R.string.NICKNAME_KEY), tvNickname.text)
+        mAddNewJournalLauncher.launch(intent)
+    }
+
+    private fun mOnJournalSave(text: String) {
+        val body = text
+        val date = DateTimeService.getCurrentDateTime()
+
+        val toAdd: HashMap<*, *> = hashMapOf(
+            "body" to body,
+            "date" to date
+        )
+
+        // add to firebase
+        DBService.updateDocument(
+            F.plantsCollection,
+            mPlantData.id,
+            "journal",
+            FieldValue.arrayUnion(toAdd)
+        )
+
+        val index = PlantRepository.plantList.indexOf(mPlantData)
+
+        // add to local repo
+        PlantRepository
+            .plantList[index]
+            .journal
+            .add(Journal(body, date))
+
+        // update plant data
+        mPlantData = PlantRepository.plantList[index]
+
+        // notify adapter of removal
+        if (mJournalLimited.size >= 3) {
+            mJournalLimited.removeAt(2)
+            recyclerViewJournal.adapter?.notifyItemRemoved(2)
+        }
+
+        // notify adapter of addition
+        mJournalLimited.add(0, Journal(body, date))
+        recyclerViewJournal.adapter?.notifyItemInserted(0)
+    }
+
 }
