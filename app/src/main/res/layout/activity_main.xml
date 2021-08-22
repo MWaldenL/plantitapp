@@ -16,6 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/btn_set_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Alarm" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:text="Cancel Alarm" />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"

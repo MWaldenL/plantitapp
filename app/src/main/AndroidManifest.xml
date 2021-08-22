@@ -30,6 +30,9 @@
         android:theme="@style/Theme.MOBDEVEMP"
         tools:replace="android:fullBackupContent">
         <activity
+            android:name=".controller.activities.AddNewJournalActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.activities.ViewAllJournalsActivity"
             android:exported="true" />
         <activity
@@ -45,6 +48,7 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -62,6 +66,8 @@
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://dnoqllk3h" />
+
+        <receiver android:name=".controller.receivers.AlarmReceiver" />
     </application>
 
 </manifest>

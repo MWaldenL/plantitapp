@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AddJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeleteJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalAllListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
@@ -29,16 +29,12 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ViewAllJournalsActivity :
     AppCompatActivity(),
-    AddJournalDialogFragment.AddJournalDialogListener,
     DeleteJournalDialogFragment.DeleteJournalDialogListener
 {
     private lateinit var recyclerView: RecyclerView
@@ -49,6 +45,16 @@ class ViewAllJournalsActivity :
     private lateinit var mPlantData: Plant
     private lateinit var mRecentlyDeletedItem: Journal
     private var mRecentlyDeletedPosition: Int = -1
+
+    private var mAddNewJournalLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val string = result.data?.getStringExtra(getString(R.string.JOURNAL_KEY))
+                if (string != null) {
+                    mOnJournalSave(string)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +108,9 @@ class ViewAllJournalsActivity :
         recyclerView.adapter = JournalAllListAdapter(mJournal)
     }
 
+    // TODO: Fix display
     private fun mPrepareSwipeCallback() {
-        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -143,46 +150,29 @@ class ViewAllJournalsActivity :
                     actionState,
                     isCurrentlyActive
                 )
-                val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.ic_trash_24)
-                val bg = ColorDrawable(Color.RED)
+                if (dX != 0f && isCurrentlyActive) {
+                    val itemView = viewHolder.itemView
+                    val color = Paint()
+                    color.color = Color.parseColor("#B34D4D")
+                    val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.ic_trash_24)!!
 
-                val itemView = viewHolder.itemView
-                val offset = 20
+                    val top = itemView.top + (itemView.height - icon.intrinsicHeight) / 2
+                    val left = itemView.width - icon.intrinsicWidth - (itemView.height - icon.intrinsicHeight) / 2
+                    val right = left + icon.intrinsicHeight
+                    val bottom = top + icon.intrinsicHeight
 
-                val iconMargin = itemView.height - icon!!.intrinsicHeight / 2
-                val iconTop = itemView.top + iconMargin
-                val iconBottom = iconTop + icon.intrinsicHeight
+                    if (dX < 0) {
 
-                if (dX > 0) {
-                    val iconLeft = itemView.left + iconMargin + icon.intrinsicWidth
-                    val iconRight = itemView.left + iconMargin
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(),
+                            itemView.right.toFloat(), itemView.bottom.toFloat())
+                        c.drawRect(background, color)
+                        icon.setBounds(left, top, right, bottom)
 
-                    bg.setBounds(
-                        itemView.left,
-                        itemView.top,
-                        itemView.left + dX.toInt() - offset,
-                        itemView.bottom
-                    )
-                } else if (dX < 0) {
-                    val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
-                    val iconRight = itemView.right - iconMargin
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    }
 
-                    bg.setBounds(
-                        itemView.right + dX.toInt() - offset,
-                        itemView.top,
-                        itemView.right,
-                        itemView.bottom
-                    )
-                } else {
-                    bg.setBounds(0, 0, 0, 0)
+                    icon.draw(c)
                 }
-
-                icon.draw(c)
-                bg.draw(c)
             }
-
         }
 
         val itemTouchHelper = ItemTouchHelper(callback)
@@ -190,13 +180,9 @@ class ViewAllJournalsActivity :
     }
 
     private fun mHandleNewJournalRequest() {
-        val fragment = AddJournalDialogFragment()
-
-        val bundle = Bundle()
-        bundle.putString(getString(R.string.NICKNAME_KEY), tvNickname.text.toString())
-
-        fragment.arguments = bundle
-        fragment.show(supportFragmentManager, "add_journal")
+        val intent = Intent(this, AddNewJournalActivity::class.java)
+        intent.putExtra(getString(R.string.NICKNAME_KEY), tvNickname.text)
+        mAddNewJournalLauncher.launch(intent)
     }
 
     private fun mHandleDeleteJournalRequest() {
@@ -204,7 +190,7 @@ class ViewAllJournalsActivity :
         fragment.show(supportFragmentManager, "delete_journal")
     }
 
-    override fun onJournalSave(dialog: DialogFragment, text: String) {
+    private fun mOnJournalSave(text: String) {
         val body = text
         val date = DateTimeService.getCurrentDateTime()
 
@@ -236,10 +222,6 @@ class ViewAllJournalsActivity :
         mJournal.add(0, Journal(body, date))
         recyclerView.layoutManager?.smoothScrollToPosition(recyclerView, null, 0)
         recyclerView.adapter?.notifyItemInserted(0)
-    }
-
-    override fun onJournalCancel(dialog: DialogFragment) {
-        // TODO: Notify user???
     }
 
     override fun onJournalDelete(dialog: DialogFragment) {
