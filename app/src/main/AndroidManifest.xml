@@ -29,6 +29,9 @@
         android:theme="@style/Theme.MOBDEVEMP"
         tools:replace="android:fullBackupContent">
         <activity
+            android:name=".controller.activities.AddNewJournalActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.activities.ViewAllJournalsActivity"
             android:exported="true" />
         <activity
@@ -39,16 +42,18 @@
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
         <activity android:name=".controller.activities.MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".controller.activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,8 +72,7 @@
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://dnoqllk3h" />
 
-        <receiver
-            android:name=".controller.receivers.AlarmReceiver" />
+        <receiver android:name=".controller.receivers.AlarmReceiver" />
     </application>
 
 </manifest>
