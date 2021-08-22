@@ -61,7 +61,7 @@ object NewPlantInstance {
     }
 
     fun addTask(newTask: Task) {
-        Log.d("Dashboard", "addTask: $newTask")
+        Log.d("AddTask", "addTask: $newTask")
         tasks.add(hashMapOf(
             "id" to newTask.id,
             "plantId" to newTask.plantId,
@@ -73,6 +73,15 @@ object NewPlantInstance {
             "lastCompleted" to Timestamp(newTask.lastCompleted)
         ))
         (plant["tasks"] as ArrayList<String>).add(newTask.id) // TODO: Remove
+    }
+
+    fun removeTask(taskToRemove: Task) {
+        Log.d("AddTask", "remove task: $taskToRemove")
+        Log.d("AddTask", "before removal: ${tasks.size}, ${tasksObject.size}")
+        val idx = tasksObject.indexOf(taskToRemove)
+        tasks.remove(tasks[idx])
+        tasksObject.remove(taskToRemove)
+        Log.d("AddTask", "result after removal: ${tasks.size}, ${tasksObject.size}")
     }
 
     fun setImageUrl(url: String) {

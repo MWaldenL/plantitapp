@@ -15,6 +15,12 @@ class AddPlantTasksAdapter(
     private var data: ArrayList<Task>
 ) : RecyclerView.Adapter<AddPlantTasksAdapter.ViewHolder>() {
 
+    lateinit var taskDeletedListener: OnTaskDeletedListener
+
+    interface OnTaskDeletedListener {
+        fun notifyTaskDeleted(task: Task) {}
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val actionTV: TextView = view.findViewById(R.id.tv_action)
         val startDateTV: TextView = view.findViewById(R.id.tv_start_date)
@@ -43,9 +49,11 @@ class AddPlantTasksAdapter(
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
-            // TODO: connect sa logic
+            taskDeletedListener.notifyTaskDeleted(task)
             notifyItemRemoved(holder.adapterPosition)
         }
+
+        taskDeletedListener = holder.itemView.context as OnTaskDeletedListener
     }
 
     override fun getItemCount(): Int {
