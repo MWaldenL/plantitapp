@@ -39,6 +39,11 @@ class MainActivity:
     private lateinit var btnSetAlarm: Button
     private lateinit var btnCancel: Button
 
+    // TODO: Remove these in final impl, only here for manual cancel
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var notificationIntent: Intent
+    private lateinit var pendingIntent: PendingIntent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,37 +59,111 @@ class MainActivity:
             startActivity(addPlantIntent)
         }
 
-        mHandleFeedbackReady()
         mHandleDailyNotificationsReady()
 
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+        // TODO: Remove these in final impl, only here for manual cancel
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        notificationIntent = Intent(this, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, 0)
 
         btnSetAlarm = findViewById(R.id.btn_set_alarm)
         btnSetAlarm.setOnClickListener {
-            val c = Calendar.getInstance()
+            mSetAlarm()
+        }
 
-            c.set(Calendar.HOUR_OF_DAY, 10)
-            c.set(Calendar.MINUTE, 0)
-            c.set(Calendar.SECOND, 0)
-
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent)
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY,pendingIntent)
+        btnCancel = findViewById(R.id.btn_cancel)
+        btnCancel.setOnClickListener {
+            alarmManager.cancel(pendingIntent)
         }
     }
 
-    private fun mHandleDailyNotificationsReady() {
+    // push notifications function
 
+    private fun mHandleDailyNotificationsReady() {
+        val uid = F.auth.currentUser?.uid
+        if (uid != null) {
+            F.usersCollection
+                .document(uid)
+                .get()
+                .addOnSuccessListener {
+                    if (it != null) {
+                        val doc = it.data
+                        if (doc != null) {
+                            if (doc["pushAsked"] == false) {
+                                val fragment = DailyNotificationsDialogFragment()
+                                fragment.show(supportFragmentManager, "daily_notifications")
+                            } else {
+                                mHandleFeedbackReady()
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("fail", it.toString())
+                }
+        }
     }
 
     override fun onPushAccept(dialog: DialogFragment) {
-        TODO("Not yet implemented")
+        val id = F.auth.currentUser?.uid
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "pushAsked",
+            true
+        )
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "pushAllowed",
+            true
+        )
+
+        mSetAlarm()
+        mHandleFeedbackReady()
     }
 
     override fun onPushDecline(dialog: DialogFragment) {
-        TODO("Not yet implemented")
+        val id = F.auth.currentUser?.uid
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "pushAsked",
+            true
+        )
+
+        DBService.updateDocument(
+            F.usersCollection,
+            id,
+            "pushAllowed",
+            false
+        )
+
+        mHandleFeedbackReady()
     }
+
+    private fun mSetAlarm() {
+        val c = Calendar.getInstance()
+
+        // uncomment for final impl
+//        c.set(Calendar.HOUR_OF_DAY, 10)
+//        c.set(Calendar.MINUTE, 0)
+//        c.set(Calendar.SECOND, 0)
+//
+//        if (c.before(Calendar.getInstance()))
+//            c.add(Calendar.DATE, 1)
+//
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent) // change third arg to millis (min 60000) to test repeated
+
+        // code for testing
+        c.add(Calendar.SECOND, 30)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent) // use this to check for exact time
+    }
+
+    // feedback functions
 
     private fun mHandleFeedbackReady() {
         val uid = F.auth.currentUser?.uid
@@ -130,11 +209,7 @@ class MainActivity:
         fragment.show(supportFragmentManager, "feedback")
     }
 
-    override fun onFeedbackContinue(
-        dialog: DialogFragment,
-        feedbackRating: Float,
-        feedbackComment: String
-    ) {
+    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Float, feedbackComment: String) {
         val id = F.auth.currentUser?.uid
         val toAdd = hashMapOf(
             "rating" to feedbackRating,

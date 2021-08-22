@@ -19,10 +19,12 @@ class NotificationHelper(base: Context?): ContextWrapper(base) {
         return mManager
     }
 
+    // TODO: Edit this to get daily tasks or congratulations
     fun getNotification(): NotificationCompat.Builder {
         return NotificationCompat.Builder(applicationContext, channelID)
-            .setContentTitle("Alarm!")
-            .setContentText("PUNYETA GUMAGANA NA SIYA")
+            .setContentTitle("Your plants are calling...")
+            .setContentText("You have daily tasks that you need to do. Open PlantitApp to see them.")
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setSmallIcon(R.drawable.ic_plant_24)
     }
 

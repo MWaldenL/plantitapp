@@ -66,7 +66,8 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                                     "dateJoined" to now,
                                     "plants" to ArrayList<String>(),
                                     "feedbackStop" to false,
-                                    "feedbackLastSent" to now
+                                    "feedbackLastSent" to now,
+                                    "pushAsked" to false
                                 )
                             )
                         }
