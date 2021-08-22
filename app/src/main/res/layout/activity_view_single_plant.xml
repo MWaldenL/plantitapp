@@ -85,7 +85,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/nickname_placeholder"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@string/common_name_placeholder"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
@@ -108,7 +108,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/date_label"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_common_name" />
 
@@ -119,7 +119,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/date_placeholder"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 app:layout_constraintStart_toEndOf="@+id/tv_purchase_date_label"
                 app:layout_constraintTop_toBottomOf="@+id/tv_common_name" />
 
