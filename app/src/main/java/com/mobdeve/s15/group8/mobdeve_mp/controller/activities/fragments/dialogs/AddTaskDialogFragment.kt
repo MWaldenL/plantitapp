@@ -29,7 +29,7 @@ class AddTaskDialogFragment :
     private lateinit var mOccurrence: String
     private var mRepeat: Int = 0
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    /*override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
@@ -49,7 +49,7 @@ class AddTaskDialogFragment :
                             plantId = "",
                             userId = F.auth.uid!!,
                             action = mAction,
-                            startDate = mStartDate,
+                            startDate = Date(),
                             repeat = mRepeat,
                             occurrence = mOccurrence,
                             lastCompleted = DateTimeService.getLastDueDate(
@@ -63,7 +63,7 @@ class AddTaskDialogFragment :
                 .setNegativeButton("Cancel") { dialog, id -> getDialog()?.cancel() }
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")
-    }
+    }*/
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         when(parent?.id) {
@@ -80,7 +80,7 @@ class AddTaskDialogFragment :
     }
 
     private fun mInitDatePicker(view: View) {
-        dateStart = view.findViewById(R.id.date_start)
+//        dateStart = view.findViewById(R.id.date_start)
         val cal: Calendar = Calendar.getInstance()
         val monthInt = cal.get(Calendar.MONTH)
         val month = DateFormatSymbols().months[cal.get(Calendar.MONTH)]

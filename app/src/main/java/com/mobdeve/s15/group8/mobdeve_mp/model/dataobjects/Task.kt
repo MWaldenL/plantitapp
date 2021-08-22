@@ -10,7 +10,7 @@ data class Task(
     var plantId: String,
     val userId: String,
     val action: String,
-    val startDate: String,
+    val startDate: Date,
     val repeat: Int,
     val occurrence: String,
     var lastCompleted: Date

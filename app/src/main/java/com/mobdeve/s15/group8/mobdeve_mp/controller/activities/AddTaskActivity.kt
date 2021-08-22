@@ -1,16 +1,21 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.google.type.DateTime
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DatePickerDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,13 +28,15 @@ class AddTaskActivity :
     private lateinit var btnStartDate: Button
     private lateinit var spinnerOccurrence: Spinner
     private lateinit var spinnerAction: Spinner
+    private lateinit var occurrenceArrayAdapter: ArrayAdapter<String>
     private lateinit var etRepeat: EditText
-    private lateinit var mAction: String
-    private lateinit var mOccurrence: String
-
-    private lateinit var mStartDate: Calendar
+    private lateinit var ibtnSaveTask: ImageButton
 
     private lateinit var llRepeatsOn: LinearLayout
+
+    private lateinit var mAction: String
+    private lateinit var mOccurrence: String
+    private lateinit var mStartDate: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +44,33 @@ class AddTaskActivity :
 
         llRepeatsOn = findViewById(R.id.ll_repeats_on)
         btnStartDate = findViewById(R.id.btn_start_date)
+        ibtnSaveTask = findViewById(R.id.ibtn_save_task)
+        etRepeat = findViewById(R.id.et_repeat)
 
         llRepeatsOn.visibility = View.INVISIBLE
 
+        mAction = "Water"
+        mOccurrence = "Day"
         mStartDate = DateTimeService.getCurrentDateWithoutTime()
+
         mDisplayDateInBtn()
         btnStartDate.setOnClickListener {
             val newFragment = DatePickerDialogFragment(mStartDate)
             newFragment.show(supportFragmentManager, "datePicker")
+        }
+
+        ibtnSaveTask.setOnClickListener {
+
+            Toast.makeText(this, mAction, Toast.LENGTH_SHORT).show()
+
+            val resultIntent = Intent()
+            resultIntent.putExtra(ADD_TASK_ACTION, mAction)
+            resultIntent.putExtra(ADD_TASK_START_DATE, mStartDate.timeInMillis)
+            resultIntent.putExtra(ADD_TASK_OCCURRENCE, mOccurrence)
+            resultIntent.putExtra(ADD_TASK_REPEAT, etRepeat.text.toString().toInt())
+            // TODO: process repeat on with week
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
         }
 
         mInitSpinnerAction()
@@ -61,6 +87,7 @@ class AddTaskActivity :
             adapter.setDropDownViewResource(R.layout.item_spinner)
             spinnerAction.adapter = adapter
         }
+        spinnerAction.onItemSelectedListener = this
     }
 
     private fun mInitSpinnerOccurrence() {
@@ -78,8 +105,8 @@ class AddTaskActivity :
 
     @SuppressLint("SimpleDateFormat")
     private fun mDisplayDateInBtn() {
-        val format1 = SimpleDateFormat("EEE, MMM d, yyyy")
-        btnStartDate.text = format1.format(mStartDate.time)
+        val format = SimpleDateFormat("EEE, MMM d, yyyy")
+        btnStartDate.text = format.format(mStartDate.time)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
@@ -92,7 +119,6 @@ class AddTaskActivity :
         when(parent?.id) {
             R.id.spinner_actions ->
                 mAction = parent.getItemAtPosition(position).toString()
-
             R.id.spinner_occurrence -> {
                 mOccurrence = parent.getItemAtPosition(position).toString()
                 if ((mOccurrence == "Week") or (mOccurrence == "Weeks"))

@@ -42,7 +42,7 @@ object NewPlantInstance {
                     task["plantId"].toString(),
                     task["userId"].toString(),
                     task["action"].toString(),
-                    task["startDate"].toString(),
+                    (task["startDate"] as Timestamp).toDate(),
                     task["repeat"] as Int,
                     task["occurrence"].toString(),
                     (task["lastCompleted"] as Timestamp).toDate()
@@ -67,12 +67,12 @@ object NewPlantInstance {
             "plantId" to newTask.plantId,
             "userId" to newTask.userId,
             "action" to newTask.action,
-            "startDate" to newTask.startDate,
+            "startDate" to Timestamp(newTask.startDate),
             "repeat" to newTask.repeat,
             "occurrence" to newTask.occurrence,
             "lastCompleted" to Timestamp(newTask.lastCompleted)
         ))
-        (plant["tasks"] as ArrayList<String>).add(newTask.id)
+        (plant["tasks"] as ArrayList<String>).add(newTask.id) // TODO: Remove
     }
 
     fun setImageUrl(url: String) {

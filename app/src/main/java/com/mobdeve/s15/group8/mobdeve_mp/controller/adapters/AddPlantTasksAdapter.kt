@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import java.text.SimpleDateFormat
 
 class AddPlantTasksAdapter(
-    private val data: ArrayList<Task>
+    private var data: ArrayList<Task>
 ) : RecyclerView.Adapter<AddPlantTasksAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -26,6 +28,7 @@ class AddPlantTasksAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repeatStringBuilder = StringBuilder()
         repeatStringBuilder.append(data[position].repeat)
@@ -33,7 +36,8 @@ class AddPlantTasksAdapter(
                             .append(data[position].occurrence)
 
         holder.actionTV.text = data[position].action
-        holder.startDateTV.text = data[position].startDate
+        val f = SimpleDateFormat("MMM d, yyyy")
+        holder.startDateTV.text = f.format(data[position].startDate)
         holder.repeatTV.text = repeatStringBuilder.toString()
 
         holder.deleteTaskIBtn.setOnClickListener {
@@ -46,5 +50,10 @@ class AddPlantTasksAdapter(
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun addNewTask(task: Task) {
+        data.add(task)
+        notifyItemInserted(data.size-1)
     }
 }

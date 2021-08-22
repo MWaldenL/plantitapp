@@ -88,7 +88,7 @@ object PlantRepository: DBCallback {
                     plantId = doc["plantId"].toString(),
                     userId = doc["userId"].toString(),
                     action = doc["action"].toString(),
-                    startDate = doc["startDate"].toString(),
+                    startDate = (doc["startDate"] as Timestamp).toDate(),
                     repeat = doc["repeat"].toString().toInt(),
                     occurrence = doc["occurrence"].toString(),
                     lastCompleted = (doc["lastCompleted"] as Timestamp).toDate()

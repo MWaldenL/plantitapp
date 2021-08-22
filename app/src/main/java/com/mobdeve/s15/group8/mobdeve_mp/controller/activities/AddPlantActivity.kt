@@ -22,18 +22,24 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AddTaskDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val ADD_TASK_ACTION = "ACTION"
+const val ADD_TASK_START_DATE = "START_DATE"
+const val ADD_TASK_OCCURRENCE = "OCCURRENCE"
+const val ADD_TASK_REPEAT = "REPEAT"
+
 class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
+
     private lateinit var tasksRV: RecyclerView
     private lateinit var ivPlant: ImageView
     private lateinit var btnAddTask: Button
@@ -43,10 +49,35 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private lateinit var etPlantNickname: EditText
     private lateinit var ibtnDelete: Button
     private lateinit var mPhotoFilename: String
-    private val mTasks = NewPlantInstance.tasksObject as ArrayList<String>
+    private val mTasks = NewPlantInstance.tasksObject as ArrayList<*>
     private val mPlantId = UUID.randomUUID().toString()
-    private val launcher =
-        registerForActivityResult(StartActivityForResult()) { result -> }
+
+    private val addTaskLauncher =
+        registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val action = result.data?.getCharSequenceExtra(ADD_TASK_ACTION).toString()
+                val startDate = result.data?.getLongExtra(ADD_TASK_START_DATE, 0)
+                val occurrence = result.data?.getCharSequenceExtra(ADD_TASK_OCCURRENCE).toString()
+                val repeat = result.data?.getIntExtra(ADD_TASK_REPEAT, 0) as Int
+
+                val newTask = Task(
+                    id = UUID.randomUUID().toString(),
+                    plantId = mPlantId,
+                    userId = F.auth.uid!!,
+                    action = action,
+                    startDate = Date(startDate!!),
+                    occurrence = occurrence,
+                    repeat = repeat,
+                    lastCompleted = DateTimeService.getLastDueDate(
+                        occurrence,
+                        repeat,
+                        Date(startDate)
+                    ).time
+                )
+                NewPlantInstance.addTask(newTask)
+                (tasksRV.adapter as AddPlantTasksAdapter).addNewTask(newTask)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +97,8 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         btnAddPhoto.setOnClickListener { mOpenCamera() }
         btnSave.setOnClickListener { mSavePlant() }
         btnAddTask.setOnClickListener {
-            /*val fragment = AddTaskDialogFragment()
-            fragment.show(supportFragmentManager, "add_task")*/
             val i = Intent(this, AddTaskActivity::class.java)
-            startActivity(i)
+            addTaskLauncher.launch(i)
         }
     }
 
