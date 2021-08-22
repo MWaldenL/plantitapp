@@ -40,6 +40,7 @@ class AddNewJournalActivity : AppCompatActivity() {
             }
         })
 
+        btnSaveJournal.isEnabled = false
         btnSaveJournal.setOnClickListener {
             val resultIntent = Intent()
 

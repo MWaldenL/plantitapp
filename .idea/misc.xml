@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/dialogue_add_journal.xml" value="0.12532894736842104" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/fragment_view_all_plants.xml" value="0.12532894736842104" />
+        <entry key="app/src/main/res/layout/group_dashboard_tasks.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/item_journal.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/item_journal_all.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_journal_recent.xml" value="0.5" />
