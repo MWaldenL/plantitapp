@@ -23,9 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:text="Add a new plant"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
                 android:textColor="@color/primary_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +52,7 @@
                     <ImageView
                         android:id="@+id/iv_no_pic"
                         android:layout_width="0dp"
-                        android:layout_height="150dp"
+                        android:layout_height="100dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.497"
@@ -65,7 +64,7 @@
 
                     <TextView
                         android:id="@+id/textView4"
-                        style="@style/TextAppearance.MOBDEVEMP.Headline3"
+                        style="@style/TextAppearance.MOBDEVEMP.Headline4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Add a Photo"
@@ -76,7 +75,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/iv_no_pic"
-                        app:layout_constraintVertical_bias="0.642" />
+                        app:layout_constraintVertical_bias="0.45" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -93,11 +92,12 @@
 
             <TextView
                 android:id="@+id/tv_gen_info"
-                style="@style/TextAppearance.MOBDEVEMP.Headline3"
+                style="@style/TextAppearance.MOBDEVEMP.Headline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                android:fontFamily="@font/source_sans_pro"
                 android:text="General Information"
                 android:textColor="@color/primary_color"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +105,7 @@
 
             <EditText
                 android:id="@+id/et_plant_name"
+                style="@style/Widget.MOBDEVEMP.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -113,13 +114,16 @@
                 android:hint="Name of Plant"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />
 
             <EditText
                 android:id="@+id/et_plant_nickname"
+                style="@style/Widget.MOBDEVEMP.EditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -129,7 +133,7 @@
                 android:hint="Nickname (optional)"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/et_plant_name"
@@ -137,7 +141,7 @@
 
             <TextView
                 android:id="@+id/tv_care_methods"
-                style="@style/TextAppearance.MOBDEVEMP.Headline3"
+                style="@style/TextAppearance.MOBDEVEMP.Headline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

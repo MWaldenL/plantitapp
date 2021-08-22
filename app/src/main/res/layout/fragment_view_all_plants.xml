@@ -46,13 +46,13 @@
 
                         <TextView
                             android:id="@+id/tv_alive"
-                            style="@style/TextAppearance.MOBDEVEMP.Headline4"
+                            style="@style/TextAppearance.MOBDEVEMP.Headline3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:text="My Plants"
-                            android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
+                            android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
                             android:textColor="@color/primary_color"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +105,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
                         android:text="Dead Plants"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline4"
                         android:textColor="@color/primary_color"
                         android:textSize="24sp" />
 

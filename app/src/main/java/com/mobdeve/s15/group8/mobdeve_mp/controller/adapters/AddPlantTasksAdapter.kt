@@ -50,6 +50,7 @@ class AddPlantTasksAdapter(
             val task = data[holder.adapterPosition]
             data.remove(task)
             taskDeletedListener.notifyTaskDeleted(task)
+            notifyItemRemoved(holder.adapterPosition)
         }
 
         taskDeletedListener = holder.itemView.context as OnTaskDeletedListener
@@ -61,6 +62,7 @@ class AddPlantTasksAdapter(
 
     fun addNewTask(task: Task) {
         data.add(task)
+        Log.d("AddTask", "Add new: ${data.toString()}")
         notifyItemInserted(data.size-1)
     }
 }

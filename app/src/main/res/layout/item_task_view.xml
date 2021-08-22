@@ -14,7 +14,7 @@
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="CheckBox"
-        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
