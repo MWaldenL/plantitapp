@@ -10,7 +10,12 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_fertilize_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_water_filled_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/rounded_rectangle.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/rounded_rectangle_8.xml" value="0.14074074074074075" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/toggle_selector.xml" value="0.14074074074074075" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/widget_spinner.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/font/work_sans_bold.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_add_plant.xml" value="0.16530797101449277" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_add_task.xml" value="0.5" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_home.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
@@ -23,6 +28,7 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/group_dashboard_tasks.xml" value="0.67" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_dashboard_plant.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_plant.xml" value="0.1802536231884058" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_spinner_dropdown.xml" value="0.5" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task_view.xml" value="0.5" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/menu/bottom_nav.xml" value="0.18645833333333334" />

@@ -66,8 +66,10 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         btnAddPhoto.setOnClickListener { mOpenCamera() }
         btnSave.setOnClickListener { mSavePlant() }
         btnAddTask.setOnClickListener {
-            val fragment = AddTaskDialogFragment()
-            fragment.show(supportFragmentManager, "add_task")
+            /*val fragment = AddTaskDialogFragment()
+            fragment.show(supportFragmentManager, "add_task")*/
+            val i = Intent(this, AddTaskActivity::class.java)
+            startActivity(i)
         }
     }
 

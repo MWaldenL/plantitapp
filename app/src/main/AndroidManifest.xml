@@ -38,6 +38,7 @@
         <activity android:name=".controller.activities.LoginActivity" />
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
+        <activity android:name=".controller.activities.AddTaskActivity" />
         <activity android:name=".controller.activities.MainActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->

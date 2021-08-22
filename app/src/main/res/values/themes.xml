@@ -32,8 +32,44 @@
         <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
+    <style name="Widget.MOBDEVEMP.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/rounded_rectangle_8</item>
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="android:textAppearance">@style/TextAppearance.MOBDEVEMP.Body1</item>
+        <item name="minHeight">48dp</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.TextButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/rounded_rectangle_8</item>
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="android:textAppearance">@style/TextAppearance.MOBDEVEMP.Body1</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="minHeight">48dp</item>
+        <item name="elevation">0dp</item>
+        <item name="paddingStart">16dp</item>
+        <item name="paddingEnd">16dp</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.ToggleBtn" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/toggle_text_color</item>
+        <item name="android:background">@drawable/rounded_rectangle_8</item>
+        <item name="backgroundTint">@color/toggle_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.MOBDEVEMP.Body1</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.ToggleBtnCircular" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/toggle_text_color</item>
+        <item name="android:background">@drawable/rounded_rectangle_16</item>
+        <item name="backgroundTint">@color/toggle_color</item>
+    </style>
+
     <style name="Widget.MOBDEVEMP.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="buttonTint">@color/checkbox_color</item>
+    </style>
+
+    <style name="Widget.MOBDEVEMP.Spinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/widget_spinner</item>
     </style>
 
     <style name="Widget.MOBDEVEMP.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
