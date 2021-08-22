@@ -3,8 +3,10 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -35,14 +37,7 @@ class AddTaskDialogFragment :
             mInitDatePicker(view)
             mInitSpinnerAction(view)
             mInitSpinnerOccurrence(view)
-            builder
-                .setView(view)
-                .setPositiveButton("Add") { dialog, id ->
-                    mRepeat = etRepeat.text.toString().toInt()
-                    NewPlantInstance.addTask(Task(mAction, mStartDate, mRepeat, mOccurrence))
-                }
-                .setNegativeButton("Cancel") { dialog, id -> getDialog()?.cancel() }
-                .create()
+            mCreateDialog(builder, view)
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
@@ -99,5 +94,15 @@ class AddTaskDialogFragment :
             spinnerOccurrence.adapter = adapter
         }
         spinnerOccurrence.onItemSelectedListener = this
+    }
+
+    private fun mCreateDialog(builder: AlertDialog.Builder, view: View): Dialog {
+        builder.setView(view)
+            .setPositiveButton("Add") { dialog, id ->
+                mRepeat = etRepeat.text.toString().toInt()
+                NewPlantInstance.addTask(Task(mAction, mStartDate, mRepeat, mOccurrence))
+            }
+            .setNegativeButton("Cancel") { dialog, id -> getDialog()?.cancel() }
+        return builder.create()
     }
 }

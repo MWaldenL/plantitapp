@@ -9,12 +9,11 @@
 
     <TextView
         android:id="@+id/tv_add_task_header"
+        style="@style/TextAppearance.MOBDEVEMP.Headline3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Create a new task"
-        android:textColor="#1E1E1E"
-        android:textSize="24sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -25,6 +24,7 @@
 
         <TextView
             android:id="@+id/tv_action_label"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -33,6 +33,7 @@
 
         <Spinner
             android:id="@+id/spinner_actions"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -40,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        style="@style/TextAppearance.MOBDEVEMP.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -47,6 +49,7 @@
 
         <TextView
             android:id="@+id/tv_start_date_label"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -55,6 +58,7 @@
 
         <DatePicker
             android:id="@+id/date_start"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -64,6 +68,7 @@
     </LinearLayout>
 
     <LinearLayout
+        style="@style/TextAppearance.MOBDEVEMP.Body2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -71,6 +76,7 @@
 
         <TextView
             android:id="@+id/tv_repeat"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -79,6 +85,7 @@
 
         <EditText
             android:id="@+id/et_repeat"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -89,6 +96,7 @@
 
         <TextView
             android:id="@+id/textView3"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -97,6 +105,7 @@
 
         <Spinner
             android:id="@+id/spinner_occurrence"
+            style="@style/TextAppearance.MOBDEVEMP.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

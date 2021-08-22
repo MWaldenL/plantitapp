@@ -26,6 +26,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="stateAlwaysHidden"
         android:theme="@style/Theme.MOBDEVEMP"
         tools:replace="android:fullBackupContent">
         <activity
@@ -41,13 +42,7 @@
         <activity android:name=".controller.activities.LoginActivity" />
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
-        <activity android:name=".controller.activities.MainActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+        <activity android:name=".controller.activities.MainActivity" />
         <activity
             android:name=".controller.activities.SplashActivity"
             android:theme="@style/SplashTheme">
