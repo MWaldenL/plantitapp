@@ -15,11 +15,10 @@
         <item>Fertilize</item>
     </string-array>
     <string-array name="occurrence_array">
-        <item>daily</item>
-        <item>weekly</item>
-        <item>monthly</item>
-        <item>quarterly</item>
-        <item>yearly</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

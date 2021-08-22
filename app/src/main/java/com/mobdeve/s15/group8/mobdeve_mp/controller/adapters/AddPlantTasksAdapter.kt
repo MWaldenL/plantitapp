@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import java.text.SimpleDateFormat
 
 class AddPlantTasksAdapter(
-    private val data: ArrayList<Task>
+    private var data: ArrayList<Task>
 ) : RecyclerView.Adapter<AddPlantTasksAdapter.ViewHolder>() {
+
+    lateinit var taskDeletedListener: OnTaskDeletedListener
+
+    interface OnTaskDeletedListener {
+        fun notifyTaskDeleted(task: Task) {}
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val actionTV: TextView = view.findViewById(R.id.tv_action)
@@ -27,19 +35,32 @@ class AddPlantTasksAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (action, startDate, repeat, occurrence) = data[position]
-        holder.actionTV.text = action
-        holder.startDateTV.text = startDate
-        holder.repeatTV.text = "$repeat times $occurrence"
+        val repeatStringBuilder = StringBuilder()
+        repeatStringBuilder.append(data[position].repeat)
+                            .append(" times ")
+                            .append(data[position].occurrence)
+
+        val f = SimpleDateFormat("MMM d, yyyy")
+        holder.actionTV.text = data[position].action
+        holder.startDateTV.text = f.format(data[position].startDate)
+        holder.repeatTV.text = repeatStringBuilder.toString()
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
-            notifyItemRemoved(holder.adapterPosition)
+            taskDeletedListener.notifyTaskDeleted(task)
         }
+
+        taskDeletedListener = holder.itemView.context as OnTaskDeletedListener
     }
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun addNewTask(task: Task) {
+        data.add(task)
+        notifyItemInserted(data.size-1)
     }
 }

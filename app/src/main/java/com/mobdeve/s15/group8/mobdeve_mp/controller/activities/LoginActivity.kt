@@ -20,6 +20,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class LoginActivity : AppCompatActivity(), DBCallback {
     private lateinit var btnLogin: SignInButton
@@ -80,7 +81,11 @@ class LoginActivity : AppCompatActivity(), DBCallback {
     override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
     }
 
-    override fun onComplete() {
+    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
+    }
+
+    override fun onComplete(tag: String) {
+        PlantRepository.setOnDataFetchedListener(null)
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }

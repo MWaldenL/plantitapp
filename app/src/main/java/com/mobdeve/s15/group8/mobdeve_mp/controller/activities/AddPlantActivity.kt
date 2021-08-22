@@ -19,23 +19,29 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cloudinary.android.MediaManager
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AddTaskDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
 import java.io.File
 import java.io.IOException
+import java.lang.Error
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
+class AddPlantActivity :
+    AppCompatActivity(),
+    ImageUploadCallback,
+    AddPlantTasksAdapter.OnTaskDeletedListener {
+
     private lateinit var tasksRV: RecyclerView
     private lateinit var ivPlant: ImageView
     private lateinit var ivAddPlant: ImageView
@@ -45,13 +51,47 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
     private lateinit var etPlantNickname: EditText
     private lateinit var groupNoPic: ConstraintLayout
     private lateinit var mPhotoFilename: String
-    private val mTasks = NewPlantInstance.plant["tasks"] as ArrayList<Task>
     private val mPlantId = UUID.randomUUID().toString()
+
+    private val addTaskLauncher =
+        registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val action = result.data?.getCharSequenceExtra(
+                    getString(R.string.ADD_TASK_ACTION)).toString()
+                val startDate = result.data?.getLongExtra(
+                    getString(R.string.ADD_TASK_START_DATE), 0)
+                val occurrence = result.data?.getCharSequenceExtra(
+                    getString(R.string.ADD_TASK_OCCURRENCE)).toString()
+                val repeat = result.data?.getIntExtra(
+                    getString(R.string.ADD_TASK_REPEAT), 0) as Int
+
+                val newTask = Task(
+                    id = UUID.randomUUID().toString(),
+                    plantId = mPlantId,
+                    userId = F.auth.uid!!,
+                    action = action,
+                    startDate = Date(startDate!!),
+                    occurrence = occurrence,
+                    repeat = repeat,
+                    lastCompleted = DateTimeService.getLastDueDate(
+                        occurrence,
+                        repeat,
+                        Date(startDate)
+                    ).time
+                )
+                NewPlantInstance.addTask(newTask)
+                (tasksRV.adapter as AddPlantTasksAdapter).addNewTask(newTask)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
         ImageUploadService.setOnUploadSuccessListener(this)
+
+        // Clear NewPlantInstance
+        NewPlantInstance.resetPlant()
+        NewPlantInstance.resetTasks()
 
         groupNoPic = findViewById(R.id.group_no_pic)
         ivAddPlant = findViewById(R.id.iv_no_pic)
@@ -61,16 +101,20 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         btnAddTask = findViewById(R.id.btn_add_task)
         btnSave = findViewById(R.id.btn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
-        tasksRV.adapter = AddPlantTasksAdapter(mTasks)
+        tasksRV.adapter = AddPlantTasksAdapter(NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
         ivAddPlant.setOnClickListener { mOpenCamera() }
         ivPlant.setOnClickListener { mOpenCamera() }
         btnSave.setOnClickListener { mSavePlant() }
         btnAddTask.setOnClickListener {
-            val fragment = AddTaskDialogFragment()
-            fragment.show(supportFragmentManager, "add_task")
+            val i = Intent(this, AddTaskActivity::class.java)
+            addTaskLauncher.launch(i)
         }
+    }
+
+    override fun notifyTaskDeleted(task: Task) {
+        NewPlantInstance.removeTask(task)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -95,6 +139,7 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
         // Compile final map to write to firebase
         NewPlantInstance.setStaticParams(
             id=mPlantId,
+            userId=F.auth.uid!!,
             name=etPlantName.text.toString(),
             nick=etPlantNickname.text.toString(),
             filePath=mPhotoFilename,
@@ -111,19 +156,39 @@ class AddPlantActivity : AppCompatActivity(), ImageUploadCallback {
             field="plants",
             value=FieldValue.arrayUnion(mPlantId))
 
+        // Write the tasks to firebase db
+        for (task in NewPlantInstance.tasks) {
+            // update the plantId first
+            task["plantId"] = mPlantId
+            DBService.addDocument(
+                collection = F.tasksCollection,
+                id = task["id"].toString(),
+                data = task
+            )
+        }
+
+        // Write to local
+        for (taskObj in NewPlantInstance.tasksObject) {
+            taskObj.plantId = mPlantId
+            PlantRepository.taskList.add(taskObj)
+        }
+
         // Notify the ViewAllPlantsAdapter of a dataset change
         PlantRepository.plantList.add(NewPlantInstance.plantObject)
         NewPlantInstance.notifyPlantRV()
 
         // Then upload to cloudinary and reset the new plant instance
-        ImageUploadService.uploadToCloud(mPhotoFilename)
+        try {
+            ImageUploadService.uploadToCloud(mPhotoFilename)
+        } catch (err: Error) {
+            MediaManager.init(this)
+        }
 
         // Go back to MainActivity
         Intent(this@AddPlantActivity, MainActivity::class.java)
         setResult(Activity.RESULT_OK)
         finish()
     }
-
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {

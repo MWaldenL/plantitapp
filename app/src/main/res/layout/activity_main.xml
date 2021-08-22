@@ -20,13 +20,15 @@
             android:id="@+id/btn_set_alarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Alarm" />
+            android:text="Set Alarm"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="46dp"
             android:layout_height="wrap_content"
-            android:text="Cancel Alarm" />
+            android:text="Cancel Alarm"
+            android:visibility="gone" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_fragment"

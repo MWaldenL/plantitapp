@@ -9,28 +9,62 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DashboardTaskGroupAdapter(
-    private val context: Context,
-    private val tasksChildren: HashMap<String, ArrayList<String>>,
-    private val tasksTitles: ArrayList<String> = ArrayList(tasksChildren.keys)
+    private var mContext: Context,
+    private var mTasks: ArrayList<Task>
 ) : BaseExpandableListAdapter() {
 
+    lateinit var taskMaps: HashMap<String, ArrayList<HashMap<String,String>>>
+    lateinit var taskKeys: ArrayList<String>
+
+    init {
+        mLoadTaskMaps()
+    }
+
+    private fun mLoadTaskMaps() {
+        taskMaps = HashMap()
+
+        for (task in mTasks) {
+            PlantService.findPlantById(task.plantId)?.let{
+                if (taskMaps[task.action] == null)
+                    taskMaps[task.action] = ArrayList()
+                taskMaps[task.action]!!.add(hashMapOf(
+                    "plantId" to it.id,
+                    "taskId" to task.id
+                ))
+            }
+        }
+
+        taskKeys = ArrayList(taskMaps.keys)
+    }
+
     override fun getGroupCount(): Int {
-        return tasksTitles.size
+        return taskKeys.size
     }
 
     override fun getChildrenCount(groupPosition: Int): Int {
-        return tasksChildren[tasksTitles[groupPosition]]!!.size
+        return taskMaps[taskKeys[groupPosition]]!!.size
     }
 
     override fun getGroup(groupPosition: Int): Any {
-        return tasksTitles[groupPosition]
+        return taskKeys[groupPosition]
     }
 
-    override fun getChild(groupPosition: Int, childPosition: Int): String {
-        return tasksChildren[tasksTitles[groupPosition]]!![childPosition]
+    override fun getChild(groupPosition: Int, childPosition: Int): HashMap<String,String> {
+        return taskMaps[taskKeys[groupPosition]]!![childPosition]
     }
 
     override fun getGroupId(groupPosition: Int): Long {
@@ -42,7 +76,7 @@ class DashboardTaskGroupAdapter(
     }
 
     override fun hasStableIds(): Boolean {
-        return false
+        return true
     }
 
     override fun getGroupView(
@@ -51,11 +85,12 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val groupListText: String = getGroup(groupPosition) as String
+        val dateToday = DateTimeService.getCurrentDateWithoutTime().time
+        val groupListText = getGroup(groupPosition) as String
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.group_dashboard_tasks, null)
         }
 
@@ -63,25 +98,45 @@ class DashboardTaskGroupAdapter(
         val tvGroupTask: TextView = cv!!.findViewById(R.id.tv_group_task)
         tvGroupTask.text = groupListText
         mUpdateExpandedIndicator(isExpanded, cv)
-        mUpdatePlantsLeft(groupPosition, cv)
 
+        // change icons
         val ivTaskIcon: ImageView = cv.findViewById(R.id.iv_task_icon)
         when (groupListText) {
-            context.resources.getStringArray(R.array.actions_array)[0] ->
+            mContext.resources.getStringArray(R.array.actions_array)[0] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_water_filled_24)
-            context.resources.getStringArray(R.array.actions_array)[1] ->
+            mContext.resources.getStringArray(R.array.actions_array)[1] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_shovel_24)
-            context.resources.getStringArray(R.array.actions_array)[2] ->
+            mContext.resources.getStringArray(R.array.actions_array)[2] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_prune_24)
-            context.resources.getStringArray(R.array.actions_array)[3] ->
+            mContext.resources.getStringArray(R.array.actions_array)[3] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_sunlight_24)
-            context.resources.getStringArray(R.array.actions_array)[4] ->
+            mContext.resources.getStringArray(R.array.actions_array)[4] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_dark_24)
-            context.resources.getStringArray(R.array.actions_array)[5] ->
+            mContext.resources.getStringArray(R.array.actions_array)[5] ->
                 ivTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
         }
 
+        // update plants left
+        var plantsLeft = 0
+        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
+        for (plantTask in taskMaps[taskKeys[groupPosition]]!!) {
+            val task = plantTask["taskId"]?.let { TaskService.findTaskById(it) }
+            if (task != null)
+                if (task.lastCompleted != dateToday)
+                    plantsLeft += 1
+        }
+        if (plantsLeft > 0) {
+            tvPlantsLeft.visibility = View.VISIBLE
+            tvPlantsLeft.text = plantsLeft.toString()
+        } else {
+            tvPlantsLeft.visibility = View.INVISIBLE
+        }
+
         return cv
+    }
+
+    override fun onGroupExpanded(groupPosition: Int) {
+        super.onGroupExpanded(groupPosition)
     }
 
     override fun getChildView(
@@ -91,38 +146,58 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val childListText: String = getChild(groupPosition, childPosition)
+        val dateToday = DateTimeService.getCurrentDateWithoutTime()
+        val child = getChild(groupPosition, childPosition)
+        val plant = child["plantId"]?.let { PlantService.findPlantById(it) }
+        val task = child["taskId"]?.let { TaskService.findTaskById(it) }
         var cv = convertView
         if (cv == null) {
             val layoutInflater: LayoutInflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
         // update view content
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
-        checkboxDashboardPlant.text = childListText
+        checkboxDashboardPlant.text = plant?.name
+        // check if task has been completed
+        if (dateToday.time == task!!.lastCompleted) {
+            checkboxDashboardPlant.isChecked = true
+            checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            checkboxDashboardPlant.isChecked = false
+            checkboxDashboardPlant.paintFlags = 0
+        }
 
         // remove item from the elv
         checkboxDashboardPlant.setOnClickListener {
             if (checkboxDashboardPlant.isChecked) {
-                checkboxDashboardPlant.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                /*// remove plant from the list of children
-                tasksChildren[getGroup(groupPosition) as String]?.removeAt(childPosition)
-                // remove task if there are no plants associated with the task
-                if (tasksChildren[getGroup(groupPosition) as String]?.size == 0) {
-                    val key = getGroup(groupPosition) as String
-                    tasksChildren.remove(key)
-                    tasksTitles.remove(key)
-                }
-                checkboxDashboardPlant.isChecked = false*/
+                // update repo
+                task.lastCompleted = dateToday.time
+                // update db
+                DBService.updateDocument(
+                    collection = F.tasksCollection,
+                    id = task.id,
+                    field = "lastCompleted",
+                    value = dateToday.time
+                )
             } else {
-                checkboxDashboardPlant.paintFlags = 0
+                val lastDue = DateTimeService.getLastDueDate(
+                    task.occurrence,
+                    task.repeat,
+                    dateToday.time
+                ).time
+                // update repo
+                task.lastCompleted = lastDue
+                // update db
+                DBService.updateDocument(
+                    collection = F.tasksCollection,
+                    id = task.id,
+                    field = "lastCompleted",
+                    value = lastDue
+                )
             }
-            // TODO: dito ba ung pagupdate sa db?
             notifyDataSetChanged()
-
-            // TODO: snackbar for undo? o wag na hahahahhahaa
         }
 
         return cv
@@ -132,8 +207,46 @@ class DashboardTaskGroupAdapter(
         return true
     }
 
+    private fun mUpdateLastCompletedTask(newDate: Date, plant: Plant, completedTask: Task) {
+        // TODO: update
+
+        val toUpdate: HashMap<*,*> = hashMapOf(
+            "action" to completedTask.action,
+            "lastCompleted" to completedTask.lastCompleted,
+            "occurrence" to completedTask.occurrence,
+            "repeat" to completedTask.repeat,
+            "startDate" to completedTask.startDate
+        )
+
+        DBService.updateDocument(
+            collection = F.plantsCollection,
+            id = plant.id,
+            field = "tasks",
+            value = FieldValue.arrayRemove(toUpdate)
+        )
+        completedTask.lastCompleted = newDate
+        DBService.updateDocument(
+            collection = F.plantsCollection,
+            id = plant.id,
+            field = "tasks",
+            value = FieldValue.arrayUnion(completedTask)
+        )
+    }
+
     private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
-        val plantsLeftString = tasksChildren[getGroup(groupPosition) as String]?.size.toString()
+
+        // TODO: update
+
+        val plantsLeft = 0
+
+
+//        val plantsLeft = 0
+//        PlantRepository.tasksToday[taskTitles[groupPosition]]
+//        for (task in PlantRepository.tasksToday) {
+//
+//        }
+
+        val plantsLeftString = taskMaps[getGroup(groupPosition) as String]?.size.toString()
         val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
         tvPlantsLeft.text = plantsLeftString
     }
@@ -145,6 +258,12 @@ class DashboardTaskGroupAdapter(
         else
             cv.findViewById<ImageView>(R.id.iv_expand_group)
                 .setImageResource(R.drawable.ic_expand_more_24)
+    }
+
+    fun updateData(data: ArrayList<Task>) {
+        mTasks = data
+        mLoadTaskMaps()
+        notifyDataSetChanged()
     }
 
 }
