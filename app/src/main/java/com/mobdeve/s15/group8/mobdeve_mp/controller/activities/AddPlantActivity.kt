@@ -37,11 +37,6 @@ import java.lang.Error
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val ADD_TASK_ACTION = "ACTION"
-const val ADD_TASK_START_DATE = "START_DATE"
-const val ADD_TASK_OCCURRENCE = "OCCURRENCE"
-const val ADD_TASK_REPEAT = "REPEAT"
-
 class AddPlantActivity :
     AppCompatActivity(),
     ImageUploadCallback,
@@ -61,10 +56,14 @@ class AddPlantActivity :
     private val addTaskLauncher =
         registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val action = result.data?.getCharSequenceExtra(ADD_TASK_ACTION).toString()
-                val startDate = result.data?.getLongExtra(ADD_TASK_START_DATE, 0)
-                val occurrence = result.data?.getCharSequenceExtra(ADD_TASK_OCCURRENCE).toString()
-                val repeat = result.data?.getIntExtra(ADD_TASK_REPEAT, 0) as Int
+                val action = result.data?.getCharSequenceExtra(
+                    getString(R.string.ADD_TASK_ACTION)).toString()
+                val startDate = result.data?.getLongExtra(
+                    getString(R.string.ADD_TASK_START_DATE), 0)
+                val occurrence = result.data?.getCharSequenceExtra(
+                    getString(R.string.ADD_TASK_OCCURRENCE)).toString()
+                val repeat = result.data?.getIntExtra(
+                    getString(R.string.ADD_TASK_REPEAT), 0) as Int
 
                 val newTask = Task(
                     id = UUID.randomUUID().toString(),

@@ -64,10 +64,14 @@ class AddTaskActivity :
             Toast.makeText(this, mAction, Toast.LENGTH_SHORT).show()
 
             val resultIntent = Intent()
-            resultIntent.putExtra(ADD_TASK_ACTION, mAction)
-            resultIntent.putExtra(ADD_TASK_START_DATE, mStartDate.timeInMillis)
-            resultIntent.putExtra(ADD_TASK_OCCURRENCE, mOccurrence)
-            resultIntent.putExtra(ADD_TASK_REPEAT, etRepeat.text.toString().toInt())
+            resultIntent.putExtra(
+                getString(R.string.ADD_TASK_ACTION), mAction)
+            resultIntent.putExtra(
+                getString(R.string.ADD_TASK_START_DATE), mStartDate.timeInMillis)
+            resultIntent.putExtra(getString(
+                R.string.ADD_TASK_OCCURRENCE), mOccurrence)
+            resultIntent.putExtra(getString(
+                R.string.ADD_TASK_REPEAT), etRepeat.text.toString().toInt())
             // TODO: process repeat on with week
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
