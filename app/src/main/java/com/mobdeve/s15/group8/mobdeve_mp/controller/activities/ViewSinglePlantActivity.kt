@@ -27,6 +27,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
@@ -123,7 +124,8 @@ class ViewSinglePlantActivity :
     private fun mBindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
-        val (id, imageUrl, filePath, name, nickname, datePurchased, death, tasks, journal) = mPlantData
+        val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
+        val tasks = TaskService.findTasksByPlantId(id)
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -248,6 +250,19 @@ class ViewSinglePlantActivity :
         PlantRepository
             .plantList
             .remove(mPlantData)
+
+        // delete plant's tasks
+        for (taskId in mPlantData.tasks) {
+            // remove from local
+            PlantRepository.taskList.remove(TaskService.findTaskById(taskId))
+            // remove from db
+            DBService.deleteDocument(
+                F.tasksCollection,
+                taskId
+            )
+        }
+
+        // TODO: Delete the corresponding plantId from the user doc
 
         Toast.makeText(
             this,

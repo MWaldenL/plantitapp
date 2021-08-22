@@ -8,5 +8,6 @@ import com.google.firebase.ktx.Firebase
 object F {
     val usersCollection = Firebase.firestore.collection("users")
     val plantsCollection = Firebase.firestore.collection("plants")
+    val tasksCollection = Firebase.firestore.collection("tasks")
     val auth: FirebaseAuth = Firebase.auth
 }
