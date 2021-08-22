@@ -46,6 +46,7 @@ object DBService: CoroutineScope {
             }
         }
     }
+
     fun addDocument(collection: CollectionReference, id: String="", data: Any) {
         launch(Dispatchers.IO) {
             when (id) {

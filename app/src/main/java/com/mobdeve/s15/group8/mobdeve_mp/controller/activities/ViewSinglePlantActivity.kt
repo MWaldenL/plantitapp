@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,7 @@ class ViewSinglePlantActivity :
     private lateinit var ivPlant: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
+    private var mJournalLimited = arrayListOf<Journal>()
 
     private var mViewAllJournalsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -86,14 +88,16 @@ class ViewSinglePlantActivity :
     private var mEditPlantLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // TODO(panget pa)
+                val data = result.data?.getParcelableExtra<Plant>(getString(R.string.PLANT_KEY))
+                if (data != null) {
+                    mPlantData = data
+                    Log.d("hatdog", mPlantData.toString())
+                }
             }
         }
 
     private var mDashboardLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
-
-    private var mJournalLimited = arrayListOf<Journal>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,9 +187,9 @@ class ViewSinglePlantActivity :
     // plant option functions
 
     private fun mHandleEditPlant() {
-//        val intent = Intent(this, EditPlantActivity::class.java)
-//        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
-//        mEditPlantLauncher.launch(intent)
+        val intent = Intent(this, EditPlantActivity::class.java)
+        intent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+        mEditPlantLauncher.launch(intent)
     }
 
     private fun mHandlePlantDelete() {
