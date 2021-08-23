@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -49,8 +50,8 @@ class EditPlantActivity :
 {
     private lateinit var rvTasks: RecyclerView
     private lateinit var ivPlant: ImageView
-    private lateinit var btnAddTask: Button
-    private lateinit var btnSave: Button
+    private lateinit var ibtnAddTask: ImageButton
+    private lateinit var ibtnSave: ImageButton
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
     private lateinit var mPhotoFilename: String
@@ -120,14 +121,14 @@ class EditPlantActivity :
 
     private fun mInitViews() {
         ivPlant = findViewById(R.id.iv_plant_edit)
-        btnAddTask = findViewById(R.id.btn_add_task_edit)
-        btnSave = findViewById(R.id.btn_save_plant_edit)
+        ibtnAddTask = findViewById(R.id.ibtn_add_task_edit)
+        ibtnSave = findViewById(R.id.ibtn_save_plant_edit)
         etPlantName = findViewById(R.id.et_plant_name_edit)
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
 
         ivPlant.setOnClickListener { mOpenCamera() }
-        btnSave.setOnClickListener { mSavePlant() }
-        btnAddTask.setOnClickListener {
+        ibtnSave.setOnClickListener { mSavePlant() }
+        ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
             addTaskLauncher.launch(i)
         }

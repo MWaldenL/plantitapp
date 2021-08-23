@@ -39,7 +39,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_kill_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
                 app:srcCompat="@drawable/ic_edit_24"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
+                app:tint="@color/primary_color" />
 
             <ImageButton
                 android:id="@+id/ibtn_kill_plant"
@@ -51,7 +52,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
                 app:srcCompat="@drawable/ic_kill_24"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateClickableBoundsCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateClickableBoundsCheck"
+                app:tint="@color/primary_color" />
 
             <ImageButton
                 android:id="@+id/ibtn_revive_plant"
@@ -63,7 +65,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
                 app:srcCompat="@drawable/ic_revive_24"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
+                app:tint="@color/primary_color" />
 
             <ImageButton
                 android:id="@+id/ibtn_delete_plant"
@@ -192,17 +195,18 @@
 
                     <ImageButton
                         android:id="@+id/ibtn_add_journal"
-                        android:layout_width="26dp"
-                        android:layout_height="22dp"
-                        android:background="#00FFFFFF"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@null"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@android:drawable/ic_input_add"
-                        app:tint="#000000"
+                        app:srcCompat="@drawable/ic_add_24"
+                        app:tint="@color/primary_color"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <Button
                         android:id="@+id/btn_view_all"
+                        style="@style/Widget.MOBDEVEMP.ButtonPrimary"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginTop="8dp"
