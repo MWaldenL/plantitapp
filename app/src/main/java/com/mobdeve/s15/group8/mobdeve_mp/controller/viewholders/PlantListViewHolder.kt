@@ -17,8 +17,13 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
 
     override fun bindData(plant: Plant) {
         mLoadImage(plant)
-        mTvNick.text = plant.nickname
-        mTvName.text = plant.name
+        if (plant.nickname == "") {
+            mTvNick.text = plant.name
+            mTvName.visibility = View.GONE
+        } else {
+            mTvNick.text = plant.nickname
+            mTvName.text = plant.name
+        }
     }
 
     private fun mLoadImage(plant: Plant) {

@@ -18,6 +18,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -32,23 +33,6 @@ class DashboardTaskGroupAdapter(
 
     init {
         mLoadTaskMaps()
-    }
-
-    private fun mLoadTaskMaps() {
-        taskMaps = HashMap()
-
-        for (task in mTasks) {
-            PlantService.findPlantById(task.plantId)?.let{
-                if (taskMaps[task.action] == null)
-                    taskMaps[task.action] = ArrayList()
-                taskMaps[task.action]!!.add(hashMapOf(
-                    "plantId" to it.id,
-                    "taskId" to task.id
-                ))
-            }
-        }
-
-        taskKeys = ArrayList(taskMaps.keys)
     }
 
     override fun getGroupCount(): Int {
@@ -135,10 +119,6 @@ class DashboardTaskGroupAdapter(
         return cv
     }
 
-    override fun onGroupExpanded(groupPosition: Int) {
-        super.onGroupExpanded(groupPosition)
-    }
-
     override fun getChildView(
         groupPosition: Int,
         childPosition: Int,
@@ -157,9 +137,18 @@ class DashboardTaskGroupAdapter(
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
-        // update view content
+        // update checkbox view
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
+        val tvLate: TextView = cv.findViewById(R.id.tv_late)
+
         checkboxDashboardPlant.text = plant?.name
+
+        // check if task is late
+        if (task?.let { TaskService.taskIsLate(it) } == true)
+            tvLate.visibility = View.VISIBLE
+        else
+            tvLate.visibility = View.INVISIBLE
+
         // check if task has been completed
         if (dateToday.time == task!!.lastCompleted) {
             checkboxDashboardPlant.isChecked = true
@@ -207,48 +196,21 @@ class DashboardTaskGroupAdapter(
         return true
     }
 
-    private fun mUpdateLastCompletedTask(newDate: Date, plant: Plant, completedTask: Task) {
-        // TODO: update
-
-        val toUpdate: HashMap<*,*> = hashMapOf(
-            "action" to completedTask.action,
-            "lastCompleted" to completedTask.lastCompleted,
-            "occurrence" to completedTask.occurrence,
-            "repeat" to completedTask.repeat,
-            "startDate" to completedTask.startDate
-        )
-
-        DBService.updateDocument(
-            collection = F.plantsCollection,
-            id = plant.id,
-            field = "tasks",
-            value = FieldValue.arrayRemove(toUpdate)
-        )
-        completedTask.lastCompleted = newDate
-        DBService.updateDocument(
-            collection = F.plantsCollection,
-            id = plant.id,
-            field = "tasks",
-            value = FieldValue.arrayUnion(completedTask)
-        )
+    fun updateData(data: ArrayList<Task>) {
+        mTasks = data
+        mLoadTaskMaps()
+        notifyDataSetChanged()
     }
 
-    private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
-
-        // TODO: update
-
-        val plantsLeft = 0
-
-
-//        val plantsLeft = 0
-//        PlantRepository.tasksToday[taskTitles[groupPosition]]
-//        for (task in PlantRepository.tasksToday) {
-//
-//        }
-
-        val plantsLeftString = taskMaps[getGroup(groupPosition) as String]?.size.toString()
-        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
-        tvPlantsLeft.text = plantsLeftString
+    fun groupIsCompleted(groupPosition: Int): Boolean {
+        val currDate = DateTimeService.getCurrentDateWithoutTime().time
+        for (taskMap in taskMaps[taskKeys[groupPosition]]!!) {
+            val task = TaskService.findTaskById(taskMap["taskId"].toString())
+            if (task != null)
+                if (task.lastCompleted != currDate)
+                    return false
+        }
+        return true
     }
 
     private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
@@ -260,10 +222,21 @@ class DashboardTaskGroupAdapter(
                 .setImageResource(R.drawable.ic_expand_more_24)
     }
 
-    fun updateData(data: ArrayList<Task>) {
-        mTasks = data
-        mLoadTaskMaps()
-        notifyDataSetChanged()
+    private fun mLoadTaskMaps() {
+        taskMaps = HashMap()
+
+        for (task in mTasks) {
+            PlantService.findPlantById(task.plantId)?.let{
+                if (taskMaps[task.action] == null)
+                    taskMaps[task.action] = ArrayList()
+                taskMaps[task.action]!!.add(hashMapOf(
+                    "plantId" to it.id,
+                    "taskId" to task.id
+                ))
+            }
+        }
+
+        taskKeys = ArrayList(taskMaps.keys)
     }
 
 }

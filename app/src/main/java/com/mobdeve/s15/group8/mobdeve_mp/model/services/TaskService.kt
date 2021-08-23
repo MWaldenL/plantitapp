@@ -41,4 +41,14 @@ object TaskService {
         }
         return tasksToday
     }
+
+    fun taskIsLate(task: Task): Boolean {
+        val dateToday = DateTimeService.getCurrentDateWithoutTime()
+        val nextDue = DateTimeService.getNextDueDate(
+            task.occurrence,
+            task.repeat,
+            task.lastCompleted
+        )
+        return nextDue.before(dateToday)
+    }
 }

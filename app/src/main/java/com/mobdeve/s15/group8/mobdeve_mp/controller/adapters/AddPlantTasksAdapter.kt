@@ -37,20 +37,17 @@ class AddPlantTasksAdapter(
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repeatStringBuilder = StringBuilder()
-        repeatStringBuilder.append(data[position].repeat)
-                            .append(" times ")
-                            .append(data[position].occurrence)
+        val repeatString = "Repeats every ${data[position].repeat} ${data[position].occurrence}/s"
 
         val f = SimpleDateFormat("MMM d, yyyy")
         holder.actionTV.text = data[position].action
         holder.startDateTV.text = f.format(data[position].startDate)
-        holder.repeatTV.text = repeatStringBuilder.toString()
+        holder.repeatTV.text = repeatString
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
-            taskDeletedListener.notifyTaskDeleted(task)
             notifyItemRemoved(holder.adapterPosition)
+            taskDeletedListener.notifyTaskDeleted(task)
         }
 
         taskDeletedListener = holder.itemView.context as OnTaskDeletedListener
