@@ -46,8 +46,8 @@ class AddPlantTasksAdapter(
         holder.deleteTaskIBtn.setOnClickListener {
             val task = data[holder.adapterPosition]
             data.remove(task)
-            taskDeletedListener.notifyTaskDeleted(task)
             notifyItemRemoved(holder.adapterPosition)
+            taskDeletedListener.notifyTaskDeleted(task)
         }
 
         taskDeletedListener = holder.itemView.context as OnTaskDeletedListener

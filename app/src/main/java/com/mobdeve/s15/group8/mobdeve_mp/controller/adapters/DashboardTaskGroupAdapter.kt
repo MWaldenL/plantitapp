@@ -18,6 +18,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -136,9 +137,18 @@ class DashboardTaskGroupAdapter(
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
-        // update view content
+        // update checkbox view
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
+        val tvLate: TextView = cv.findViewById(R.id.tv_late)
+
         checkboxDashboardPlant.text = plant?.name
+
+        // check if task is late
+        if (task?.let { TaskService.taskIsLate(it) } == true)
+            tvLate.visibility = View.VISIBLE
+        else
+            tvLate.visibility = View.INVISIBLE
+
         // check if task has been completed
         if (dateToday.time == task!!.lastCompleted) {
             checkboxDashboardPlant.isChecked = true
