@@ -34,23 +34,6 @@ class DashboardTaskGroupAdapter(
         mLoadTaskMaps()
     }
 
-    private fun mLoadTaskMaps() {
-        taskMaps = HashMap()
-
-        for (task in mTasks) {
-            PlantService.findPlantById(task.plantId)?.let{
-                if (taskMaps[task.action] == null)
-                    taskMaps[task.action] = ArrayList()
-                taskMaps[task.action]!!.add(hashMapOf(
-                    "plantId" to it.id,
-                    "taskId" to task.id
-                ))
-            }
-        }
-
-        taskKeys = ArrayList(taskMaps.keys)
-    }
-
     override fun getGroupCount(): Int {
         return taskKeys.size
     }
@@ -135,10 +118,6 @@ class DashboardTaskGroupAdapter(
         return cv
     }
 
-    override fun onGroupExpanded(groupPosition: Int) {
-        super.onGroupExpanded(groupPosition)
-    }
-
     override fun getChildView(
         groupPosition: Int,
         childPosition: Int,
@@ -207,48 +186,21 @@ class DashboardTaskGroupAdapter(
         return true
     }
 
-    private fun mUpdateLastCompletedTask(newDate: Date, plant: Plant, completedTask: Task) {
-        // TODO: update
-
-        val toUpdate: HashMap<*,*> = hashMapOf(
-            "action" to completedTask.action,
-            "lastCompleted" to completedTask.lastCompleted,
-            "occurrence" to completedTask.occurrence,
-            "repeat" to completedTask.repeat,
-            "startDate" to completedTask.startDate
-        )
-
-        DBService.updateDocument(
-            collection = F.plantsCollection,
-            id = plant.id,
-            field = "tasks",
-            value = FieldValue.arrayRemove(toUpdate)
-        )
-        completedTask.lastCompleted = newDate
-        DBService.updateDocument(
-            collection = F.plantsCollection,
-            id = plant.id,
-            field = "tasks",
-            value = FieldValue.arrayUnion(completedTask)
-        )
+    fun updateData(data: ArrayList<Task>) {
+        mTasks = data
+        mLoadTaskMaps()
+        notifyDataSetChanged()
     }
 
-    private fun mUpdatePlantsLeft(groupPosition: Int, cv: View) {
-
-        // TODO: update
-
-        val plantsLeft = 0
-
-
-//        val plantsLeft = 0
-//        PlantRepository.tasksToday[taskTitles[groupPosition]]
-//        for (task in PlantRepository.tasksToday) {
-//
-//        }
-
-        val plantsLeftString = taskMaps[getGroup(groupPosition) as String]?.size.toString()
-        val tvPlantsLeft: TextView = cv.findViewById(R.id.tv_plants_left)
-        tvPlantsLeft.text = plantsLeftString
+    fun groupIsCompleted(groupPosition: Int): Boolean {
+        val currDate = DateTimeService.getCurrentDateWithoutTime().time
+        for (taskMap in taskMaps[taskKeys[groupPosition]]!!) {
+            val task = TaskService.findTaskById(taskMap["taskId"].toString())
+            if (task != null)
+                if (task.lastCompleted != currDate)
+                    return false
+        }
+        return true
     }
 
     private fun mUpdateExpandedIndicator(isExpanded: Boolean, cv: View) {
@@ -260,10 +212,21 @@ class DashboardTaskGroupAdapter(
                 .setImageResource(R.drawable.ic_expand_more_24)
     }
 
-    fun updateData(data: ArrayList<Task>) {
-        mTasks = data
-        mLoadTaskMaps()
-        notifyDataSetChanged()
+    private fun mLoadTaskMaps() {
+        taskMaps = HashMap()
+
+        for (task in mTasks) {
+            PlantService.findPlantById(task.plantId)?.let{
+                if (taskMaps[task.action] == null)
+                    taskMaps[task.action] = ArrayList()
+                taskMaps[task.action]!!.add(hashMapOf(
+                    "plantId" to it.id,
+                    "taskId" to task.id
+                ))
+            }
+        }
+
+        taskKeys = ArrayList(taskMaps.keys)
     }
 
 }
