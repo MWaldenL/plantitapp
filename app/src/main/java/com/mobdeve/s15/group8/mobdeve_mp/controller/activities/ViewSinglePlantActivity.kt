@@ -70,6 +70,7 @@ class ViewSinglePlantActivity :
                             break
                         mJournalLimited.add(journal[size - i])
                     }
+
                     recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
                 }
             }
@@ -91,17 +92,21 @@ class ViewSinglePlantActivity :
                 val data = result.data?.getParcelableExtra<Plant>(getString(R.string.PLANT_KEY))
                 if (data != null) {
                     mPlantData = data
+                    mBindData()
                     Log.d("hatdog", mPlantData.toString())
                 }
             }
         }
 
     private var mDashboardLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result -> }
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
         mInitViews()
         mBindData()
@@ -135,8 +140,6 @@ class ViewSinglePlantActivity :
     }
 
     private fun mBindData() {
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
         val tasks = TaskService.findTasksByPlantId(id)
 
@@ -175,11 +178,14 @@ class ViewSinglePlantActivity :
         }
 
         val size = journal.size
+        mJournalLimited.clear()
+
         for (i in 1..3) {
             if (size == i - 1)
                 break
             mJournalLimited.add(journal[size - i])
         }
+
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
     }

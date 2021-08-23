@@ -10,7 +10,7 @@ data class Plant(
     val id: String,
     val userId: String,
     val imageUrl: String,
-    val filePath: String,
+    var filePath: String,
     var name: String,
     var nickname: String,
     val dateAdded: String,

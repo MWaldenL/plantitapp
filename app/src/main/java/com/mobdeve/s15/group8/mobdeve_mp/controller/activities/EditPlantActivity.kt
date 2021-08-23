@@ -163,13 +163,16 @@ class EditPlantActivity :
     }
 
     private fun mSavePlant() {
+        mPlantDataEditable.name = etPlantName.text.toString()
+        mPlantDataEditable.nickname = etPlantNickname.text.toString()
+        mPlantDataEditable.filePath = mPhotoFilename
 
         DBService.updateDocument(
             F.plantsCollection,
             mPlantData.id,
             hashMapOf(
-                "name" to etPlantName.text.toString(),
-                "nickname" to etPlantNickname.text.toString(),
+                "name" to mPlantDataEditable.name,
+                "nickname" to mPlantDataEditable.nickname,
                 "tasks" to mPlantDataEditable.tasks,
                 "filePath" to mPhotoFilename
             )
@@ -190,13 +193,18 @@ class EditPlantActivity :
                     "lastCompleted" to Timestamp(task.lastCompleted)
                 )
             )
+
+            PlantRepository.taskList.add(task)
         }
 
-        for (task in mDeletedTasks) {
+        for (taskID in mDeletedTasks) {
             DBService.deleteDocument(
                 F.tasksCollection,
-                task
+                taskID
             )
+
+            val task = TaskService.findTaskById(taskID)
+            PlantRepository.taskList.remove(task)
         }
 
         try {
