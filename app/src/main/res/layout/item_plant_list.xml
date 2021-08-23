@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:text="Tomato"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
                 android:textColor="@color/primary_color" />
         </LinearLayout>
 

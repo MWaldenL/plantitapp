@@ -4,11 +4,22 @@
     <color name="light_gray">#FFE5E9EA</color>
     <color name="dark_gray">#FFB5BEC5</color>
 
-    <color name="blue">#FF87B8CF</color>
-    <color name="blue_light">#FFB0CDE3</color>
+    <!--<color name="blue">#FF87B8CF</color>
+    <color name="light_blue">#FFB0CDE3</color>
 
     <color name="green">#FF8FBCC5</color>
-    <color name="green_light">#FFC1E0DF</color>
+    <color name="light_green">#FFC1E0DF</color>-->
+
+    <color name="green">#FF78C8A1</color>
+    <color name="light_green">#FFDCF8EA</color>
+
+    <color name="blue">#FF73C7EC</color>
+    <color name="light_blue">#FFE3F4FB</color>
+
+    <color name="yellow">#FFFDD58F</color>
+    <color name="light_yellow">#F8F1E5</color>
+
+    <color name="red">#CC6363</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
