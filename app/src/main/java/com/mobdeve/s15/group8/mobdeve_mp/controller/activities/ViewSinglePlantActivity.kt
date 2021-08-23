@@ -98,11 +98,6 @@ class ViewSinglePlantActivity :
             }
         }
 
-    private var mDashboardLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_plant)
@@ -247,8 +242,6 @@ class ViewSinglePlantActivity :
         ).show()
 
         // launch main activity after deletion TODO
-        val intent = Intent(this@ViewSinglePlantActivity, MainActivity::class.java)
-        mDashboardLauncher.launch(intent)
         finish()
     }
 
