@@ -48,6 +48,7 @@ class AddPlantActivity :
     private lateinit var ivAddPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
     private lateinit var btnSave: Button
+    private lateinit var ibtnSavePlant: ImageButton
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
     private lateinit var groupNoPic: ConstraintLayout
@@ -99,15 +100,15 @@ class AddPlantActivity :
         ivPlant = findViewById(R.id.iv_add_plant)
         etPlantName = findViewById(R.id.et_plant_name)
         etPlantNickname = findViewById(R.id.et_plant_nickname)
-        ibtnAddTask = findViewById(R.id.btn_add_task)
-        btnSave = findViewById(R.id.btn_save_plant)
+        ibtnAddTask = findViewById(R.id.ibtn_add_task)
+        ibtnSavePlant = findViewById(R.id.ibtn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
         tasksRV.adapter = AddPlantTasksAdapter(NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
         ivAddPlant.setOnClickListener { mOpenCamera() }
         ivPlant.setOnClickListener { mOpenCamera() }
-        btnSave.setOnClickListener { mSavePlant() }
+        ibtnSavePlant.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
             addTaskLauncher.launch(i)
