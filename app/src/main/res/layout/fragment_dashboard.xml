@@ -35,12 +35,12 @@
                 android:id="@+id/elv_task_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:divider="@null"
                 android:groupIndicator="@null"
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
                 android:nestedScrollingEnabled="false"
-                android:paddingBottom="?android:attr/actionBarSize" >
+                android:paddingBottom="?android:attr/actionBarSize">
 
             </com.mobdeve.s15.group8.mobdeve_mp.view.UnscrollableExpandableListView>
 
