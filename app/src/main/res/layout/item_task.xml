@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="@color/green_light"
+        app:cardBackgroundColor="@color/light_gray"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,9 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="Water"
-                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
-                    android:textColor="@color/primary_color"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline5"
+                    android:textColor="@color/primary_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,21 +53,24 @@
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Starts on " />
+                        android:text="Starts on "
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
 
                     <TextView
                         android:id="@+id/tv_start_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="August 14. 2021" />
+                        android:text="August 14. 2021"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_repeat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Repeats 2 times weekly" />
+                    android:text="Repeats 2 times weekly"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
 
             </LinearLayout>
 
