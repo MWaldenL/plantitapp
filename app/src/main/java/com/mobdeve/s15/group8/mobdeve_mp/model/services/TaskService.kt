@@ -25,7 +25,7 @@ object TaskService {
     /*
     * Retrieves a list of tasks for today, including those that have been completed
     * */
-    fun getTasksToday(): ArrayList<Task> {
+    fun getTasksToday(includeFinished: Boolean = true): ArrayList<Task> {
         val tasksToday = ArrayList<Task>()
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
 
@@ -36,8 +36,14 @@ object TaskService {
                 task.lastCompleted
             )
             Log.d("Dashboard", "${task.lastCompleted} lc vs dt ${dateToday.time}")
-            if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday.time))
-                tasksToday.add(task)
+
+            if (includeFinished) {
+                if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday.time))
+                    tasksToday.add(task)
+            } else {
+                if (!nextDue.after(dateToday))
+                    tasksToday.add(task)
+            }
         }
         return tasksToday
     }

@@ -150,7 +150,7 @@ class MainActivity:
 //        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent) // change third arg to millis (min 60000) to test repeated
 
         // code for testing
-        c.add(Calendar.SECOND, 30)
+        c.add(Calendar.SECOND, 10)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent) // use this to check for exact time
     }
 
