@@ -22,18 +22,10 @@ class SplashActivity : AppCompatActivity(), DBCallback {
         }
     }
 
-    override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
-    }
-
-    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
-    }
-
     override fun onComplete(tag: String) { // Once the plant repo has informed us, go to MainActivity
         Log.d("Dashboard", "SplashActivity: onComplete $tag")
-        if (tag == PlantRepository.USERS_TYPE) {
-            PlantRepository.setOnDataFetchedListener(null)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            finish()
-        }
+        PlantRepository.setOnDataFetchedListener(null)
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
     }
 }

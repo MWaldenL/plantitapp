@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LoginActivity : AppCompatActivity(), DBCallback {
+class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity(), DBCallback {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
-        PlantRepository.setOnDataFetchedListener(this)
     }
 
     private val googleLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -73,20 +72,10 @@ class LoginActivity : AppCompatActivity(), DBCallback {
                             )
                         }
                     }
-                    PlantRepository.getData() // fetch the user's plants
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+//                    PlantRepository.getData() // fetch the user's plants
                 }
             }
-    }
-
-    override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
-    }
-
-    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
-    }
-
-    override fun onComplete(tag: String) {
-        PlantRepository.setOnDataFetchedListener(null)
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        finish()
     }
 }
