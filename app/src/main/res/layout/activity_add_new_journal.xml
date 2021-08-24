@@ -38,7 +38,7 @@
         android:ems="10"
         android:gravity="bottom|start"
         android:hint="@string/add_journal_hint"
-        android:inputType="textLongMessage|textMultiLine"
+        android:inputType="textLongMessage|textMultiLine|textCapSentences"
         android:minLines="3"
         android:padding="16dp"
         android:singleLine="false"

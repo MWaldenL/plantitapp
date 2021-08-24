@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -153,8 +154,10 @@ class ViewAllJournalsActivity :
                 if (dX != 0f && isCurrentlyActive) {
                     val itemView = viewHolder.itemView
                     val color = Paint()
-                    color.color = Color.parseColor("#B34D4D")
+
+                    color.color = Color.parseColor("#CC6363")
                     val icon = ContextCompat.getDrawable(this@ViewAllJournalsActivity, R.drawable.ic_trash_24)!!
+                    icon.setTint(ResourcesCompat.getColor(resources, R.color.white, null))
 
                     val top = itemView.top + (itemView.height - icon.intrinsicHeight) / 2
                     val left = itemView.width - icon.intrinsicWidth - (itemView.height - icon.intrinsicHeight) / 2
@@ -162,12 +165,10 @@ class ViewAllJournalsActivity :
                     val bottom = top + icon.intrinsicHeight
 
                     if (dX < 0) {
-
                         val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(),
                             itemView.right.toFloat(), itemView.bottom.toFloat())
                         c.drawRect(background, color)
                         icon.setBounds(left, top, right, bottom)
-
                     }
 
                     icon.draw(c)
