@@ -53,26 +53,27 @@
 
             <TextView
                 android:id="@+id/tv_gen_info_edit"
-                style="@style/TextAppearance.MOBDEVEMP.Headline4"
+                style="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:fontFamily="@font/source_sans_pro"
                 android:text="General Information"
                 android:textColor="@color/primary_color"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView_edit" />
 
             <TextView
                 android:id="@+id/tv_care_methods_edit"
-                style="@style/TextAppearance.MOBDEVEMP.Headline4"
+                style="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="Care Methods"
                 android:textColor="@color/primary_color"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_plant_name_edit" />
 

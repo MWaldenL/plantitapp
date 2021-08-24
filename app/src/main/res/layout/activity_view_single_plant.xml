@@ -99,40 +99,12 @@
                 android:id="@+id/tv_common_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:text="@string/common_name_placeholder"
                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                style="@style/TextAppearance.MOBDEVEMP.BadgeLight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_common_name">
-
-                <TextView
-                    android:id="@+id/tv_purchase_date_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_label"
-                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                    android:textColor="@color/primary_color" />
-
-                <TextView
-                    android:id="@+id/tv_purchase_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/date_placeholder"
-                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                    android:textColor="@color/primary_color" />
-            </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
             <TextView
                 android:id="@+id/tv_task_header"
@@ -145,7 +117,7 @@
                 android:textColor="@color/primary_color"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_task_wrapper"
@@ -172,9 +144,10 @@
                         android:id="@+id/recyclerview_tasks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:overScrollMode="never"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_task_header" />
 
@@ -263,6 +236,40 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_journal_header"
                 app:srcCompat="@drawable/ic_add_24"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+                app:srcCompat="@drawable/ic_leaf_24"
+                app:tint="@color/dark_gray" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:srcCompat="@drawable/ic_clock_24"
+                app:tint="@color/dark_gray" />
+
+            <TextView
+                android:id="@+id/tv_purchase_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/date_placeholder"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                android:textColor="@color/primary_color"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

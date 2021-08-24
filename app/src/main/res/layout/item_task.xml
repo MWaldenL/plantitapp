@@ -58,8 +58,9 @@
                         android:layout_marginStart="8dp"
                         android:includeFontPadding="false"
                         android:text="Water"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline5"
-                        android:textColor="@color/primary_color" />
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+                        android:textColor="@color/primary_color"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout

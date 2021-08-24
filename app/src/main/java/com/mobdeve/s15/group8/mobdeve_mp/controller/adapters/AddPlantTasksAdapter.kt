@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddPlantTasksAdapter(
     private val mContext: Context,
@@ -41,7 +43,9 @@ class AddPlantTasksAdapter(
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repeatString = "Repeats every ${data[position].repeat} ${data[position].occurrence}/s"
+        val repeatString = "Repeats every ${data[position].repeat} ${data[position].occurrence.lowercase(
+            Locale.getDefault()
+        )}/s"
 
         val f = SimpleDateFormat("MMM d, yyyy")
         holder.actionTV.text = data[position].action
