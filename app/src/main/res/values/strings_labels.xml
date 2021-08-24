@@ -5,7 +5,7 @@
     <string name="common_name_placeholder">Common Name</string>
     <string name="date_placeholder">January 1, 1999</string>
 
-    <string name="date_label">Date Added:</string>
+    <string name="date_label">Added on:</string>
 
     <string name="feedback_label">Your feedback is important to us</string>
     <string name="feedback_hint">What do you think of this app?</string>

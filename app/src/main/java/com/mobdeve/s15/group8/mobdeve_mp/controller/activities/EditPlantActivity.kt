@@ -160,7 +160,7 @@ class EditPlantActivity :
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
 
-        rvTasks.adapter = AddPlantTasksAdapter(tasks)
+        rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
     }
 
     private fun mSavePlant() {

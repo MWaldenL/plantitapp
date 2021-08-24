@@ -103,7 +103,7 @@ class AddPlantActivity :
         ibtnAddTask = findViewById(R.id.ibtn_add_task)
         ibtnSavePlant = findViewById(R.id.ibtn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
-        tasksRV.adapter = AddPlantTasksAdapter(NewPlantInstance.tasksObject)
+        tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
         ivAddPlant.setOnClickListener { mOpenCamera() }
