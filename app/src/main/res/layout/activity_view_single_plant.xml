@@ -102,9 +102,10 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/common_name_placeholder"
                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                android:textColor="@color/dark_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_plant_name_icon"
+                app:layout_constraintStart_toEndOf="@+id/iv_plant_name_icon"
+                app:layout_constraintTop_toTopOf="@+id/iv_plant_name_icon" />
 
             <TextView
                 android:id="@+id/tv_task_header"
@@ -238,7 +239,7 @@
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_plant_name_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -246,7 +247,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
                 app:srcCompat="@drawable/ic_leaf_24"
-                app:tint="@color/dark_gray" />
+                app:tint="@color/gray" />
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -255,9 +256,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:layout_constraintTop_toBottomOf="@+id/iv_plant_name_icon"
                 app:srcCompat="@drawable/ic_clock_24"
-                app:tint="@color/dark_gray" />
+                app:tint="@color/gray" />
 
             <TextView
                 android:id="@+id/tv_purchase_date"
@@ -266,7 +267,7 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/date_placeholder"
                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                android:textColor="@color/primary_color"
+                android:textColor="@color/dark_gray"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />

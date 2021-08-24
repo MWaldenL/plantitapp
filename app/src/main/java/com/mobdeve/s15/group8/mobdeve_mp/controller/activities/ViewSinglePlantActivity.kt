@@ -50,6 +50,7 @@ class ViewSinglePlantActivity :
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
+    private lateinit var ivPlantNameIcon: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
     private var mJournalLimited = arrayListOf<Journal>()
@@ -114,6 +115,7 @@ class ViewSinglePlantActivity :
         tvNickname = findViewById(R.id.tv_nickname)
         tvPurchaseDate = findViewById(R.id.tv_purchase_date)
         ivPlant = findViewById(R.id.iv_plant)
+        ivPlantNameIcon = findViewById(R.id.iv_plant_name_icon)
         btnViewAll = findViewById(R.id.btn_view_all)
         ibtnAddNewJournal = findViewById(R.id.ibtn_add_journal)
         ibtnEditPlant = findViewById(R.id.ibtn_edit_plant)
@@ -140,6 +142,7 @@ class ViewSinglePlantActivity :
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
+            ivPlantNameIcon.visibility = View.GONE
             tvCommonName.text = ""
             tvNickname.text = name
         } else {
