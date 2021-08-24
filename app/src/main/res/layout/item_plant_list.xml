@@ -9,8 +9,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,19 +38,18 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:text="Nick Name"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
-                android:textColor="@color/primary_color"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline5"
+                android:textColor="@color/primary_color" />
 
             <TextView
                 android:id="@+id/tv_list_plant_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Tomato"
                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                android:textColor="@color/primary_color" />
+                android:textColor="@color/dark_gray" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
