@@ -3,6 +3,8 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -148,6 +150,12 @@ class ViewSinglePlantActivity :
         } else {
             tvCommonName.text = name
             tvNickname.text = nickname
+        }
+
+        if (death) {
+            val matrix = ColorMatrix()
+            matrix.setSaturation(0f)
+            ivPlant.colorFilter = ColorMatrixColorFilter(matrix)
         }
 
         tvPurchaseDate.text = datePurchased

@@ -1,6 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders
 
 import android.graphics.BitmapFactory
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,6 +25,12 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
         } else {
             mTvNick.text = plant.nickname
             mTvName.text = plant.name
+        }
+
+        if (plant.death) {
+            val matrix = ColorMatrix()
+            matrix.setSaturation(0f)
+            mImagePlant.colorFilter = ColorMatrixColorFilter(matrix)
         }
     }
 
