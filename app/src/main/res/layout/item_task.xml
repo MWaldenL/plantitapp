@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="@color/light_blue"
+        app:cardBackgroundColor="@color/light_green"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Starts on "
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body" />
 
                     <TextView
                         android:id="@+id/tv_start_date"
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="August 14. 2021"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body" />
                 </LinearLayout>
 
                 <TextView
@@ -70,18 +70,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Repeats 2 times weekly"
-                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body" />
 
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/ibtn_delete"
+                style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="top"
-                android:backgroundTint="#00000000"
                 android:contentDescription="delete task"
-                android:tint="@color/primary_color"
                 app:srcCompat="@drawable/ic_cross_24"
                 tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>

@@ -83,7 +83,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:text="Action"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                         android:textColor="@color/primary_color" />
 
                     <Spinner
@@ -111,7 +111,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:text="Start on"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                         android:textColor="@color/primary_color" />
 
                     <Button
@@ -124,7 +124,7 @@
                         android:elevation="0dp"
                         android:text="Button"
                         android:textAlignment="textStart"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2" />
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -136,7 +136,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="Repeat every"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                 android:textColor="@color/primary_color" />
 
 
@@ -184,7 +184,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="Repeats on"
-                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                     android:textColor="@color/primary_color" />
 
                 <LinearLayout

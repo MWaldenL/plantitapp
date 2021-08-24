@@ -150,7 +150,7 @@
                 android:minHeight="48dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />
 
@@ -200,7 +200,7 @@
                 android:hint="Nickname (optional)"
                 android:inputType="textPersonName|textCapWords"
                 android:minHeight="48dp"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/et_plant_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info" />

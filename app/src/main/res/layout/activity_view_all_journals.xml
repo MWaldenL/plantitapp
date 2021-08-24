@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/common_name_placeholder"
-        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_nickname_journal" />
 

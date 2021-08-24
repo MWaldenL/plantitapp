@@ -35,7 +35,7 @@
                 style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_kill_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
@@ -47,7 +47,7 @@
                 style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
@@ -59,7 +59,7 @@
                 style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toStartOf="@+id/ibtn_delete_plant"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:tint="@color/red"
+                app:tint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_nickname"
@@ -98,41 +98,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="@string/common_name_placeholder"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
-                android:textColor="@color/primary_color"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
-            <TextView
-                android:id="@+id/tv_purchase_date_label"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                style="@style/TextAppearance.MOBDEVEMP.BadgeLight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="@string/date_label"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
-                android:textColor="@color/primary_color"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_common_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_common_name">
 
-            <TextView
-                android:id="@+id/tv_purchase_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/date_placeholder"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body2"
-                android:textColor="@color/primary_color"
-                app:layout_constraintStart_toEndOf="@+id/tv_purchase_date_label"
-                app:layout_constraintTop_toBottomOf="@+id/tv_common_name" />
+                <TextView
+                    android:id="@+id/tv_purchase_date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_label"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                    android:textColor="@color/primary_color" />
+
+                <TextView
+                    android:id="@+id/tv_purchase_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/date_placeholder"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                    android:textColor="@color/primary_color" />
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_task_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:cardBackgroundColor="@color/light_gray"
                 app:cardCornerRadius="10dp"
@@ -142,7 +147,7 @@
                 app:contentPadding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_purchase_date_label">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -152,7 +157,7 @@
                         android:id="@+id/recyclerview_tasks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:overScrollMode="never"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/task_header"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                         android:textColor="@color/primary_color"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -194,15 +199,15 @@
 
                     <ImageButton
                         android:id="@+id/ibtn_add_journal"
+                        style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@null"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_journal_header"
+                        app:backgroundTint="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_journal_header"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_add_24"
-                        app:tint="@color/primary_color"
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <Button
@@ -241,7 +246,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/journal_header"
-                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body1"
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                         android:textColor="@color/primary_color"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
