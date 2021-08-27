@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Dashboard"
+        android:id="@+id/dashboard_fragment"
+        android:icon="@drawable/ic_tasks_24" />
+    <item android:title="Plants"
+        android:id="@+id/view_all_plants_fragment"
+        android:icon="@drawable/ic_plant_24" />
+</menu>

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary_color">#FF485256</color>
+    <color name="light_gray">#FFE5E9EA</color>
+    <color name="gray">#FFB5BEC5</color>
+    <color name="dark_gray">#7B838C</color>
+
+    <!--<color name="blue">#FF87B8CF</color>
+    <color name="light_blue">#FFB0CDE3</color>
+
+    <color name="green">#FF8FBCC5</color>
+    <color name="light_green">#FFC1E0DF</color>-->
+
+    <color name="green">#5A967A</color>
+    <color name="light_green">#DCF8EA</color>
+
+    <color name="blue">#95B3EF</color>
+    <color name="light_blue">#D6E6FF</color>
+
+    <color name="yellow">#FED58E</color>
+    <color name="light_yellow">#FEEFD2</color>
+
+    <color name="red">#CC6363</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

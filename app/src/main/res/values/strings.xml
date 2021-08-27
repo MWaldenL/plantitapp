@@ -1,3 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MOBDEVE-MP</string>
+    <string name="app_name">Plantitapp</string>
+    <string name="web_client_id">
+        280609903358-d11ev4c65r15ghdp78pvi267a53ltl7k.apps.googleusercontent.com
+    </string>
+    <string name="file_provider_authority">com.mobdeve.s15.group8.mobdeve_mp.fileprovider</string>
+    <string name="cloudinary_upload_preset">vywedaso</string>
+    <string-array name="actions_array">
+        <item>Water</item>
+        <item>Weed</item>
+        <item>Prune</item>
+        <item>Move to sunlight</item>
+        <item>Move to dark room</item>
+        <item>Fertilize</item>
+    </string-array>
+    <string-array name="occurrence_array">
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

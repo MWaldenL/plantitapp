@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Label and view-related strings -->
+<resources>
+    <string name="nickname_placeholder">Nickname</string>
+    <string name="common_name_placeholder">Common Name</string>
+    <string name="date_placeholder">January 1, 1999</string>
+
+    <string name="date_label">Added on:</string>
+
+    <string name="feedback_label">Your feedback is important to us</string>
+    <string name="feedback_hint">What do you think of this app?</string>
+
+    <string name="task_header">Daily Tasks</string>
+    <string name="journal_header">Plant Journal</string>
+    <string name="add_journal_header">New Journal Entry</string>
+
+    <string name="view_all_button">View All Entries</string>
+    <string name="dead_button">Mark the Plant as Dead</string>
+    <string name="delete_button">Delete Plant</string>
+
+    <string name="add_journal_hint">What\'s on your mind?</string>
+    <string name="add_journal_counter">500</string>
+</resources>
