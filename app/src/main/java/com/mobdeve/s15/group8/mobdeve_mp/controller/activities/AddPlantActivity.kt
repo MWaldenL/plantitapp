@@ -1,5 +1,6 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.ImageDecoder
@@ -234,6 +235,7 @@ class AddPlantActivity :
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Throws(IOException::class)
     private fun mCreateImageFile(): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
