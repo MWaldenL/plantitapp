@@ -13,9 +13,6 @@ class SplashActivity : AppCompatActivity(), DBCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO: move to application level to avoid MediaManager is already initialized error
-        MediaManager.init(this) // initializer for Cloudinary's image upload
-
         if (F.auth.currentUser == null) { // no user - go to login
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()

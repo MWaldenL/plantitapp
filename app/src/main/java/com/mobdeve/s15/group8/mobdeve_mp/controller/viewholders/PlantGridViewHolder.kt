@@ -24,6 +24,7 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
         if (plant.filePath == "") { // load the image from cloud
             Glide.with(itemView.context)
                  .load(plant.imageUrl)
+                 //.thumbnail()
                  .placeholder(R.drawable.ic_launcher_background)
                  .into(ivImage)
         } else { // load the image from app storage
@@ -40,7 +41,7 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
 
         if (plant.nickname == "") {
             tvPlantGridHeader.text = plant.name
-            tvPlantGridSubheader.visibility = View.GONE
+            tvPlantGridSubheader.visibility = View.INVISIBLE
         } else {
             tvPlantGridHeader.text = plant.nickname
             tvPlantGridSubheader.text = plant.name
