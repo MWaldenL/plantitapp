@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -26,17 +27,18 @@ class TaskListAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val cvPlantTaskItem: CardView = holder.itemView.findViewById(R.id.cv_plant_task_item)
         val task = data[position]
-        val cbTask = holder.itemView.findViewById<CheckBox>(R.id.cb_task)
         val today = DateTimeService.getCurrentDateWithoutTime()
 
         // bind task text/checked to viewholder
-        holder.bindData(data[position])
+        val last = position == itemCount-1
+        holder.bindData(data[position], last)
 
-        cbTask.setOnClickListener {
+        cvPlantTaskItem.setOnClickListener {
             val index = PlantRepository.taskList.indexOf(task)
 
-            if (cbTask.isChecked) {
+            if (task.lastCompleted != today.time) {
                 task.lastCompleted = today.time
                 PlantRepository.taskList[index] = task
 
@@ -67,7 +69,7 @@ class TaskListAdapter(
                 )
             }
 
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
     }
 

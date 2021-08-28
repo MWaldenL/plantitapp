@@ -151,40 +151,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv_task_wrapper"
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_tasks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        app:cardBackgroundColor="@color/light_gray"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="0dp"
-                        app:cardPreventCornerOverlap="true"
-                        app:cardUseCompatPadding="false"
-                        app:contentPadding="16dp"
+                        android:overScrollMode="never"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_task_header">
+                        app:layout_constraintTop_toBottomOf="@+id/tv_task_header" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recyclerview_tasks"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:overScrollMode="never"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/tv_journal_header"
@@ -197,7 +174,7 @@
                         android:textColor="@color/primary_color"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cv_task_wrapper" />
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_tasks" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cv_journal_wrapper"

@@ -134,7 +134,7 @@ class ViewSinglePlantActivity :
 
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
-        recyclerViewTask.layoutManager = LinearLayoutManager(this)
+        recyclerViewTask.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
