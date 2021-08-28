@@ -25,6 +25,7 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
         } else {
             mTvNick.text = plant.nickname
             mTvName.text = plant.name
+            mTvName.visibility = View.VISIBLE
         }
 
         if (plant.death) {

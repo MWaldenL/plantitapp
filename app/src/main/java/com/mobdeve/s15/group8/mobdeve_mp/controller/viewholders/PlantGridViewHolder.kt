@@ -45,6 +45,7 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
         } else {
             tvPlantGridHeader.text = plant.nickname
             tvPlantGridSubheader.text = plant.name
+            tvPlantGridSubheader.visibility = View.VISIBLE
         }
 
     }

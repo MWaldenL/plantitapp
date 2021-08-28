@@ -103,7 +103,7 @@ class EditPlantActivity :
             val file = File(mPhotoFilename)
             file.createNewFile()
             val fos = FileOutputStream(file)
-            bm.compress(Bitmap.CompressFormat.JPEG, 10, fos)
+            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos)
             fos.close()
 
             val uri = Uri.fromFile(File(mPhotoFilename))
