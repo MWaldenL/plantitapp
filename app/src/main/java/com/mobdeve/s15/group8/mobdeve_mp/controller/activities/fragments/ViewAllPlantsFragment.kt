@@ -117,7 +117,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 
-    override fun onRefreshSuccess() { // set refreshing to false para di spin ng spin nakakahilo
+    override fun onRefreshSuccess() {
         swipeToRefreshLayout.isRefreshing = false
     }
 }
