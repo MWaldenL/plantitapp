@@ -2,7 +2,8 @@
 <resources>
     <color name="primary_color">#FF485256</color>
     <color name="light_gray">#FFE5E9EA</color>
-    <color name="dark_gray">#FFB5BEC5</color>
+    <color name="gray">#FFB5BEC5</color>
+    <color name="dark_gray">#7B838C</color>
 
     <!--<color name="blue">#FF87B8CF</color>
     <color name="light_blue">#FFB0CDE3</color>

@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -37,6 +38,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Error
 import java.text.SimpleDateFormat
@@ -95,6 +97,15 @@ class EditPlantActivity :
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
+
+            // reduce image quality
+            val bm = BitmapFactory.decodeFile(mPhotoFilename)
+            val file = File(mPhotoFilename)
+            file.createNewFile()
+            val fos = FileOutputStream(file)
+            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos)
+            fos.close()
+
             val uri = Uri.fromFile(File(mPhotoFilename))
             try { // create the bitmap from uri
                 val bitmap = if (Build.VERSION.SDK_INT < 28) {
@@ -160,7 +171,7 @@ class EditPlantActivity :
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
 
-        rvTasks.adapter = AddPlantTasksAdapter(tasks)
+        rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
     }
 
     private fun mSavePlant() {

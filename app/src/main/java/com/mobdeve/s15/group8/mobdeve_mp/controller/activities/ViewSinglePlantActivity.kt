@@ -3,6 +3,8 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -50,6 +52,7 @@ class ViewSinglePlantActivity :
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
     private lateinit var ivPlant: ImageView
+    private lateinit var ivPlantNameIcon: ImageView
     private lateinit var btnViewAll: Button
     private lateinit var mPlantData: Plant
     private var mJournalLimited = arrayListOf<Journal>()
@@ -114,6 +117,7 @@ class ViewSinglePlantActivity :
         tvNickname = findViewById(R.id.tv_nickname)
         tvPurchaseDate = findViewById(R.id.tv_purchase_date)
         ivPlant = findViewById(R.id.iv_plant)
+        ivPlantNameIcon = findViewById(R.id.iv_plant_name_icon)
         btnViewAll = findViewById(R.id.btn_view_all)
         ibtnAddNewJournal = findViewById(R.id.ibtn_add_journal)
         ibtnEditPlant = findViewById(R.id.ibtn_edit_plant)
@@ -130,7 +134,7 @@ class ViewSinglePlantActivity :
 
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
-        recyclerViewTask.layoutManager = LinearLayoutManager(this)
+        recyclerViewTask.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
@@ -140,11 +144,18 @@ class ViewSinglePlantActivity :
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
+            ivPlantNameIcon.visibility = View.GONE
             tvCommonName.text = ""
             tvNickname.text = name
         } else {
             tvCommonName.text = name
             tvNickname.text = nickname
+        }
+
+        if (death) {
+            val matrix = ColorMatrix()
+            matrix.setSaturation(0f)
+            ivPlant.colorFilter = ColorMatrixColorFilter(matrix)
         }
 
         tvPurchaseDate.text = datePurchased

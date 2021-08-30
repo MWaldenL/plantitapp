@@ -30,6 +30,7 @@ class DashboardFragment : Fragment(), DBCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PlantRepository.setOnDataFetchedListener(this)
+        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasks)
     }
 
     override fun onCreateView(
@@ -50,7 +51,6 @@ class DashboardFragment : Fragment(), DBCallback {
         super.onViewCreated(view, savedInstanceState)
         btnSignout = view.findViewById(R.id.btn_signout)
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
-        taskGroupAdapter = DashboardTaskGroupAdapter(requireContext(), mTasks)
         elvTaskGroup.setAdapter(taskGroupAdapter)
     }
 

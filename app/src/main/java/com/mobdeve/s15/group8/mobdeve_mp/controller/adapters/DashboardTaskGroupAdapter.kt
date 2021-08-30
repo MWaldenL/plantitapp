@@ -137,17 +137,21 @@ class DashboardTaskGroupAdapter(
             cv = layoutInflater.inflate(R.layout.item_dashboard_plant, null)
         }
 
-        // update checkbox view
+        // get views
         val checkboxDashboardPlant: CheckBox = cv!!.findViewById(R.id.checkbox_dashboard_plant)
         val tvLate: TextView = cv.findViewById(R.id.tv_late)
 
-        checkboxDashboardPlant.text = plant?.name
+        // display plant name (and nickname)
+        val plantNameString = StringBuilder().append(plant?.name)
+        if (plant?.nickname != "")
+            plantNameString.append(" (${plant?.nickname})")
+        checkboxDashboardPlant.text = plantNameString
 
         // check if task is late
         if (task?.let { TaskService.taskIsLate(it) } == true)
             tvLate.visibility = View.VISIBLE
         else
-            tvLate.visibility = View.INVISIBLE
+            tvLate.visibility = View.GONE
 
         // check if task has been completed
         if (dateToday.time == task!!.lastCompleted) {
