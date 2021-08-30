@@ -51,11 +51,14 @@ object PlantRepository: CoroutineScope {
         val id = F.auth.currentUser!!.uid
         launch(coroutineContext) {
             val plantData = DBService.readDocuments( // fetch plants
-                collection=F.plantsCollection,
-                where="userId",
-                equalTo=id
+                collection = F.plantsCollection,
+                where = "userId",
+                equalTo = id
             )
             mGetPlantData(plantData)
+            mDBListener?.onComplete(PLANTS_TYPE)
+        }
+        launch(Dispatchers.IO + Job()) {
             val taskData = DBService.readDocuments( // fetch tasks
                 collection=F.tasksCollection,
                 where="userId",
@@ -63,7 +66,6 @@ object PlantRepository: CoroutineScope {
             )
             mGetTasksData(taskData)
             mRefreshListener?.onRefreshSuccess()
-            mDBListener?.onComplete(PLANTS_TYPE)
             mDBListener?.onComplete(TASKS_TYPE)
         }
     }
@@ -74,7 +76,6 @@ object PlantRepository: CoroutineScope {
     }
 
     private fun mGetPlantData(docs: QuerySnapshot?) {
-        Log.d("PR", "$docs")
         if (docs == null) {
             return
         }
@@ -104,7 +105,6 @@ object PlantRepository: CoroutineScope {
     }
 
     private fun mGetTasksData(docs: QuerySnapshot?) {
-        Log.d("PR", "$docs")
         if (docs == null) {
             return
         }

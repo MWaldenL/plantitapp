@@ -58,11 +58,11 @@ class DashboardFragment : Fragment(), DBCallback {
         taskGroupAdapter.updateData(mTasks)
         mExpandIncompleteGroups()
         btnSignout.setOnClickListener { // sign out from both firebase and google
+            PlantRepository.resetData()
             F.auth.signOut()
             GoogleSignIn.getClient(this.activity, GoogleSingleton.googleSigninOptions).signOut()
-            PlantRepository.resetData()
             Log.d("Dashboard", "Logging out")
-            startActivity(Intent(this@DashboardFragment.context, LoginActivity::class.java))
+            startActivity(Intent(this@DashboardFragment.activity, LoginActivity::class.java))
             this.activity?.finish()
         }
     }
