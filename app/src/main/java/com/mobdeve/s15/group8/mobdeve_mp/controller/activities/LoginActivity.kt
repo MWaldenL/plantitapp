@@ -18,13 +18,21 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var btnLogin: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
             try { // then with firebase
                 val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
                 mFirebaseAuthWithGoogle(account?.idToken!!)
-            } catch (e: ApiException) { // possibly because
+            } catch (e: ApiException) {
                 Log.e("TAG","signInResult:failed code=" + e.statusCode)
             }
         }
@@ -52,29 +60,15 @@ class LoginActivity : AppCompatActivity() {
             .signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) { // get the completed user object
-                    val user = F.auth.currentUser
-                    val userId = user?.uid.toString()
-                    val userDoc = F.usersCollection.document(userId)
-                    val now = DateTimeService.getCurrentDateTime()
-                    userDoc.get().addOnSuccessListener { doc -> // if the user doesn't exist yet in firestore,
-                        if (doc.data == null) {
-                            DBService.addDocument( // create a new user document
-                                collection= F.usersCollection,
-                                id=userId,
-                                data=hashMapOf(
-                                    "name" to user?.displayName,
-                                    "dateJoined" to now,
-                                    "plants" to ArrayList<String>(),
-                                    "feedbackStop" to false,
-                                    "feedbackLastSent" to now,
-                                    "pushAsked" to false
-                                )
-                            )
+                    val userId = F.auth.currentUser!!.uid
+                    launch(coroutineContext) {
+                        val doc = UserService.getUserById(userId)
+                        if (doc?.data == null) {
+                            UserService.addUser(userId)
                         }
                     }
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    startActivity(Intent(this@LoginActivity, SplashActivity::class.java))
                     finish()
-//                    PlantRepository.getData() // fetch the user's plants
                 }
             }
     }

@@ -32,7 +32,7 @@ object PlantRepository: CoroutineScope {
     var taskList: ArrayList<Task> = ArrayList()
 
     init {
-        mResetData()
+        resetData()
     }
 
     fun setOnDataFetchedListener(listener: DBCallback?) {
@@ -47,7 +47,7 @@ object PlantRepository: CoroutineScope {
         if (F.auth.currentUser == null) {
             return
         }
-        mResetData()
+        resetData()
         val id = F.auth.currentUser!!.uid
         launch(coroutineContext) {
             val plantData = DBService.readDocuments( // fetch plants
@@ -68,7 +68,7 @@ object PlantRepository: CoroutineScope {
         }
     }
 
-    private fun mResetData() {
+    fun resetData() {
         plantList = ArrayList()
         taskList = ArrayList()
     }

@@ -19,7 +19,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
-import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment(), DBCallback {
     private lateinit var elvTaskGroup: ExpandableListView
@@ -61,6 +60,8 @@ class DashboardFragment : Fragment(), DBCallback {
         btnSignout.setOnClickListener { // sign out from both firebase and google
             F.auth.signOut()
             GoogleSignIn.getClient(this.activity, GoogleSingleton.googleSigninOptions).signOut()
+            PlantRepository.resetData()
+            Log.d("Dashboard", "Logging out")
             startActivity(Intent(this@DashboardFragment.context, LoginActivity::class.java))
             this.activity?.finish()
         }
