@@ -153,16 +153,11 @@ class AddPlantActivity :
 
         // Write plant to firebase first
         DBService.addDocument(
-            collection= F.plantsCollection,
+            collection=F.plantsCollection,
             id=mPlantId,
             data=NewPlantInstance.plant)
-//        DBService.updateDocument(
-//            collection= F.usersCollection,
-//            id= F.auth.currentUser?.uid,
-//            field="plants",
-//            value=FieldValue.arrayUnion(mPlantId))
 
-        // Write the tasks to firebase db
+        // Write the tasks to firebase
         for (task in NewPlantInstance.tasks) {
             // update the plantId first
             task["plantId"] = mPlantId

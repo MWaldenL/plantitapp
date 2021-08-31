@@ -52,6 +52,13 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="TextAppearance.MOBDEVEMP.Error" parent="TextAppearance.AppCompat.Body2">
+        <item name="fontFamily">@font/source_sans_pro</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!--  Widgets  -->
 
     <style name="TextAppearance.MOBDEVEMP.BadgeLight" parent="TextAppearance.MOBDEVEMP.Body">
