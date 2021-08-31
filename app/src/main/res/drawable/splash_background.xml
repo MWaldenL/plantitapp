@@ -3,5 +3,5 @@
     <item android:drawable="@drawable/bg"/>
     <item
         android:gravity="center"
-        android:drawable="@drawable/plantitapp" />
+        android:drawable="@drawable/logo" />
 </layer-list>
