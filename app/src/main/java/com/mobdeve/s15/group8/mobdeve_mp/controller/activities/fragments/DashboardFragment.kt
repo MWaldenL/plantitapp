@@ -63,7 +63,7 @@ class DashboardFragment : Fragment(), DBCallback {
             GoogleSignIn.getClient(this.activity, GoogleSingleton.googleSigninOptions).signOut()
             Log.d("Dashboard", "Logging out")
             startActivity(Intent(this@DashboardFragment.activity, LoginActivity::class.java))
-            this.activity?.finish()
+            requireActivity().finish()
         }
     }
 
