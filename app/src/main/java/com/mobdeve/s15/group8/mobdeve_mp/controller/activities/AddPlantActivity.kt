@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.CameraService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -23,7 +23,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageUploadService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.io.File
@@ -79,6 +79,15 @@ class AddPlantActivity :
             }
         }
 
+    private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) { // fetch bitmap and show image to user
+            val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
+            groupNoPic.visibility = View.GONE
+            ivPlant.visibility = View.VISIBLE
+            ivPlant.setImageBitmap(bitmap)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
@@ -94,7 +103,7 @@ class AddPlantActivity :
         etPlantName = findViewById(R.id.et_plant_name)
         etPlantNickname = findViewById(R.id.et_plant_nickname)
         tvErrName = findViewById(R.id.tv_err_name)
-        tvErrNickname = findViewById(R.id.tv_err_nickname)
+        tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
         tvErrImage = findViewById(R.id.tv_err_image)
         ibtnAddTask = findViewById(R.id.ibtn_add_task)
         ibtnSavePlant = findViewById(R.id.ibtn_save_plant)
@@ -102,8 +111,18 @@ class AddPlantActivity :
         tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
-        ivAddPlant.setOnClickListener { mOpenCamera() }
-        ivPlant.setOnClickListener { mOpenCamera() }
+        ivAddPlant.setOnClickListener {
+            mPhotoFilename = CameraService.launchCameraAndGetFilename(
+                context=this,
+                authority=getString(R.string.file_provider_authority),
+                launcher=cameraLauncher)
+        }
+        ivPlant.setOnClickListener {
+            mPhotoFilename = CameraService.launchCameraAndGetFilename(
+                context=this,
+                authority=getString(R.string.file_provider_authority),
+                launcher=cameraLauncher)
+        }
         ibtnSavePlant.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -195,33 +214,5 @@ class AddPlantActivity :
         Intent(this@AddPlantActivity, MainActivity::class.java)
         setResult(Activity.RESULT_OK)
         finish()
-    }
-
-    private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            CameraService.reduceImageQuality(mPhotoFilename)
-            val bitmap = CameraService.getBitmapFromUri(
-                uri=Uri.fromFile(File(mPhotoFilename)),
-                contentResolver)
-            // show the image
-            groupNoPic.visibility = View.GONE
-            ivPlant.visibility = View.VISIBLE
-            ivPlant.setImageBitmap(bitmap)
-        }
-    }
-
-    private fun mOpenCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                val photoFile: File? = CameraService.createImageFile(this)
-                mPhotoFilename = photoFile?.absolutePath!!
-                val photoURI: Uri = FileProvider.getUriForFile(
-                    this,
-                    getString(R.string.file_provider_authority),
-                    photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                cameraLauncher.launch(takePictureIntent)
-            }
-        }
     }
 }

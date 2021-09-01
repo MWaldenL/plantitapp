@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="40dp"
                 android:text="Care Methods"
                 android:textColor="@color/primary_color"
                 android:textStyle="bold"
@@ -172,6 +172,33 @@
                 app:layout_constraintStart_toEndOf="@+id/et_plant_name_edit"
                 app:layout_constraintTop_toBottomOf="@+id/tv_gen_info_edit" />
 
+            <TextView
+                android:id="@+id/tv_edit_err_name"
+                style="@style/TextAppearance.MOBDEVEMP.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:ems="12"
+                android:text="@string/err_no_name"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/tv_care_methods_edit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_plant_name_edit"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <TextView
+                android:id="@+id/tv_edit_err_nickname"
+                style="@style/TextAppearance.MOBDEVEMP.Error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:text="@string/err_dup_nickname"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/ibtn_add_task_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_plant_nickname_edit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

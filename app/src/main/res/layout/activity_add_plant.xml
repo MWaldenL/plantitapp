@@ -217,7 +217,7 @@
                 android:text="@string/err_no_name"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/tv_care_methods"
-                app:layout_constraintEnd_toStartOf="@+id/tv_err_nickname"
+                app:layout_constraintEnd_toStartOf="@+id/tv_edit_err_nickname"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_plant_name"
@@ -236,7 +236,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
             <TextView
-                android:id="@+id/tv_err_nickname"
+                android:id="@+id/tv_edit_err_nickname"
                 style="@style/TextAppearance.MOBDEVEMP.Error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
