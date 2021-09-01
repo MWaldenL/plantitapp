@@ -9,11 +9,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import java.io.File
 import android.graphics.ColorMatrixColorFilter
-
 import android.graphics.ColorMatrix
-
-
-
 
 class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
     private val ivImage: ImageView = itemView.findViewById(R.id.iv_plant_grid)
@@ -24,7 +20,7 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
         if (plant.filePath == "") { // load the image from cloud
             Glide.with(itemView.context)
                  .load(plant.imageUrl)
-                 //.thumbnail()
+                 .thumbnail()
                  .placeholder(R.drawable.ic_launcher_background)
                  .into(ivImage)
         } else { // load the image from app storage
@@ -47,6 +43,5 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
             tvPlantGridSubheader.text = plant.name
             tvPlantGridSubheader.visibility = View.VISIBLE
         }
-
     }
 }

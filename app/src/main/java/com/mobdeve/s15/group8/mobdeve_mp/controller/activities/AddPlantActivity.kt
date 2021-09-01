@@ -156,11 +156,11 @@ class AddPlantActivity :
             collection= F.plantsCollection,
             id=mPlantId,
             data=NewPlantInstance.plant)
-        DBService.updateDocument(
-            collection= F.usersCollection,
-            id= F.auth.currentUser?.uid,
-            field="plants",
-            value=FieldValue.arrayUnion(mPlantId))
+//        DBService.updateDocument(
+//            collection= F.usersCollection,
+//            id= F.auth.currentUser?.uid,
+//            field="plants",
+//            value=FieldValue.arrayUnion(mPlantId))
 
         // Write the tasks to firebase db
         for (task in NewPlantInstance.tasks) {

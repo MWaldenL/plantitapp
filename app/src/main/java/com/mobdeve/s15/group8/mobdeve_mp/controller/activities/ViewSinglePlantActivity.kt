@@ -244,8 +244,6 @@ class ViewSinglePlantActivity :
             )
         }
 
-        // TODO: Delete the corresponding plantId from the user doc
-
         Toast.makeText(
             this,
             "${name} has been deleted. Returning to the home screen.",
