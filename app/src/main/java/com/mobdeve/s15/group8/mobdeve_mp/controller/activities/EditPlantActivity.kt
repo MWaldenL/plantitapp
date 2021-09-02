@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -47,10 +49,10 @@ class EditPlantActivity :
     private lateinit var tvErrName: TextView
     private lateinit var tvErrNickname: TextView
     private lateinit var mPhotoFilename: String
-    private lateinit var mOldNickname: String
     private lateinit var mPlantData: Plant
     private lateinit var mPlantDataEditable: Plant
-
+    private var mOldNickname = "NULL"
+    private var mFirstTime = true
     private val mNewTasks: ArrayList<Task> = arrayListOf()
     private val mDeletedTasks: ArrayList<String> = arrayListOf()
 
@@ -108,12 +110,28 @@ class EditPlantActivity :
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
         tvErrName = findViewById(R.id.tv_edit_err_name)
         tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
-        ivPlant.setOnClickListener {
-            mPhotoFilename = CameraService.launchCameraAndGetFilename(
-                context=this,
-                authority=getString(R.string.file_provider_authority),
-                launcher=cameraLauncher)
-        }
+
+        etPlantName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!mFirstTime) {
+                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        etPlantNickname.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (mOldNickname != "NULL") {
+                    tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        ivPlant.setOnClickListener { mLaunchCamera() }
         ibtnSave.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -147,19 +165,29 @@ class EditPlantActivity :
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
         mOldNickname = etPlantNickname.text.toString()
+        mOldNickname.trim()
 
         rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
     }
 
+    private fun mLaunchCamera() {
+        mPhotoFilename = CameraService.launchCameraAndGetFilename(
+            context=this,
+            authority=getString(R.string.file_provider_authority),
+            launcher=cameraLauncher)
+    }
+
     private fun mCheckNickname(): Boolean {
-        val currentNickname = etPlantNickname.text.toString()
+        val currentNickname = etPlantNickname.text.toString().trim()
         val plant = PlantService.findPlantByNickname(currentNickname)
         return plant == null || // for newly-named plants
+                currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
                 currentNickname == mOldNickname || // if did not change nickname
                 currentNickname != plant.nickname // changed nickname and unique
     }
 
     private fun mCheckFields(): Boolean {
+        mFirstTime = false
         val nameFilled = etPlantName.text.isNotEmpty()
         val nicknameUnique = mCheckNickname()
         tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
@@ -172,8 +200,8 @@ class EditPlantActivity :
             return
         }
 
-        mPlantDataEditable.name = etPlantName.text.toString()
-        mPlantDataEditable.nickname = etPlantNickname.text.toString()
+        mPlantDataEditable.name = etPlantName.text.toString().trim()
+        mPlantDataEditable.nickname = etPlantNickname.text.toString().trim()
         mPlantDataEditable.filePath = mPhotoFilename
 
         DBService.updateDocument(

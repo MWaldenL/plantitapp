@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -46,6 +48,7 @@ class AddPlantActivity :
     private lateinit var etPlantNickname: EditText
     private lateinit var groupNoPic: ConstraintLayout
     private lateinit var mPhotoFilename: String
+    private var mFirstTime = true
     private val mPlantId = UUID.randomUUID().toString()
 
     private val addTaskLauncher =
@@ -92,8 +95,6 @@ class AddPlantActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
         ImageUploadService.setOnUploadSuccessListener(this)
-
-        // Clear NewPlantInstance
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
 
@@ -111,18 +112,26 @@ class AddPlantActivity :
         tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
-        ivAddPlant.setOnClickListener {
-            mPhotoFilename = CameraService.launchCameraAndGetFilename(
-                context=this,
-                authority=getString(R.string.file_provider_authority),
-                launcher=cameraLauncher)
-        }
-        ivPlant.setOnClickListener {
-            mPhotoFilename = CameraService.launchCameraAndGetFilename(
-                context=this,
-                authority=getString(R.string.file_provider_authority),
-                launcher=cameraLauncher)
-        }
+        etPlantName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!mFirstTime) {
+                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        etPlantNickname.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
+            }
+        })
+
+        ivAddPlant.setOnClickListener { mLaunchCamera() }
+        ivPlant.setOnClickListener { mLaunchCamera() }
         ibtnSavePlant.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -152,13 +161,32 @@ class AddPlantActivity :
             value=imageUrl)
     }
 
+    private fun mLaunchCamera() {
+        mPhotoFilename = CameraService.launchCameraAndGetFilename(
+            context=this,
+            authority=getString(R.string.file_provider_authority),
+            launcher=cameraLauncher)
+    }
+
+    private fun mCheckNickname(): Boolean {
+        val currentNickname = etPlantNickname.text.toString().trim()
+        val plant = PlantService.findPlantByNickname(currentNickname)
+        return plant == null || // for newly-named plants
+                currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
+                currentNickname != plant.nickname // changed nickname and unique
+    }
+
     private fun mCheckFields(): Boolean {
-        val nameFilled = etPlantName.text.isNotEmpty()
-        val nicknameUnique = PlantService.findPlantByNickname(etPlantNickname.text.toString()) == null
+        mFirstTime = false
+
+        val nameFilled = etPlantName.text.trim().isNotEmpty()
+        val nicknameUnique = mCheckNickname()
         val imageAdded = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
+
         tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
         tvErrNickname.visibility = if (!nicknameUnique) View.VISIBLE else View.GONE
         tvErrImage.visibility = if (!imageAdded) View.VISIBLE else View.GONE
+
         return nameFilled && nicknameUnique && imageAdded
     }
 
@@ -171,8 +199,8 @@ class AddPlantActivity :
         NewPlantInstance.setStaticParams(
             id=mPlantId,
             userId=F.auth.uid!!,
-            name=etPlantName.text.toString(),
-            nick=etPlantNickname.text.toString(),
+            name=etPlantName.text.toString().trim(),
+            nick=etPlantNickname.text.toString().trim(),
             filePath=mPhotoFilename,
             death=false)
 
