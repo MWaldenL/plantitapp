@@ -2,23 +2,20 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,24 +23,17 @@ import com.bumptech.glide.Glide
 import com.cloudinary.android.MediaManager
 import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageUploadService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.Error
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class EditPlantActivity :
     AppCompatActivity(),
@@ -56,15 +46,18 @@ class EditPlantActivity :
     private lateinit var ibtnSave: ImageButton
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
+    private lateinit var tvErrName: TextView
+    private lateinit var tvErrNickname: TextView
     private lateinit var mPhotoFilename: String
     private lateinit var mPlantData: Plant
     private lateinit var mPlantDataEditable: Plant
-
+    private var mOldNickname = "NULL"
+    private var mFirstTime = true
     private val mNewTasks: ArrayList<Task> = arrayListOf()
     private val mDeletedTasks: ArrayList<String> = arrayListOf()
 
     private val addTaskLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val action = result.data?.getCharSequenceExtra(
                     getString(R.string.ADD_TASK_ACTION)).toString()
@@ -95,37 +88,16 @@ class EditPlantActivity :
             }
         }
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-
-            // reduce image quality
-            val bm = BitmapFactory.decodeFile(mPhotoFilename)
-            val file = File(mPhotoFilename)
-            file.createNewFile()
-            val fos = FileOutputStream(file)
-            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos)
-            fos.close()
-
-            val uri = Uri.fromFile(File(mPhotoFilename))
-            try { // create the bitmap from uri
-                val bitmap = if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                } else {
-                    val source = ImageDecoder.createSource(contentResolver, uri)
-                    ImageDecoder.decodeBitmap(source)
-                }
-                // show the image
-                ivPlant.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
+            ivPlant.setImageBitmap(bitmap)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_plant)
-
         mInitViews()
         mBindData()
     }
@@ -136,8 +108,30 @@ class EditPlantActivity :
         ibtnSave = findViewById(R.id.ibtn_save_plant_edit)
         etPlantName = findViewById(R.id.et_plant_name_edit)
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
+        tvErrName = findViewById(R.id.tv_edit_err_name)
+        tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
 
-        ivPlant.setOnClickListener { mOpenCamera() }
+        etPlantName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!mFirstTime) {
+                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        etPlantNickname.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (mOldNickname != "NULL") {
+                    tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        ivPlant.setOnClickListener { mLaunchCamera() }
         ibtnSave.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -170,13 +164,44 @@ class EditPlantActivity :
 
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
+        mOldNickname = etPlantNickname.text.toString()
+        mOldNickname.trim()
 
         rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
     }
 
+    private fun mLaunchCamera() {
+        mPhotoFilename = CameraService.launchCameraAndGetFilename(
+            context=this,
+            authority=getString(R.string.file_provider_authority),
+            launcher=cameraLauncher)
+    }
+
+    private fun mCheckNickname(): Boolean {
+        val currentNickname = etPlantNickname.text.toString().trim()
+        val plant = PlantService.findPlantByNickname(currentNickname)
+        return plant == null || // for newly-named plants
+                currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
+                currentNickname == mOldNickname || // if did not change nickname
+                currentNickname != plant.nickname // changed nickname and unique
+    }
+
+    private fun mCheckFields(): Boolean {
+        mFirstTime = false
+        val nameFilled = etPlantName.text.isNotEmpty()
+        val nicknameUnique = mCheckNickname()
+        tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
+        tvErrNickname.visibility = if (!nicknameUnique) View.VISIBLE else View.GONE
+        return nameFilled && nicknameUnique
+    }
+
     private fun mSavePlant() {
-        mPlantDataEditable.name = etPlantName.text.toString()
-        mPlantDataEditable.nickname = etPlantNickname.text.toString()
+        if (!mCheckFields()) {
+            return
+        }
+
+        mPlantDataEditable.name = etPlantName.text.toString().trim()
+        mPlantDataEditable.nickname = etPlantNickname.text.toString().trim()
         mPlantDataEditable.filePath = mPhotoFilename
 
         DBService.updateDocument(
@@ -247,37 +272,5 @@ class EditPlantActivity :
             mPlantData.id,
             "imageUrl",
             imageUrl)
-    }
-
-    private fun mOpenCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                val photoFile: File? = try {
-                    mCreateImageFile()
-                } catch (ex: IOException) {
-                    Log.e("CAM", "$ex")
-                    null
-                }
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        getString(R.string.file_provider_authority),
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    cameraLauncher.launch(takePictureIntent)
-                }
-            }
-        }
-    }
-
-    @Throws(IOException::class)
-    private fun mCreateImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val filename = "plant_${timeStamp}"
-        return File.createTempFile(filename, ".jpg", storageDir).apply {
-            mPhotoFilename = absolutePath
-        }
     }
 }

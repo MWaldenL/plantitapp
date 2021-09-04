@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.model.services
+package com.mobdeve.s15.group8.mobdeve_mp.controller.services
 
 import android.util.Log
 import com.cloudinary.android.MediaManager
