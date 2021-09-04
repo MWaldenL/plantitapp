@@ -5,12 +5,16 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FieldValue
@@ -19,6 +23,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NetworkService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
@@ -33,45 +38,74 @@ class MainActivity:
     DailyNotificationsDialogFragment.DailyNotificationsDialogListener,
     RefreshCallback
 {
+    private lateinit var bottomAppBar: BottomAppBar
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
+    private lateinit var layoutMain: CoordinatorLayout
     private lateinit var btnSetAlarm: Button
-
+    private lateinit var ivOffline: ImageView
     private lateinit var mSharedPreferences: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mInitViews()
+        mInitListeners()
 
-        bottomNav = findViewById(R.id.bottom_nav_view)
         val navFragment = supportFragmentManager.findFragmentById(R.id.nav_fragment) as NavHostFragment
         val navController = navFragment.navController
         bottomNav.setupWithNavController(navController)
-
-        fabAddPlant = findViewById(R.id.fab_add_plant)
-        fabAddPlant.setOnClickListener {
-            val addPlantIntent = Intent(this@MainActivity, AddPlantActivity::class.java)
-            startActivity(addPlantIntent)
-        }
 
         mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
         mEditor = mSharedPreferences.edit()
 
         mHandleDailyNotificationsReady()
+        PlantRepository.setRefreshedListener(this)
 
+        val networkConnection = NetworkService(this)
+        networkConnection.observe(this, { connected ->
+            if (connected) {
+                Log.d("MPMainActivity", "connected")
+                ivOffline.visibility = View.GONE
+                mToggleMainViews(show=true)
+            } else {
+                Log.d("MPMainActivity", "disconnected")
+                ivOffline.visibility = View.VISIBLE
+                mToggleMainViews(show=false)
+            }
+        })
+    }
+
+    private fun mInitViews() {
+        ivOffline = findViewById(R.id.iv_offline_dashboard)
+        layoutMain = findViewById(R.id.layout_main)
+        bottomNav = findViewById(R.id.bottom_nav_view)
+        bottomAppBar = findViewById(R.id.bottom_appbar)
+        fabAddPlant = findViewById(R.id.fab_add_plant)
         btnSetAlarm = findViewById(R.id.btn_set_alarm)
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh)
+    }
+
+    private fun mInitListeners() {
+        fabAddPlant.setOnClickListener {
+            val addPlantIntent = Intent(this@MainActivity, AddPlantActivity::class.java)
+            startActivity(addPlantIntent)
+        }
         btnSetAlarm.setOnClickListener {
             mSetAlarm()
         }
-
-        PlantRepository.setRefreshedListener(this)
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh)
         swipeRefreshLayout.setOnRefreshListener {
             PlantRepository.getData()
         }
+    }
+
+    private fun mToggleMainViews(show: Boolean) {
+        bottomAppBar.visibility = if (show) View.VISIBLE else View.GONE
+        bottomNav.visibility = if (show) View.VISIBLE else View.GONE
+        fabAddPlant.visibility = if (show) View.VISIBLE else View.GONE
+        layoutMain.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     // push notifications function

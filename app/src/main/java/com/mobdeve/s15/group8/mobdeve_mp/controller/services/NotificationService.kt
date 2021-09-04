@@ -1,10 +1,9 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.services
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.mobdeve.s15.group8.mobdeve_mp.model.workers.FirstNotificationWorker
-import com.mobdeve.s15.group8.mobdeve_mp.model.workers.NotificationWorker
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 object NotificationService {
