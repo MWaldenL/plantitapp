@@ -20,4 +20,23 @@
 
     <string name="add_journal_hint">What\'s on your mind?</string>
     <string name="add_journal_counter">500</string>
+
+<!--    Profile    -->
+
+    <string name="profile_name_placeholder">Name</string>
+
+    <string name="profile_date_label">Date Joined</string>
+    <string name="profile_date_placeholder">January 31, 2000</string>
+
+    <string name="live_count_label">Live Plants</string>
+    <string name="dead_count_label">Dead Plants</string>
+    <string name="total_count_label">Total Plants</string>
+    <string name="all_time_count_label">Total Plants (All Time)</string>
+    <string name="count_placeholder">25</string>
+
+    <string name="push_label">Push Notifications</string>
+    <string name="feedback_switch_label">Feedback Prompts</string>
+
+    <string name="log_out_label">Sign-out</string>
+
 </resources>
