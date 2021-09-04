@@ -14,11 +14,12 @@ import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
-class AppFeedbackDialogFragment :
+class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
     DialogFragment()
 {
     private lateinit var rbFeedbackRating: RatingBar
     private lateinit var etFeedbackComment: EditText
+    private val mForceTrigger: Boolean = forceTrigger
 
     internal lateinit var listener: AppFeedbackDialogListener
 
@@ -46,6 +47,11 @@ class AppFeedbackDialogFragment :
             rbFeedbackRating = view.findViewById(R.id.rb_feedback_rating)
             etFeedbackComment = view.findViewById(R.id.et_feedback_comment)
 
+            if (!mForceTrigger)
+                builder.setNegativeButton("Don't show again") { dialog, id ->
+                        listener.onFeedbackStop(this)
+                    }
+
             builder
                 .setView(view)
                 .setPositiveButton("Continue") { dialog, id ->
@@ -54,13 +60,8 @@ class AppFeedbackDialogFragment :
 
                     listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
                 }
-                .setNegativeButton("Don't show again") { dialog, id ->
-                    listener.onFeedbackStop(this)
-                    getDialog()?.cancel()
-                }
                 .setNeutralButton("Cancel") { dialog, id ->
                     listener.onFeedbackCancel(this)
-                    getDialog()?.cancel()
                 }
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")
@@ -68,6 +69,5 @@ class AppFeedbackDialogFragment :
 
     override fun onCancel(dialog: DialogInterface) {
         listener.onFeedbackCancel(this)
-        super.onCancel(dialog)
     }
 }
