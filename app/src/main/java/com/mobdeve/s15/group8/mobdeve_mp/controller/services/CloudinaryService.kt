@@ -28,7 +28,7 @@ object CloudinaryService : UploadCallback, CoroutineScope {
             .get()
             .upload(filename)
             .option("folder", F.auth.currentUser!!.uid)
-            .unsigned("vywedaso")
+            .unsigned(BuildConfig.UPLOAD_PRESET)
             .callback(this).dispatch()
     }
 
