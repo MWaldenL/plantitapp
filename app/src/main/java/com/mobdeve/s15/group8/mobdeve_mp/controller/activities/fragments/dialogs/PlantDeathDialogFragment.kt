@@ -29,10 +29,13 @@ class PlantDeathDialogFragment:
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            // TODO: change message to be more specific
-
             builder
-                .setMessage("This plant will be labelled as dead but will not be deleted. Its functions will be limited but you can choose to revive it later on.")
+                .setMessage(
+                    "This plant will be labelled as dead but it will not be deleted.\n\n" +
+                            "You can still choose to revive it later on but the following functions will be disabled during the period when it's dead: \n\n" +
+                            "- Edit Plant\n" +
+                            "- Add New Journal (but you can still delete entries)"
+                )
                 .setPositiveButton("Continue") { dialog, id ->
                     listener.onPlantDeath(this)
                 }

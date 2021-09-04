@@ -29,8 +29,6 @@ class PlantRevivalDialogFragment:
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            // TODO: change message to be more specific
-
             builder
                 .setMessage("This plant will no longer be labelled as dead. Its functions will be restored.")
                 .setPositiveButton("Continue") { dialog, id ->

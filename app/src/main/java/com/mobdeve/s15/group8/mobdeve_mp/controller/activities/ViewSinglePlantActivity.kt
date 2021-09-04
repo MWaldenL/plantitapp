@@ -260,7 +260,6 @@ class ViewSinglePlantActivity :
             Toast.LENGTH_SHORT
         ).show()
 
-        // launch main activity after deletion TODO
         finish()
     }
 

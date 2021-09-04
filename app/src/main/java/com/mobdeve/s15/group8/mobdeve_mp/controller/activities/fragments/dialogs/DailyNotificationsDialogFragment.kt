@@ -30,8 +30,6 @@ class DailyNotificationsDialogFragment:
         return activity?.let {
             val builder = AlertDialog.Builder(it)
 
-            // TODO: change message to be more specific
-
             builder
                 .setMessage("Do you want to receive push notifications? You can always change this in your profile.")
                 .setPositiveButton("Yes") { dialog, id ->

@@ -117,7 +117,6 @@ class ViewAllJournalsActivity :
         mToggleJournalDisplay()
     }
 
-    // TODO: Fix display
     private fun mPrepareSwipeCallback() {
         val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -140,7 +139,6 @@ class ViewAllJournalsActivity :
                 mHandleDeleteJournalRequest()
             }
 
-            // TODO: Check why icon not showing
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
