@@ -108,6 +108,7 @@ class ProfileActivity :
                 NotificationService.scheduleNotification(this)
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.ALLOWED.ordinal)
             } else {
+                NotificationService.sendDisablingNotification(this)
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.NOT_ALLOWED.ordinal)
             }
 

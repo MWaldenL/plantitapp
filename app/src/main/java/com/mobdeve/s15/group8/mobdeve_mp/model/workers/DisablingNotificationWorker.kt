@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent.getActivity
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
@@ -18,59 +17,24 @@ import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.PushPermissions
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
-class NotificationWorker(context: Context, params: WorkerParameters):
+class DisablingNotificationWorker(context: Context, params: WorkerParameters):
     Worker(context, params)
 {
     override fun doWork(): Result {
         val id = inputData.getLong(NOTIFICATION_ID, 0).toInt()
+        sendNotification(id)
 
         val pushStatus = applicationContext.getSharedPreferences(applicationContext.getString(R.string.SP_NAME), Context.MODE_PRIVATE)
                 .getInt(applicationContext.getString(R.string.SP_PUSH_KEY), -1)
 
-        if (pushStatus == PushPermissions.ALLOWED.ordinal) {
+        if (pushStatus == PushPermissions.NOT_ALLOWED.ordinal)
             sendNotification(id)
 
-            val workManager = WorkManager.getInstance(applicationContext)
-
-            val c = Calendar.getInstance()
-            c.set(Calendar.HOUR_OF_DAY, 10)
-            c.set(Calendar.MINUTE, 0)
-            c.set(Calendar.SECOND, 0)
-
-            if (c.before(Calendar.getInstance()))
-                c.add(Calendar.DATE, 1)
-
-            val delay = c.timeInMillis - Calendar.getInstance().timeInMillis
-
-            val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-                .build()
-
-            workManager.enqueue(dailyWorkRequest)
-        }
-
         return Result.success()
-    }
-
-    private fun getMessages(): ArrayList<String> {
-        val messages = arrayListOf<String>()
-        val tasks = TaskService.getTasksToday(false)
-
-        if (tasks.size == 0) {
-            messages.add("Hooray!")
-            messages.add("Your plants are all taken care of for today. You can take a break!")
-        } else {
-            messages.add("Your plants are calling...")
-            messages.add("Your plants need you to take care of them. Open PlantitApp to see what you need to do.")
-        }
-
-        return messages
     }
 
     private fun sendNotification(id: Int) {
@@ -79,21 +43,21 @@ class NotificationWorker(context: Context, params: WorkerParameters):
         intent.putExtra(NOTIFICATION_ID, id)
 
         val notificationManager = applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
         val pendingIntent = getActivity(applicationContext, 0, intent, 0)
-        val messages = getMessages()
 
         val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.ic_plant_24)
-            .setContentTitle(messages[0])
-            .setContentText(messages[1])
-            .setStyle(NotificationCompat.BigTextStyle().bigText(messages[1]))
+            .setContentTitle("Bye Bye :<")
+            .setContentText("You disabled notifications. This is the last one you'll receive unless you re-enable them in your profile.")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("You disabled notifications. This is the last one you'll receive unless you re-enable them in your profile."))
             .setDefaults(DEFAULT_ALL)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(PRIORITY_MAX)
 
         if (SDK_INT >= O) {
-            notification.setChannelId(FirstNotificationWorker.NOTIFICATION_CHANNEL)
+            notification.setChannelId(NOTIFICATION_CHANNEL)
 
             val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL,
@@ -107,8 +71,8 @@ class NotificationWorker(context: Context, params: WorkerParameters):
     }
 
     companion object {
-        const val NOTIFICATION_ID = "appName_notification_id"
-        const val NOTIFICATION_NAME = "appName"
-        const val NOTIFICATION_CHANNEL = "appName_channel_01"
+        const val NOTIFICATION_ID = "appName_notification_id3"
+        const val NOTIFICATION_NAME = "appName3"
+        const val NOTIFICATION_CHANNEL = "appName_channel_03"
     }
 }

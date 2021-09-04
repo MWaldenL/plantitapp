@@ -47,7 +47,16 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_task_view.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/menu/bottom_nav.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/baseline_more_vert_36.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/drawable/bg1.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/drawable/bg2.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/drawable/bg_img_temp.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/drawable/ic_8_25_52_pm_camera_24.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/drawable/ic_expand_more_24.xml" value="0.18848684210526315" />
         <entry key="app/src/main/res/drawable/outline_edit_24.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/drawable/rounded_rectangle_16.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/drawable/rounded_rectangle_8.xml" value="0.18848684210526315" />
+        <entry key="app/src/main/res/layout/activity_add_plant.xml" value="0.17828947368421053" />
+        <entry key="app/src/main/res/layout/activity_add_task.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.21165652459687587" />
