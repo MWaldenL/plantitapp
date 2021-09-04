@@ -35,6 +35,7 @@
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="8dp"
                 android:background="@null"
+                android:contentDescription="Save"
                 app:srcCompat="@drawable/ic_check_24"
                 app:tint="@color/primary_color" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -195,7 +196,36 @@
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_care_methods" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_care_methods" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_no_tasks"
+                style="MOBDEVE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:contentPadding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_care_methods">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="You do not have any tasks yet for this plant. Add one now."
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                    android:textStyle="italic" />
+            </androidx.cardview.widget.CardView>
 
             <EditText
                 android:id="@+id/et_plant_nickname"
