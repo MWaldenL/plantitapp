@@ -41,6 +41,8 @@ class ViewAllJournalsActivity :
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvNickname: TextView
     private lateinit var tvCommonName: TextView
+    private lateinit var tvJournalHeader: TextView
+    private lateinit var tvNoJournal: TextView
     private lateinit var fabAddNewJournal: FloatingActionButton
     private lateinit var mJournal: ArrayList<Journal>
     private lateinit var mPlantData: Plant
@@ -78,6 +80,8 @@ class ViewAllJournalsActivity :
     private fun mInitViews() {
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
+        tvJournalHeader = findViewById(R.id.tv_journal_header)
+        tvNoJournal = findViewById(R.id.tv_no_journal)
         fabAddNewJournal = findViewById(R.id.fab_add_new_journal)
 
         recyclerView = findViewById(R.id.recyclerview_all_journal)
@@ -91,12 +95,6 @@ class ViewAllJournalsActivity :
 
         val nickname = mPlantData.nickname
         val name = mPlantData.name
-        mJournal = mPlantData.journal
-
-        mJournal = mJournal
-            .indices
-            .map{i: Int -> mJournal[mJournal.size - 1 - i]}
-            .toCollection(ArrayList())
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -106,7 +104,15 @@ class ViewAllJournalsActivity :
             tvNickname.text = nickname
         }
 
+        mJournal = mPlantData.journal
+        mJournal = mJournal
+            .indices
+            .map{i: Int -> mJournal[mJournal.size - 1 - i]}
+            .toCollection(ArrayList())
+
         recyclerView.adapter = JournalAllListAdapter(mJournal)
+
+        mToggleJournalDisplay()
     }
 
     // TODO: Fix display
@@ -191,6 +197,16 @@ class ViewAllJournalsActivity :
         fragment.show(supportFragmentManager, "delete_journal")
     }
 
+    private fun mToggleJournalDisplay() {
+        if (mJournal.size == 0) {
+            tvJournalHeader.visibility = View.GONE
+            tvNoJournal.visibility = View.VISIBLE
+        } else {
+            tvNoJournal.visibility = View.GONE
+            tvJournalHeader.visibility = View.VISIBLE
+        }
+    }
+
     private fun mOnJournalSave(text: String) {
         val body = text
         val date = DateTimeService.getCurrentDateTime()
@@ -221,6 +237,8 @@ class ViewAllJournalsActivity :
 
         // notify adapter of addition
         mJournal.add(0, Journal(body, date))
+        mToggleJournalDisplay()
+
         recyclerView.layoutManager?.smoothScrollToPosition(recyclerView, null, 0)
         recyclerView.adapter?.notifyItemInserted(0)
     }
@@ -249,6 +267,7 @@ class ViewAllJournalsActivity :
 
         // update plant data
         mPlantData = PlantRepository.plantList[index]
+        mToggleJournalDisplay()
 
         Log.d("hatdog", mPlantData.journal.toString())
 

@@ -13,6 +13,7 @@
     <string name="task_header">Daily Tasks</string>
     <string name="journal_header">Plant Journal</string>
     <string name="add_journal_header">New Journal Entry</string>
+    <string name="no_journals">You do not have any journal entries yet for this plant. Add one now by clicking the + button.</string>
 
     <string name="view_all_button">View All Entries</string>
     <string name="dead_button">Mark the Plant as Dead</string>
