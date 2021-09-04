@@ -27,7 +27,7 @@ class PushNotificationsDialogFragment:
         try {
             listener = context as PushNotificationsDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + " must implement PushNotificationsDialogListener"))
+            throw ClassCastException(("$context must implement PushNotificationsDialogListener"))
         }
     }
 

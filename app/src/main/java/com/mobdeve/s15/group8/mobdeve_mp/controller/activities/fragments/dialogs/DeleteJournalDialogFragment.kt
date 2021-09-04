@@ -27,7 +27,7 @@ class DeleteJournalDialogFragment:
         try {
             listener = context as DeleteJournalDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + " must implement DeleteJournalDialogListener"))
+            throw ClassCastException(("$context must implement DeleteJournalDialogListener"))
         }
     }
 
