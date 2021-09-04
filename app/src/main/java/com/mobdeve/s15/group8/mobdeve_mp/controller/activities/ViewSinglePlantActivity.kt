@@ -27,12 +27,14 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ViewSinglePlantActivity :
@@ -51,6 +53,7 @@ class ViewSinglePlantActivity :
     private lateinit var tvCommonName: TextView
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
+    private lateinit var tvNoJournal: TextView
     private lateinit var ivPlant: ImageView
     private lateinit var ivPlantNameIcon: ImageView
     private lateinit var btnViewAll: Button
@@ -110,6 +113,11 @@ class ViewSinglePlantActivity :
         mBindData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mShowOrHideNoJournal()
+    }
+
     // activity init functions
 
     private fun mInitViews() {
@@ -124,6 +132,7 @@ class ViewSinglePlantActivity :
         ibtnKillPlant = findViewById(R.id.ibtn_kill_plant)
         ibtnRevivePlant = findViewById(R.id.ibtn_revive_plant)
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
+        tvNoJournal = findViewById(R.id.tv_single_plant_no_journal)
 
         ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
         ibtnEditPlant.setOnClickListener { mHandleEditPlant() }
@@ -140,7 +149,11 @@ class ViewSinglePlantActivity :
 
     private fun mBindData() {
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
-        val tasks = TaskService.findTasksByPlantId(id)
+        val tasksTodayAll = TaskService.getTasksToday(true)
+        val tasks = ArrayList<Task>()
+        for (t in tasksTodayAll)
+            if (t.plantId == id)
+                tasks.add(t)
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -175,7 +188,7 @@ class ViewSinglePlantActivity :
         if (filePath == "") {
             Glide.with(this)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.bg_img_temp)
                 .into(ivPlant)
         } else {
             val imgFile = File(filePath)
@@ -365,6 +378,14 @@ class ViewSinglePlantActivity :
         // notify adapter of addition
         mJournalLimited.add(0, Journal(body, date))
         recyclerViewJournal.adapter?.notifyItemInserted(0)
+
+        mShowOrHideNoJournal()
     }
 
+    private fun mShowOrHideNoJournal() {
+        if (mJournalLimited.size == 0)
+            tvNoJournal.visibility = View.VISIBLE
+        else
+            tvNoJournal.visibility = View.GONE
+    }
 }
