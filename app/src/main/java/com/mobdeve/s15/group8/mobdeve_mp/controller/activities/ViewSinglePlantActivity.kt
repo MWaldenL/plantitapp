@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.cloudinary.Cloudinary
+import com.cloudinary.android.MediaManager
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -25,6 +27,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.PlantRevivalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -234,6 +237,8 @@ class ViewSinglePlantActivity :
 
     override fun onPlantDelete(dialog: DialogFragment) {
         val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
+        Log.d("VSPA", "About to delete plant img")
+        CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
 
         // delete from db
         DBService.deleteDocument(
@@ -242,9 +247,7 @@ class ViewSinglePlantActivity :
         )
 
         // delete from local repo
-        PlantRepository
-            .plantList
-            .remove(mPlantData)
+        PlantRepository.plantList.remove(mPlantData)
 
         // delete plant's tasks
         for (taskId in mPlantData.tasks) {
@@ -259,7 +262,7 @@ class ViewSinglePlantActivity :
 
         Toast.makeText(
             this,
-            "${name} has been deleted. Returning to the home screen.",
+            "$name has been deleted. Returning to the home screen.",
             Toast.LENGTH_SHORT
         ).show()
 

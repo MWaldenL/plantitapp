@@ -78,7 +78,9 @@
 
         <meta-data
             android:name="CLOUDINARY_URL"
-            android:value="cloudinary://dnoqllk3h" />
+            android:value="cloudinary://${API_KEY}:${API_SECRET}@${CLOUD_NAME}" />
+
+        <receiver android:name=".controller.receivers.AlarmReceiver" />
     </application>
 
 </manifest>

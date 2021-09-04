@@ -2,9 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
@@ -26,10 +23,9 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageUploadService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import java.io.File
 import java.util.*
 
 class AddPlantActivity :
@@ -98,7 +94,7 @@ class AddPlantActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
-        ImageUploadService.setOnUploadSuccessListener(this)
+        CloudinaryService.setOnUploadSuccessListener(this)
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
 
@@ -241,7 +237,7 @@ class AddPlantActivity :
 
         // Then upload to cloudinary and reset the new plant instance
         try {
-            ImageUploadService.uploadToCloud(mPhotoFilename)
+            CloudinaryService.uploadToCloud(mPhotoFilename)
         } catch (err: Error) {
             MediaManager.init(this)
         }
