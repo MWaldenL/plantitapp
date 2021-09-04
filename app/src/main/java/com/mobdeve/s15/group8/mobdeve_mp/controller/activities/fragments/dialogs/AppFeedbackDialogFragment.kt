@@ -6,11 +6,10 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.fragment.app.DialogFragment
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
-import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
@@ -19,6 +18,10 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
 {
     private lateinit var rbFeedbackRating: RatingBar
     private lateinit var etFeedbackComment: EditText
+    private lateinit var btnFeedbackContinue: Button
+    private lateinit var btnFeedbackStop: Button
+    private lateinit var btnFeedbackCancel: Button
+
     private val mForceTrigger: Boolean = forceTrigger
 
     internal lateinit var listener: AppFeedbackDialogListener
@@ -34,7 +37,7 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
         try {
             listener = context as AppFeedbackDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException((context.toString() + " must implement AppFeedbackDialogListener"))
+            throw ClassCastException(("$context must implement AppFeedbackDialogListener"))
         }
     }
 
@@ -46,24 +49,32 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
 
             rbFeedbackRating = view.findViewById(R.id.rb_feedback_rating)
             etFeedbackComment = view.findViewById(R.id.et_feedback_comment)
+            btnFeedbackContinue = view.findViewById(R.id.btn_feedback_continue)
+            btnFeedbackStop = view.findViewById(R.id.btn_feedback_stop)
+            btnFeedbackCancel = view.findViewById(R.id.btn_feedback_cancel)
 
-            if (!mForceTrigger)
-                builder.setNegativeButton("Don't show again") { dialog, id ->
-                        listener.onFeedbackStop(this)
-                    }
+            if (mForceTrigger)
+                btnFeedbackStop.visibility = View.GONE
 
-            builder
-                .setView(view)
-                .setPositiveButton("Continue") { dialog, id ->
-                    val feedbackRating = rbFeedbackRating.rating
-                    val feedbackComment = etFeedbackComment.text.toString()
+            btnFeedbackContinue.setOnClickListener {
+                val feedbackRating = rbFeedbackRating.rating
+                val feedbackComment = etFeedbackComment.text.toString()
 
-                    listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
-                }
-                .setNeutralButton("Cancel") { dialog, id ->
-                    listener.onFeedbackCancel(this)
-                }
-                .create()
+                listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
+                dialog?.dismiss()
+            }
+
+            btnFeedbackStop.setOnClickListener {
+                listener.onFeedbackStop(this)
+                dialog?.dismiss()
+            }
+
+            btnFeedbackCancel.setOnClickListener {
+                listener.onFeedbackCancel(this)
+                dialog?.dismiss()
+            }
+
+            builder.setView(view).create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
