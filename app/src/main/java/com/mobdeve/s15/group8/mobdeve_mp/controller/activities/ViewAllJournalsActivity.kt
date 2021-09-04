@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -62,6 +63,7 @@ class ViewAllJournalsActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_all_journals)
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
         mInitViews()
         mBindData()
@@ -91,10 +93,7 @@ class ViewAllJournalsActivity :
     }
 
     private fun mBindData() {
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-
-        val nickname = mPlantData.nickname
-        val name = mPlantData.name
+        val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -104,13 +103,16 @@ class ViewAllJournalsActivity :
             tvNickname.text = nickname
         }
 
-        mJournal = mPlantData.journal
+        mJournal = journal
         mJournal = mJournal
             .indices
             .map{i: Int -> mJournal[mJournal.size - 1 - i]}
             .toCollection(ArrayList())
 
         recyclerView.adapter = JournalAllListAdapter(mJournal)
+
+        if (death)
+            fabAddNewJournal.visibility = View.GONE
 
         mToggleJournalDisplay()
     }
