@@ -20,18 +20,20 @@ object UserService: CoroutineScope {
     }
 
     fun addUser(id: String) {
-        val now = DateTimeService.getCurrentDateTime()
+        val now = DateTimeService.getCurrentDate()
         launch(coroutineContext) {
             DBService.addDocument(
                 collection=F.usersCollection,
                 id,
                 data=hashMapOf(
                     "name" to F.auth.currentUser!!.displayName,
-                    "dateJoined" to now,
-                    "feedbackStop" to false,
-                    "feedbackLastSent" to now,
-                    "pushAsked" to false
+                    "dateJoined" to now
                 ))
         }
+    }
+
+    suspend fun getUserField(field: String): Any? {
+        val doc = getUserById(F.auth.currentUser!!.uid)
+        return doc!!.data?.get(field)
     }
 }

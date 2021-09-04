@@ -22,17 +22,31 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_dashboard_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Today's tasks"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
-                android:textColor="@color/primary_color"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+              android:id="@+id/tv_dashboard_header"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="16dp"
+              android:layout_marginLeft="16dp"
+              android:layout_marginTop="16dp"
+              android:text="Today's tasks"
+              android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
+              android:textColor="@color/primary_color"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ibtn_profile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:foreground="?selectableItemBackground"
+                android:src="@drawable/ic_profile_24"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_dashboard_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_dashboard_header"
+                app:tint="@color/primary_color"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <com.mobdeve.s15.group8.mobdeve_mp.view.UnscrollableExpandableListView
                 android:id="@+id/elv_task_group"

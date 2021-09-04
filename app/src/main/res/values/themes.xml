@@ -122,6 +122,10 @@
         <item name="android:tint">@color/white</item>
     </style>
 
+    <style name="Widget.MOBDEVEMP.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="backgroundTint">@color/primary_color</item>
+    </style>
+
     <style name="Widget.MOBDEVEMP.IconBtnWhite" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@drawable/rounded_rectangle_8</item>
         <item name="backgroundTint">@color/white</item>

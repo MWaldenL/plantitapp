@@ -2,4 +2,7 @@
 <resources>
     <string name="SP_NAME">SHARED_PREF</string>
     <string name="SP_VIEW_KEY">SP_VIEW_KEY</string>
+    <string name="SP_PUSH_KEY">SP_PUSH_KEY</string>
+    <string name="SP_FEED_KEY">SP_FEED_KEY</string>
+    <string name="SP_FEED_TIME_KEY">SP_FEED_TIME_KEY</string>
 </resources>
