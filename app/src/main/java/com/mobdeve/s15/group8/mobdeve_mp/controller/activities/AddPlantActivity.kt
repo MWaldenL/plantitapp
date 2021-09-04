@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -60,6 +61,9 @@ class AddPlantActivity :
                     getString(R.string.ADD_TASK_OCCURRENCE)).toString()
                 val repeat = result.data?.getIntExtra(
                     getString(R.string.ADD_TASK_REPEAT), 0) as Int
+                val weeklyRecurrence = result.data?.getIntegerArrayListExtra(getString(R.string.ADD_TASK_WEEKLY_RECURRENCE))
+
+                Log.d("RECURRENCE", weeklyRecurrence.toString())
 
                 val newTask = Task(
                     id = UUID.randomUUID().toString(),
@@ -72,8 +76,10 @@ class AddPlantActivity :
                     lastCompleted = DateTimeService.getLastDueDate(
                         occurrence,
                         repeat,
-                        Date(startDate)
-                    ).time
+                        Date(startDate),
+                        weeklyRecurrence
+                    ).time,
+                    weeklyRecurrence = weeklyRecurrence!!
                 )
                 NewPlantInstance.addTask(newTask)
                 (tasksRV.adapter as AddPlantTasksAdapter).addNewTask(newTask)

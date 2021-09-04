@@ -12,4 +12,5 @@
     <string name="ADD_TASK_START_DATE">ADD_TASK_START_DATE</string>
     <string name="ADD_TASK_OCCURRENCE">ADD_TASK_OCCURRENCE</string>
     <string name="ADD_TASK_REPEAT">ADD_TASK_REPEAT</string>
+    <string name="ADD_TASK_WEEKLY_RECURRENCE">ADD_TASK_WEEKLY_RECURRENCE</string>
 </resources>

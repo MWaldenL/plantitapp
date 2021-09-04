@@ -13,5 +13,6 @@ data class Task(
     val startDate: Date,
     val repeat: Int,
     val occurrence: String,
-    var lastCompleted: Date
+    var lastCompleted: Date,
+    val weeklyRecurrence: ArrayList<Int>?
 ): Parcelable
