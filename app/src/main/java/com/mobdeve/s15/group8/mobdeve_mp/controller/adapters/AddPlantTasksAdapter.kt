@@ -43,9 +43,36 @@ class AddPlantTasksAdapter(
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repeatString = "Repeats every ${data[position].repeat} ${data[position].occurrence.lowercase(
-            Locale.getDefault()
-        )}/s"
+        var repeatString = ""
+        if (data[position].occurrence == "Week") {
+            repeatString = "Repeats every "
+
+            data[position].weeklyRecurrence!!.forEachIndexed { idx, day ->
+                if (day == 1)
+                    repeatString += "Sunday"
+                else if (day == 2)
+                    repeatString += "Monday"
+                else if (day == 3)
+                    repeatString += "Tuesday"
+                else if (day == 4)
+                    repeatString += "Wednesday"
+                else if (day == 5)
+                    repeatString += "Thursday"
+                else if (day == 6)
+                    repeatString += "Friday"
+                else if (day == 7)
+                    repeatString += "Saturday"
+
+                if (idx != data[position].weeklyRecurrence!!.size - 1)
+                    repeatString += ", "
+            }
+        } else {
+            repeatString = "Repeats every ${data[position].repeat} " +
+                    data[position].occurrence.lowercase(Locale.getDefault())
+            if (data[position].repeat > 1)
+                repeatString += "s"
+        }
+
 
         val f = SimpleDateFormat("MMM d, yyyy")
         holder.actionTV.text = data[position].action
