@@ -22,11 +22,10 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.LayoutType
 
-class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
+class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var ibGridView: ImageButton
     private lateinit var recyclerViewAlive: RecyclerView
     private lateinit var recyclerViewDead: RecyclerView
-    private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
     private lateinit var plantAliveAdapter: PlantListAdapter
@@ -48,11 +47,9 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         ibGridView = view.findViewById(R.id.ib_gridview)
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
-        swipeToRefreshLayout = view.findViewById(R.id.sr_layout_view_all_plants)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
-        PlantRepository.setRefreshedListener(this) // listen for data fetch complete
         ibGridView.setOnClickListener { mToggleLayout() }
 
         // Setup shared preferences
@@ -62,7 +59,6 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         mEditor = mSharedPref.edit()
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), 0)
 
-        swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
         mRefreshRecyclerViews()
     }
 
@@ -93,7 +89,6 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
 
     override fun onStart() {
         super.onStart()
-        Log.d("HELLO", "onStart - ${mPlantListViewType}")
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
         mDead.clear()
         mAlive.clear()
@@ -108,16 +103,11 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
 
     override fun onResume() {
         super.onResume()
-        Log.d("HELLO", "onResume - ${mPlantListViewType}")
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
     }
 
     override fun onPlantAdded() {
         recyclerViewAlive.adapter?.notifyDataSetChanged()
         recyclerViewDead.adapter?.notifyDataSetChanged()
-    }
-
-    override fun onRefreshSuccess() {
-        swipeToRefreshLayout.isRefreshing = false
     }
 }

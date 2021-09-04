@@ -20,4 +20,6 @@
 
     <string name="add_journal_hint">What\'s on your mind?</string>
     <string name="add_journal_counter">500</string>
+    <string name="my_plants">My Plants</string>
+    <string name="dead_plants">Dead Plants</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cloudinary.android.MediaManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -21,7 +22,9 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.receivers.AlarmReceiver
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.util.*
@@ -32,10 +35,12 @@ import kotlin.collections.HashMap
 class MainActivity:
     AppCompatActivity(),
     AppFeedbackDialogFragment.AppFeedbackDialogListener,
-    DailyNotificationsDialogFragment.DailyNotificationsDialogListener
+    DailyNotificationsDialogFragment.DailyNotificationsDialogListener,
+    RefreshCallback
 {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var btnSetAlarm: Button
     private lateinit var btnCancel: Button
@@ -75,6 +80,12 @@ class MainActivity:
         btnCancel = findViewById(R.id.btn_cancel)
         btnCancel.setOnClickListener {
             alarmManager.cancel(pendingIntent)
+        }
+
+        PlantRepository.setRefreshedListener(this)
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            PlantRepository.getData()
         }
     }
 
@@ -242,5 +253,11 @@ class MainActivity:
                 "feedbackLastSent" to DateTimeService.getCurrentDateTime()
             )
         )
+    }
+
+    override fun onRefreshSuccess() {
+        Log.d("Main", "${PlantRepository.plantList} ${PlantRepository.taskList}")
+        swipeRefreshLayout.isRefreshing = false
+        Log.d("Main", "Done refreshing")
     }
 }
