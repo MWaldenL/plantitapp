@@ -46,4 +46,7 @@
     <string name="delete_journal_label">Deleting Journal Entry</string>
     <string name="delete_journal_question">You are about to delete this journal entry. This action cannot be undone.</string>
 
+    <string name="delete_plant_label">Deleting a Plant</string>
+    <string name="delete_plant_question">You are about to delete this plant. This action cannot be undone.</string>
+
 </resources>
