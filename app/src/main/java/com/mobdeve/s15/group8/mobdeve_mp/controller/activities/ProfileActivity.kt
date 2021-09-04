@@ -105,11 +105,9 @@ class ProfileActivity :
     private fun mBindActions() {
         switchPush.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // TODO("setup alarm")
                 NotificationService.scheduleNotification(this)
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.ALLOWED.ordinal)
             } else {
-                // TODO("cancel alarm")
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.NOT_ALLOWED.ordinal)
             }
 
