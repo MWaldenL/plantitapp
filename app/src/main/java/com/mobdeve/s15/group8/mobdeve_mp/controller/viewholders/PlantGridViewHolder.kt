@@ -21,7 +21,7 @@ class PlantGridViewHolder(itemView: View): PlantViewHolder(itemView) {
             Glide.with(itemView.context)
                  .load(plant.imageUrl)
                  .thumbnail()
-                 .placeholder(R.drawable.ic_launcher_background)
+                 .placeholder(R.drawable.bg_img_temp)
                  .into(ivImage)
         } else { // load the image from app storage
             val imgFile = File(plant.filePath)

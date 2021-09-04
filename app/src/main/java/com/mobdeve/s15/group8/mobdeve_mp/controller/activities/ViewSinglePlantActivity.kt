@@ -188,7 +188,7 @@ class ViewSinglePlantActivity :
         if (filePath == "") {
             Glide.with(this)
                 .load(imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.bg_img_temp)
                 .into(ivPlant)
         } else {
             val imgFile = File(filePath)

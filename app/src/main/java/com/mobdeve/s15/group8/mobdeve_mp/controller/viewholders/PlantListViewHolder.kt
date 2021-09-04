@@ -39,7 +39,7 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
         if (plant.filePath == "") { // load the image from cloud
             Glide.with(itemView.context)
                 .load(plant.imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.bg_img_temp)
                 .into(mImagePlant)
         } else { // load the image from app storage
             val imgFile = File(plant.filePath)
