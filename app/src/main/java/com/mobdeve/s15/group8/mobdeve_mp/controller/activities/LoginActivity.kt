@@ -1,6 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -25,12 +27,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var btnLogin: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    private lateinit var mSharedPreferences: SharedPreferences
+    private lateinit var mEditor: SharedPreferences.Editor
 
     override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
@@ -40,6 +46,9 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
+
+        mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
+        mEditor = mSharedPreferences.edit()
     }
 
     private val googleLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -65,6 +74,12 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                         val doc = UserService.getUserById(userId)
                         if (doc?.data == null) {
                             UserService.addUser(userId)
+
+                            mEditor.putInt(
+                                getString(R.string.SP_FEED_TIME_KEY),
+                                TimeUnit.HOURS.convert(Date().time, TimeUnit.MILLISECONDS).toInt()
+                            )
+                            mEditor.apply()
                         }
                     }
                     startActivity(Intent(this@LoginActivity, SplashActivity::class.java))

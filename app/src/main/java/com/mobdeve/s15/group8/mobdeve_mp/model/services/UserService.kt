@@ -27,10 +27,7 @@ object UserService: CoroutineScope {
                 id,
                 data=hashMapOf(
                     "name" to F.auth.currentUser!!.displayName,
-                    "dateJoined" to now,
-                    "feedbackStop" to false,
-                    "feedbackLastSent" to now,
-                    "pushAsked" to false
+                    "dateJoined" to now
                 ))
         }
     }
