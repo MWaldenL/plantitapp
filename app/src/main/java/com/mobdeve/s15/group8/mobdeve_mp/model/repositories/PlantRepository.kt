@@ -57,8 +57,6 @@ object PlantRepository: CoroutineScope {
             )
             mGetPlantData(plantData)
             mDBListener?.onComplete(PLANTS_TYPE)
-        }
-        launch(Dispatchers.IO + Job()) {
             val taskData = DBService.readDocuments( // fetch tasks
                 collection=F.tasksCollection,
                 where="userId",

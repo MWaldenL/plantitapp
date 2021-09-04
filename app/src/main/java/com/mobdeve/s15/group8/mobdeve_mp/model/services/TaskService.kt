@@ -29,7 +29,7 @@ object TaskService {
     fun getTasksToday(includeFinished: Boolean = true): ArrayList<Task> {
         val tasksToday = ArrayList<Task>()
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
-
+        Log.d("MPTaskService", "${PlantRepository.taskList}")
         for (task in PlantRepository.taskList) {
             val nextDue = DateTimeService.getNextDueDate(
                 task.occurrence,
@@ -46,6 +46,7 @@ object TaskService {
                     tasksToday.add(task)
             }
         }
+        Log.d("MPTaskService", "finished getting: $tasksToday")
         return tasksToday
     }
 

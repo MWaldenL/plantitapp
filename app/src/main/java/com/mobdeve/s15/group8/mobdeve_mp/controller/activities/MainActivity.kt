@@ -256,8 +256,10 @@ class MainActivity:
     }
 
     override fun onRefreshSuccess() {
-        Log.d("Main", "${PlantRepository.plantList} ${PlantRepository.taskList}")
-        swipeRefreshLayout.isRefreshing = false
-        Log.d("Main", "Done refreshing")
+        if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty()) {
+            Log.d("MPMain", "${PlantRepository.plantList} ${PlantRepository.taskList}")
+            swipeRefreshLayout.isRefreshing = false
+            Log.d("MPMain", "Done refreshing")
+        }
     }
 }
