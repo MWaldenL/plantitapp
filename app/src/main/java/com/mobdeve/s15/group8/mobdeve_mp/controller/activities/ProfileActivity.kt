@@ -14,11 +14,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService.coroutineContext
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.FeedbackPermissions
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
@@ -107,6 +106,7 @@ class ProfileActivity :
         switchPush.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // TODO("setup alarm")
+                NotificationService.scheduleNotification(this)
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.ALLOWED.ordinal)
             } else {
                 // TODO("cancel alarm")

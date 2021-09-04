@@ -50,7 +50,6 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
             if (!mForceTrigger)
                 builder.setNegativeButton("Don't show again") { dialog, id ->
                         listener.onFeedbackStop(this)
-                        getDialog()?.cancel()
                     }
 
             builder
@@ -63,7 +62,6 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
                 }
                 .setNeutralButton("Cancel") { dialog, id ->
                     listener.onFeedbackCancel(this)
-                    getDialog()?.cancel()
                 }
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")
@@ -71,6 +69,5 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
 
     override fun onCancel(dialog: DialogInterface) {
         listener.onFeedbackCancel(this)
-        super.onCancel(dialog)
     }
 }

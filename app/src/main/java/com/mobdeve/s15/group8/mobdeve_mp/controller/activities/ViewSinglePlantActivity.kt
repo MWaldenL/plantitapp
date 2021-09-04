@@ -310,10 +310,6 @@ class ViewSinglePlantActivity :
         finish()
     }
 
-    // task functions
-
-
-
     // journal functions
 
     private fun mGotoViewAllJournalsActivity() {
