@@ -200,21 +200,36 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
+                            <TextView
+                                android:id="@+id/tv_single_plant_no_journal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:gravity="center"
+                                android:text="You do not have any journal entries yet for this plant. Add one now."
+                                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                                android:textStyle="italic"
+                                app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
                             <Button
                                 android:id="@+id/btn_view_all"
                                 style="@style/Widget.AppCompat.Button.Borderless"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
                                 android:fontFamily="@font/source_sans_pro"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
                                 android:text="@string/view_all_button"
                                 android:textColor="@color/primary_color"
                                 android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/recyclerview_all_journal"
                                 tools:ignore="TouchTargetSizeCheck" />
 
                             <androidx.recyclerview.widget.RecyclerView
@@ -222,6 +237,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:overScrollMode="never"
+                                app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

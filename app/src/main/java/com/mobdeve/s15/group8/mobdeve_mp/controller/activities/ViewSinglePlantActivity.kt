@@ -51,6 +51,7 @@ class ViewSinglePlantActivity :
     private lateinit var tvCommonName: TextView
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
+    private lateinit var tvNoJournal: TextView
     private lateinit var ivPlant: ImageView
     private lateinit var ivPlantNameIcon: ImageView
     private lateinit var btnViewAll: Button
@@ -110,6 +111,11 @@ class ViewSinglePlantActivity :
         mBindData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mShowOrHideNoJournal()
+    }
+
     // activity init functions
 
     private fun mInitViews() {
@@ -124,6 +130,7 @@ class ViewSinglePlantActivity :
         ibtnKillPlant = findViewById(R.id.ibtn_kill_plant)
         ibtnRevivePlant = findViewById(R.id.ibtn_revive_plant)
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
+        tvNoJournal = findViewById(R.id.tv_single_plant_no_journal)
 
         ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
         ibtnEditPlant.setOnClickListener { mHandleEditPlant() }
@@ -365,6 +372,14 @@ class ViewSinglePlantActivity :
         // notify adapter of addition
         mJournalLimited.add(0, Journal(body, date))
         recyclerViewJournal.adapter?.notifyItemInserted(0)
+
+        mShowOrHideNoJournal()
     }
 
+    private fun mShowOrHideNoJournal() {
+        if (mJournalLimited.size == 0)
+            tvNoJournal.visibility = View.VISIBLE
+        else
+            tvNoJournal.visibility = View.GONE
+    }
 }

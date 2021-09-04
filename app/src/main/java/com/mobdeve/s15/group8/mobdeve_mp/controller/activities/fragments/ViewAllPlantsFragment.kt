@@ -62,6 +62,10 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         mEditor = mSharedPref.edit()
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), 0)
 
+        ibGridView.setImageResource(if (mPlantListViewType == LayoutType.LINEAR_VIEW.ordinal)
+            R.drawable.ic_bento_24 else
+            R.drawable.ic_card_24)
+
         swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
         mRefreshRecyclerViews()
     }
