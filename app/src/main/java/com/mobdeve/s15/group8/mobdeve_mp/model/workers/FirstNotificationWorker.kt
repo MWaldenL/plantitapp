@@ -46,7 +46,7 @@ class FirstNotificationWorker(context: Context, params: WorkerParameters):
             val delay = c.timeInMillis - Calendar.getInstance().timeInMillis
 
             val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInitialDelay(15000, TimeUnit.MILLISECONDS)
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build()
 
             workManager.enqueue(dailyWorkRequest)
@@ -66,7 +66,7 @@ class FirstNotificationWorker(context: Context, params: WorkerParameters):
 
         val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.ic_plant_24)
-            .setContentTitle("Hello :>")
+            .setContentTitle("Hello!")
             .setContentText("Thank you for enabling notifications :> you'll receive notifications if your plants need help <3")
             .setStyle(NotificationCompat.BigTextStyle().bigText("Thank you for enabling notifications :> you'll receive notifications if your plants need your help."))
             .setDefaults(DEFAULT_ALL)

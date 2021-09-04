@@ -46,7 +46,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):
             val delay = c.timeInMillis - Calendar.getInstance().timeInMillis
 
             val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInitialDelay(15000, TimeUnit.MILLISECONDS) // TODO: Change 15000 to delay for final impl
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build()
 
             workManager.enqueue(dailyWorkRequest)
