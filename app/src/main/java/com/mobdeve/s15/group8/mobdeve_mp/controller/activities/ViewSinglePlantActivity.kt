@@ -27,12 +27,14 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ViewSinglePlantActivity :
@@ -147,7 +149,11 @@ class ViewSinglePlantActivity :
 
     private fun mBindData() {
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
-        val tasks = TaskService.findTasksByPlantId(id)
+        val tasksTodayAll = TaskService.getTasksToday(true)
+        val tasks = ArrayList<Task>()
+        for (t in tasksTodayAll)
+            if (t.plantId == id)
+                tasks.add(t)
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
