@@ -20,10 +20,8 @@
 
     <string name="add_journal_hint">What\'s on your mind?</string>
     <string name="add_journal_counter">500</string>
-<<<<<<< HEAD
     <string name="my_plants">My Plants</string>
     <string name="dead_plants">Dead Plants</string>
-=======
 
 <!--    Profile    -->
 
@@ -41,6 +39,4 @@
     <string name="feedback_switch_label">Feedback Prompts</string>
 
     <string name="log_out_label">Sign Out</string>
-
->>>>>>> 96578358ad5919486ed9e4de1d2c3f673f6624e1
 </resources>

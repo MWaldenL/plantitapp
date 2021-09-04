@@ -31,4 +31,9 @@ object UserService: CoroutineScope {
                 ))
         }
     }
+
+    suspend fun getUserField(field: String): Any? {
+        val doc = getUserById(F.auth.currentUser!!.uid)
+        return doc!!.data?.get(field)
+    }
 }
