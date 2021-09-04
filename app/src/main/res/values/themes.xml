@@ -122,8 +122,10 @@
         <item name="android:tint">@color/white</item>
     </style>
 
+<!--    TODO-->
     <style name="Widget.MOBDEVEMP.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="backgroundTint">@color/primary_color</item>
+        <item name="android:colorControlActivated">#1b5e20</item>
+        <item name="android:colorForeground">#f57f17</item>
     </style>
 
     <style name="Widget.MOBDEVEMP.IconBtnWhite" parent="Widget.AppCompat.ImageButton">
@@ -166,8 +168,8 @@
     </style>
 
     <style name="Widget.MOBDEVEMP.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="android:backgroundTint">@color/primary_color</item>
-        <item name="tint">@color/light_gray</item>
+        <item name="android:backgroundTint">@color/fab_color</item>
+        <item name="tint">@color/white</item>
         <item name="borderWidth">0dp</item>
     </style>
 

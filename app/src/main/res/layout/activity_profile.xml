@@ -168,6 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
+        android:checked="false"
         android:minWidth="48dp"
         android:minHeight="24dp"
         android:paddingEnd="0dp"

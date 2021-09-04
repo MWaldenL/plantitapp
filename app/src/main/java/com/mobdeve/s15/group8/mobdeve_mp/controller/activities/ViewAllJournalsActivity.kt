@@ -111,8 +111,9 @@ class ViewAllJournalsActivity :
 
         recyclerView.adapter = JournalAllListAdapter(mJournal)
 
-        if (death)
-            fabAddNewJournal.visibility = View.GONE
+        if (death) {
+            fabAddNewJournal.isEnabled = false
+        }
 
         mToggleJournalDisplay()
     }
