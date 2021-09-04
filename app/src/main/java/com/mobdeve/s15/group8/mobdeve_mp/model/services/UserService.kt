@@ -20,7 +20,7 @@ object UserService: CoroutineScope {
     }
 
     fun addUser(id: String) {
-        val now = DateTimeService.getCurrentDateTime()
+        val now = DateTimeService.getCurrentDate()
         launch(coroutineContext) {
             DBService.addDocument(
                 collection=F.usersCollection,
