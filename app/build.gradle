@@ -6,11 +6,20 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+def apikeyPropertiesFile = rootProject.file("apiKey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
+        manifestPlaceholders = [
+                "CLOUD_NAME": apikeyProperties["CLOUD_NAME"],
+                "API_KEY": apikeyProperties["API_KEY"],
+                "API_SECRET": apikeyProperties["API_SECRET"]
+        ]
         applicationId "com.mobdeve.s15.group8.mobdeve_mp"
         minSdkVersion 21
         targetSdkVersion 30
