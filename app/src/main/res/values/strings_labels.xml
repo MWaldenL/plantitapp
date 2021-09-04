@@ -36,6 +36,6 @@
     <string name="push_label">Push Notifications</string>
     <string name="feedback_switch_label">Feedback Prompts</string>
 
-    <string name="log_out_label">Sign-out</string>
+    <string name="log_out_label">Sign Out</string>
 
 </resources>

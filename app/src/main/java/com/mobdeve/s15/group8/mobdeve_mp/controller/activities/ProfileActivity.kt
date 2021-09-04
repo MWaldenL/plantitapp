@@ -72,6 +72,7 @@ class ProfileActivity :
         mEditor = mSharedPreferences.edit()
 
         tvProfileName.text = F.auth.currentUser?.displayName
+        tvDateJoined.text = "hello"
 
         var dead = 0
         var live = 0
