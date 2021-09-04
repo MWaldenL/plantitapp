@@ -1,7 +1,5 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -12,25 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.cloudinary.android.MediaManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.receivers.AlarmReceiver
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.FeedbackPermissions
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.PushPermissions
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class MainActivity:
     AppCompatActivity(),
@@ -41,15 +33,9 @@ class MainActivity:
     private lateinit var fabAddPlant: FloatingActionButton
 
     private lateinit var btnSetAlarm: Button
-    private lateinit var btnCancel: Button
 
     private lateinit var mSharedPreferences: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
-
-    // TODO: Remove these in final impl, only here for manual cancel
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var notificationIntent: Intent
-    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,19 +57,9 @@ class MainActivity:
 
         mHandleDailyNotificationsReady()
 
-        // TODO: Remove these in final impl, only here for manual cancel
-        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        notificationIntent = Intent(this, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, 0)
-
         btnSetAlarm = findViewById(R.id.btn_set_alarm)
         btnSetAlarm.setOnClickListener {
             mSetAlarm()
-        }
-
-        btnCancel = findViewById(R.id.btn_cancel)
-        btnCancel.setOnClickListener {
-            alarmManager.cancel(pendingIntent)
         }
     }
 
@@ -115,21 +91,7 @@ class MainActivity:
     }
 
     private fun mSetAlarm() {
-        val c = Calendar.getInstance()
-
-        // uncomment for final impl
-//        c.set(Calendar.HOUR_OF_DAY, 10)
-//        c.set(Calendar.MINUTE, 0)
-//        c.set(Calendar.SECOND, 0)
-//
-//        if (c.before(Calendar.getInstance()))
-//            c.add(Calendar.DATE, 1)
-//
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent) // change third arg to millis (min 60000) to test repeated
-
-        // code for testing
-        c.add(Calendar.SECOND, 10)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.timeInMillis, pendingIntent) // use this to check for exact time
+        NotificationService.scheduleNotification(this)
     }
 
     // feedback functions
