@@ -1,22 +1,14 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -24,39 +16,39 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
-import com.google.firebase.firestore.FieldValue
-import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
+import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.ImageUploadService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageUploadService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.Error
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddPlantActivity :
     AppCompatActivity(),
     ImageUploadCallback,
-    AddPlantTasksAdapter.OnTaskDeletedListener {
-
+    AddPlantTasksAdapter.OnTaskDeletedListener
+{
     private lateinit var tasksRV: RecyclerView
     private lateinit var ivPlant: ImageView
     private lateinit var ivAddPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
-    private lateinit var btnSave: Button
     private lateinit var ibtnSavePlant: ImageButton
+    private lateinit var tvErrNickname: TextView
+    private lateinit var tvErrName: TextView
+    private lateinit var tvErrImage: TextView
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
     private lateinit var groupNoPic: ConstraintLayout
     private lateinit var mPhotoFilename: String
+    private var mFirstTime = true
     private val mPlantId = UUID.randomUUID().toString()
 
     private val addTaskLauncher =
@@ -90,12 +82,19 @@ class AddPlantActivity :
             }
         }
 
+    private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) { // fetch bitmap and show image to user
+            val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
+            groupNoPic.visibility = View.GONE
+            ivPlant.visibility = View.VISIBLE
+            ivPlant.setImageBitmap(bitmap)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
         ImageUploadService.setOnUploadSuccessListener(this)
-
-        // Clear NewPlantInstance
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
 
@@ -104,14 +103,35 @@ class AddPlantActivity :
         ivPlant = findViewById(R.id.iv_add_plant)
         etPlantName = findViewById(R.id.et_plant_name)
         etPlantNickname = findViewById(R.id.et_plant_nickname)
+        tvErrName = findViewById(R.id.tv_err_name)
+        tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
+        tvErrImage = findViewById(R.id.tv_err_image)
         ibtnAddTask = findViewById(R.id.ibtn_add_task)
         ibtnSavePlant = findViewById(R.id.ibtn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
         tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
-        ivAddPlant.setOnClickListener { mOpenCamera() }
-        ivPlant.setOnClickListener { mOpenCamera() }
+        etPlantName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!mFirstTime) {
+                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+
+        etPlantNickname.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
+            }
+        })
+
+        ivAddPlant.setOnClickListener { mLaunchCamera() }
+        ivPlant.setOnClickListener { mLaunchCamera() }
         ibtnSavePlant.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
@@ -141,28 +161,56 @@ class AddPlantActivity :
             value=imageUrl)
     }
 
+    private fun mLaunchCamera() {
+        mPhotoFilename = CameraService.launchCameraAndGetFilename(
+            context=this,
+            authority=getString(R.string.file_provider_authority),
+            launcher=cameraLauncher)
+    }
+
+    private fun mCheckNickname(): Boolean {
+        val currentNickname = etPlantNickname.text.toString().trim()
+        val plant = PlantService.findPlantByNickname(currentNickname)
+        return plant == null || // for newly-named plants
+                currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
+                currentNickname != plant.nickname // changed nickname and unique
+    }
+
+    private fun mCheckFields(): Boolean {
+        mFirstTime = false
+
+        val nameFilled = etPlantName.text.trim().isNotEmpty()
+        val nicknameUnique = mCheckNickname()
+        val imageAdded = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
+
+        tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
+        tvErrNickname.visibility = if (!nicknameUnique) View.VISIBLE else View.GONE
+        tvErrImage.visibility = if (!imageAdded) View.VISIBLE else View.GONE
+
+        return nameFilled && nicknameUnique && imageAdded
+    }
+
     private fun mSavePlant() {
+        if (!mCheckFields()) {
+            return
+        }
+
         // Compile final map to write to firebase
         NewPlantInstance.setStaticParams(
             id=mPlantId,
             userId=F.auth.uid!!,
-            name=etPlantName.text.toString(),
-            nick=etPlantNickname.text.toString(),
+            name=etPlantName.text.toString().trim(),
+            nick=etPlantNickname.text.toString().trim(),
             filePath=mPhotoFilename,
             death=false)
 
         // Write plant to firebase first
         DBService.addDocument(
-            collection= F.plantsCollection,
+            collection=F.plantsCollection,
             id=mPlantId,
             data=NewPlantInstance.plant)
-//        DBService.updateDocument(
-//            collection= F.usersCollection,
-//            id= F.auth.currentUser?.uid,
-//            field="plants",
-//            value=FieldValue.arrayUnion(mPlantId))
 
-        // Write the tasks to firebase db
+        // Write the tasks to firebase
         for (task in NewPlantInstance.tasks) {
             // update the plantId first
             task["plantId"] = mPlantId
@@ -194,67 +242,5 @@ class AddPlantActivity :
         Intent(this@AddPlantActivity, MainActivity::class.java)
         setResult(Activity.RESULT_OK)
         finish()
-    }
-
-    private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-
-            // reduce image quality
-            val bm = BitmapFactory.decodeFile(mPhotoFilename)
-            val file = File(mPhotoFilename)
-            file.createNewFile()
-            val fos = FileOutputStream(file)
-            bm.compress(Bitmap.CompressFormat.JPEG, 20, fos)
-            fos.close()
-
-            val uri = Uri.fromFile(File(mPhotoFilename))
-            try { // create the bitmap from uri
-                val bitmap = if (Build.VERSION.SDK_INT < 28) {
-                    MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                } else {
-                    val source = ImageDecoder.createSource(contentResolver, uri)
-                    ImageDecoder.decodeBitmap(source)
-                }
-                // show the image
-                groupNoPic.visibility = View.GONE
-                ivPlant.visibility = View.VISIBLE
-                ivPlant.setImageBitmap(bitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun mOpenCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                val photoFile: File? = try {
-                    mCreateImageFile()
-                } catch (ex: IOException) {
-                    Log.e("CAM", "$ex")
-                    null
-                }
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        getString(R.string.file_provider_authority),
-                        it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    cameraLauncher.launch(takePictureIntent)
-                }
-            }
-        }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    @Throws(IOException::class)
-    private fun mCreateImageFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val filename = "plant_${timeStamp}"
-        return File.createTempFile(filename, ".jpg", storageDir).apply {
-            mPhotoFilename = absolutePath
-        }
     }
 }

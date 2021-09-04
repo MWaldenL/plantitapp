@@ -23,4 +23,12 @@ object PlantService {
         }
         return null
     }
+
+    fun findPlantByNickname(nickname: String): Plant? {
+        for (plant in PlantRepository.plantList) {
+            if (plant.nickname == nickname)
+                return plant
+        }
+        return null
+    }
 }
