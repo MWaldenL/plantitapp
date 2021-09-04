@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/feedback_label"
         android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

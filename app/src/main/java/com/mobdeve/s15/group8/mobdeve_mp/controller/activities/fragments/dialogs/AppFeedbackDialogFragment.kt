@@ -61,17 +61,17 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
                 val feedbackComment = etFeedbackComment.text.toString()
 
                 listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
-                dialog?.dismiss()
+                this.dismiss()
             }
 
             btnFeedbackStop.setOnClickListener {
                 listener.onFeedbackStop(this)
-                dialog?.dismiss()
+                this.dismiss()
             }
 
             btnFeedbackCancel.setOnClickListener {
                 listener.onFeedbackCancel(this)
-                dialog?.dismiss()
+                this.dismiss()
             }
 
             builder.setView(view).create()
