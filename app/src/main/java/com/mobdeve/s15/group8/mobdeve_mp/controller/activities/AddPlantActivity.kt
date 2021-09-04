@@ -2,17 +2,15 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
@@ -25,10 +23,9 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageUploadService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import java.io.File
 import java.util.*
 
 class AddPlantActivity :
@@ -37,6 +34,7 @@ class AddPlantActivity :
     AddPlantTasksAdapter.OnTaskDeletedListener
 {
     private lateinit var tasksRV: RecyclerView
+    private lateinit var cvNoTasks: CardView
     private lateinit var ivPlant: ImageView
     private lateinit var ivAddPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
@@ -79,6 +77,8 @@ class AddPlantActivity :
                 )
                 NewPlantInstance.addTask(newTask)
                 (tasksRV.adapter as AddPlantTasksAdapter).addNewTask(newTask)
+
+                mShowOrHideNoTasksCard()
             }
         }
 
@@ -94,7 +94,7 @@ class AddPlantActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
-        ImageUploadService.setOnUploadSuccessListener(this)
+        CloudinaryService.setOnUploadSuccessListener(this)
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
 
@@ -109,6 +109,7 @@ class AddPlantActivity :
         ibtnAddTask = findViewById(R.id.ibtn_add_task)
         ibtnSavePlant = findViewById(R.id.ibtn_save_plant)
         tasksRV = findViewById(R.id.rv_tasks)
+        cvNoTasks = findViewById(R.id.cv_no_tasks)
         tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
 
@@ -137,10 +138,13 @@ class AddPlantActivity :
             val i = Intent(this, AddTaskActivity::class.java)
             addTaskLauncher.launch(i)
         }
+
+        mShowOrHideNoTasksCard()
     }
 
     override fun notifyTaskDeleted(task: Task) {
         NewPlantInstance.removeTask(task)
+        mShowOrHideNoTasksCard()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -233,7 +237,7 @@ class AddPlantActivity :
 
         // Then upload to cloudinary and reset the new plant instance
         try {
-            ImageUploadService.uploadToCloud(mPhotoFilename)
+            CloudinaryService.uploadToCloud(mPhotoFilename)
         } catch (err: Error) {
             MediaManager.init(this)
         }
@@ -242,5 +246,12 @@ class AddPlantActivity :
         Intent(this@AddPlantActivity, MainActivity::class.java)
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    private fun mShowOrHideNoTasksCard() {
+        if (NewPlantInstance.tasks.size == 0)
+            cvNoTasks.visibility = View.VISIBLE
+        else
+            cvNoTasks.visibility = View.GONE
     }
 }

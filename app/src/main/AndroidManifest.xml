@@ -31,12 +31,16 @@
         android:windowSoftInputMode="stateAlwaysHidden"
         tools:replace="android:fullBackupContent">
         <activity
+            android:name=".controller.activities.ProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".controller.activities.SplashActivity"
-            android:theme="@style/SplashTheme"
             android:excludeFromRecents="true"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -53,9 +57,10 @@
             android:name=".controller.activities.ViewSinglePlantActivity"
             android:exported="true" />
         <activity android:name=".controller.activities.fragments.ViewAllPlantsFragment" />
-        <activity android:name=".controller.activities.LoginActivity"
+        <activity
+            android:name=".controller.activities.LoginActivity"
             android:excludeFromRecents="true"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.AddPlantActivity" />
         <activity android:name=".controller.activities.AddTaskActivity" />
@@ -73,7 +78,7 @@
 
         <meta-data
             android:name="CLOUDINARY_URL"
-            android:value="cloudinary://dnoqllk3h" />
+            android:value="cloudinary://${API_KEY}:${API_SECRET}@${CLOUD_NAME}" />
 
         <receiver android:name=".controller.receivers.AlarmReceiver" />
     </application>

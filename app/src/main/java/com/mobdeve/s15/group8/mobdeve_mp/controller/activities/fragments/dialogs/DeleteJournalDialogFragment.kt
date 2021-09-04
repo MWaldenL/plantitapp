@@ -37,7 +37,6 @@ class DeleteJournalDialogFragment:
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
                     listener.onJournalDeleteCancel(this)
-                    getDialog()?.cancel()
                 }
                 .create()
         } ?: throw IllegalStateException("Activity cannot be null")

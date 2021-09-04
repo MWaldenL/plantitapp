@@ -1,17 +1,22 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.services
 
 import android.util.Log
+import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
+import com.cloudinary.utils.ObjectUtils
+import com.mobdeve.s15.group8.mobdeve_mp.BuildConfig
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * The main image uploader service for the app. This service allows modules to upload an image and
  * listen for results. Call uploadToCloud to upload the image to Cloudinary
  */
-object ImageUploadService : UploadCallback {
+object CloudinaryService : UploadCallback, CoroutineScope {
     private var mListener: ImageUploadCallback? = null
 
     fun setOnUploadSuccessListener(listener: ImageUploadCallback) {
@@ -23,8 +28,22 @@ object ImageUploadService : UploadCallback {
             .get()
             .upload(filename)
             .option("folder", F.auth.currentUser!!.uid)
-            .unsigned("vywedaso")
+            .unsigned(BuildConfig.UPLOAD_PRESET)
             .callback(this).dispatch()
+    }
+
+    fun deleteFromCloud(url: String) {
+        val urlSplit = url.split('/')
+        val folder = urlSplit[urlSplit.lastIndex-1]
+        val id = urlSplit[urlSplit.lastIndex].split('.')[0]
+        val imageId = "$folder/$id"
+        Log.d("CService", "Deleting $imageId")
+        launch(Dispatchers.IO) {
+            val result = MediaManager.get().cloudinary
+                .uploader()
+                .destroy(imageId, ObjectUtils.emptyMap())
+            Log.d("CService", "deleted image $result")
+        }
     }
 
     override fun onStart(requestId: String?) {
@@ -46,4 +65,6 @@ object ImageUploadService : UploadCallback {
 
     override fun onReschedule(requestId: String?, error: ErrorInfo?) {
     }
+
+    override val coroutineContext: CoroutineContext = Dispatchers.IO
 }

@@ -1,5 +1,10 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
+<<<<<<< HEAD
+=======
+import android.content.Context
+import android.content.Intent
+>>>>>>> dev
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ExpandableListView
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
+<<<<<<< HEAD
+=======
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.ProfileActivity
+>>>>>>> dev
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -20,6 +31,7 @@ class DashboardFragment : Fragment(), DBCallback {
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
     private var mTasks = ArrayList<Task>()
     private lateinit var btnSignout: Button
+    private lateinit var btnProfile: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +56,7 @@ class DashboardFragment : Fragment(), DBCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btnSignout = view.findViewById(R.id.btn_signout)
+        btnProfile = view.findViewById(R.id.ibtn_profile)
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
         elvTaskGroup.setAdapter(taskGroupAdapter)
     }
@@ -52,6 +65,9 @@ class DashboardFragment : Fragment(), DBCallback {
         mTasks = TaskService.getTasksToday()
         taskGroupAdapter.updateData(mTasks)
         mExpandIncompleteGroups()
+        btnProfile.setOnClickListener {
+            startActivity(Intent(this@DashboardFragment.activity, ProfileActivity::class.java))
+        }
     }
 
     private fun mExpandIncompleteGroups() {
