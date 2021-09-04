@@ -25,7 +25,7 @@
 
     <string name="profile_name_placeholder">Name</string>
 
-    <string name="profile_date_label">Date Joined</string>
+    <string name="profile_date_label">Joined</string>
     <string name="profile_date_placeholder">January 31, 2000</string>
 
     <string name="live_count_label">Live Plants</string>
