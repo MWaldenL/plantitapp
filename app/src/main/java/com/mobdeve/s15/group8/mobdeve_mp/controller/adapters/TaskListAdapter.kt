@@ -1,10 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -13,10 +11,10 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.TaskViewHolder
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 
-class TaskListAdapter(
-    private val data: ArrayList<Task>):
+class TaskListAdapter(private val data: ArrayList<Task>):
     RecyclerView.Adapter<TaskViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -33,7 +31,7 @@ class TaskListAdapter(
 
         // bind task text/checked to viewholder
         val last = position == itemCount-1
-        holder.bindData(data[position], last)
+        holder.bindData(data[position], last, PlantService.findPlantById(data[position].plantId)?.death)
 
         cvPlantTaskItem.setOnClickListener {
             val index = PlantRepository.taskList.indexOf(task)
