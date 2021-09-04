@@ -23,13 +23,18 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.FeedbackPermissions
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.PushPermissions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 
 class ProfileActivity :
     AppCompatActivity(),
-    AppFeedbackDialogFragment.AppFeedbackDialogListener
+    AppFeedbackDialogFragment.AppFeedbackDialogListener,
+    CoroutineScope
 {
     private lateinit var tvProfileName: TextView
     private lateinit var tvDateJoined: TextView
@@ -43,6 +48,7 @@ class ProfileActivity :
 
     private lateinit var mSharedPreferences: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
+    override val coroutineContext: CoroutineContext = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +78,12 @@ class ProfileActivity :
         mEditor = mSharedPreferences.edit()
 
         tvProfileName.text = F.auth.currentUser?.displayName
-        tvDateJoined.text = "hello"
+        launch(Dispatchers.IO){
+            val dateJoined = UserService.getUserField("dateJoined").toString()
+            withContext(Dispatchers.Main) {
+                tvDateJoined.text = dateJoined
+            }
+        }
 
         var dead = 0
         var live = 0
@@ -95,10 +106,10 @@ class ProfileActivity :
     private fun mBindActions() {
         switchPush.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // TODO("dialog, setup alarm")
+                // TODO("setup alarm")
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.ALLOWED.ordinal)
             } else {
-                // TODO("dialog, cancel alarm")
+                // TODO("cancel alarm")
                 mEditor.putInt(getString(R.string.SP_PUSH_KEY), PushPermissions.NOT_ALLOWED.ordinal)
             }
 
@@ -107,11 +118,9 @@ class ProfileActivity :
 
         switchFeedback.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // TODO("dialog")
                 mEditor.putInt(getString(R.string.SP_FEED_KEY), FeedbackPermissions.ALLOWED.ordinal)
                 mEditor.putInt(getString(R.string.SP_FEED_TIME_KEY), 0) // trigger feedback dialog on next startup
             } else {
-                // TODO("dialog")
                 mEditor.putInt(getString(R.string.SP_FEED_KEY), FeedbackPermissions.NOT_ALLOWED.ordinal)
             }
 

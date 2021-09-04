@@ -19,7 +19,7 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
 {
     private lateinit var rbFeedbackRating: RatingBar
     private lateinit var etFeedbackComment: EditText
-    private var mForceTrigger: Boolean = forceTrigger
+    private val mForceTrigger: Boolean = forceTrigger
 
     internal lateinit var listener: AppFeedbackDialogListener
 
