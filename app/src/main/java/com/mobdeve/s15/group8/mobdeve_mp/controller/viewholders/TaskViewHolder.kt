@@ -1,15 +1,12 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -22,11 +19,37 @@ class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val cvPlantTaskItem: CardView = itemView.findViewById(R.id.cv_plant_task_item)
 
     @SuppressLint("ResourceAsColor")
-    fun bindData(task: Task, last: Boolean) {
+    fun bindData(task: Task, last: Boolean, death: Boolean?) {
         tvPlantTask.text = task.action
 
         val today = DateTimeService.getCurrentDateWithoutTime()
-        if (today.time == task.lastCompleted) {
+
+        if (death == true) {
+            when (task.action) {
+                itemView.resources.getStringArray(R.array.actions_array)[0] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_water_filled_24)
+                itemView.resources.getStringArray(R.array.actions_array)[1] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_shovel_24)
+                itemView.resources.getStringArray(R.array.actions_array)[2] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_prune_24)
+                itemView.resources.getStringArray(R.array.actions_array)[3] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_sunlight_24)
+                itemView.resources.getStringArray(R.array.actions_array)[4] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_dark_24)
+                itemView.resources.getStringArray(R.array.actions_array)[5] ->
+                    ivPlantTaskIcon.setImageResource(R.drawable.ic_fertilize_24)
+            }
+
+            tvPlantTask.setTextColor(
+                ResourcesCompat.getColor(itemView.resources, R.color.primary_color, null))
+            ivPlantTaskIcon.setColorFilter(
+                ResourcesCompat.getColor(itemView.resources, R.color.gray, null))
+            cvPlantTaskItem.setCardBackgroundColor(
+                ResourcesCompat.getColor(itemView.resources, R.color.dark_gray, null))
+            cvPlantTaskItem.isClickable = false
+            cvPlantTaskItem.foreground = null
+
+        } else if (today.time == task.lastCompleted) {
             ivPlantTaskIcon.setImageResource(R.drawable.ic_check_24)
 
             ivPlantTaskIcon.setColorFilter(

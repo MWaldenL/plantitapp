@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -16,7 +15,7 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DailyNotificationsDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.PushNotificationsDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.FeedbackPermissions
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity:
     AppCompatActivity(),
     AppFeedbackDialogFragment.AppFeedbackDialogListener,
-    DailyNotificationsDialogFragment.DailyNotificationsDialogListener
+    PushNotificationsDialogFragment.PushNotificationsDialogListener
 {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
@@ -55,7 +54,7 @@ class MainActivity:
         mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
         mEditor = mSharedPreferences.edit()
 
-        mHandleDailyNotificationsReady()
+        mHandlePushNotificationsReady()
 
         btnSetAlarm = findViewById(R.id.btn_set_alarm)
         btnSetAlarm.setOnClickListener {
@@ -65,10 +64,10 @@ class MainActivity:
 
     // push notifications function
 
-    private fun mHandleDailyNotificationsReady() {
+    private fun mHandlePushNotificationsReady() {
         val current = mSharedPreferences.getInt(getString(R.string.SP_PUSH_KEY), -1)
         if (current == -1) {
-            val fragment = DailyNotificationsDialogFragment()
+            val fragment = PushNotificationsDialogFragment()
             fragment.show(supportFragmentManager, "daily_notifications")
         } else {
             mHandleFeedbackReady()
@@ -120,7 +119,7 @@ class MainActivity:
         }
     }
 
-    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Float, feedbackComment: String) {
+    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String) {
         mEditor.putInt(
             getString(R.string.SP_FEED_TIME_KEY),
             TimeUnit.HOURS.convert(Date().time, TimeUnit.MILLISECONDS).toInt()

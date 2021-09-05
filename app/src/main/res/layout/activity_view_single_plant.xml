@@ -208,7 +208,7 @@
                                 android:layout_marginTop="16dp"
                                 android:layout_marginBottom="16dp"
                                 android:gravity="center"
-                                android:text="You do not have any journal entries yet for this plant. Add one now."
+                                android:text="@string/no_journals"
                                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
                                 android:textStyle="italic"
                                 app:layout_constraintBottom_toTopOf="@+id/btn_view_all"

@@ -12,6 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/feedback_label"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +20,11 @@
 
     <RatingBar
         android:id="@+id/rb_feedback_rating"
+        style="@style/Widget.MOBDEVEMP.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:stepSize="0.5"
+        android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_feedback_label"
@@ -30,6 +32,7 @@
 
     <EditText
         android:id="@+id/et_feedback_comment"
+        style="@style/Widget.MOBDEVEMP.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -38,11 +41,93 @@
         android:ems="10"
         android:gravity="bottom|start"
         android:hint="@string/feedback_hint"
-        android:inputType="textMultiLine"
+        android:inputType="textLongMessage|textMultiLine|textCapSentences"
+        android:minLines="1"
+        android:padding="16dp"
+        android:singleLine="false"
         android:textAlignment="gravity"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rb_feedback_rating"
+        app:layout_constraintTop_toBottomOf="@+id/rb_feedback_rating" />
+
+    <Button
+        android:id="@+id/btn_feedback_continue"
+        style="@style/Widget.MOBDEVEMP.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Continue"
+        android:textAlignment="textEnd"
+        android:textColor="@color/green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment"
         tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/btn_feedback_stop"
+        style="@style/Widget.MOBDEVEMP.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="don't show again"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_feedback_continue"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/btn_feedback_cancel"
+        style="@style/Widget.MOBDEVEMP.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="cancel"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_feedback_stop"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/btn_feedback_cancel_forced"
+        style="@style/Widget.MOBDEVEMP.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="cancel"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/tv_err_feedback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/err_no_rating"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

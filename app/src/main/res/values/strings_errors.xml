@@ -3,4 +3,6 @@
     <string name="err_no_name">Please enter a name.</string>
     <string name="err_dup_nickname">This nickname already exists.</string>
     <string name="err_no_picture">Please add a picture.</string>
+
+    <string name="err_no_rating">Please enter any comment or a rating of at least one star.</string>
 </resources>

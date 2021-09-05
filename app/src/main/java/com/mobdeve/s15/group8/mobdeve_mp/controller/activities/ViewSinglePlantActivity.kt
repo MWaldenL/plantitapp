@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -178,12 +179,8 @@ class ViewSinglePlantActivity :
 
         if (death) {
             ibtnKillPlant.visibility = View.GONE
-
-            val params = ibtnEditPlant.layoutParams as ConstraintLayout.LayoutParams
-            params.bottomToBottom = tvNickname.id
-            params.topToTop = tvNickname.id
-            params.endToStart = ibtnRevivePlant.id
-            ibtnEditPlant.requestLayout()
+            ibtnEditPlant.visibility = View.GONE
+            ibtnAddNewJournal.visibility = View.GONE
         } else {
             ibtnRevivePlant.visibility = View.GONE
         }
@@ -266,7 +263,6 @@ class ViewSinglePlantActivity :
             Toast.LENGTH_SHORT
         ).show()
 
-        // launch main activity after deletion TODO
         finish()
     }
 
@@ -382,9 +378,14 @@ class ViewSinglePlantActivity :
     }
 
     private fun mShowOrHideNoJournal() {
-        if (mJournalLimited.size == 0)
+        if (mJournalLimited.size == 0) {
+            if (mPlantData.death) {
+                tvNoJournal.text = "You do not have any journal entries for this plant."
+                btnViewAll.visibility = View.GONE
+            }
+
             tvNoJournal.visibility = View.VISIBLE
-        else
+        } else
             tvNoJournal.visibility = View.GONE
     }
 }
