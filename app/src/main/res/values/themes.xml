@@ -80,6 +80,11 @@
         <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
+    <style name="Widget.MOBDEVEMP.RatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressTint">@color/green</item>
+        <item name="android:progressBackgroundTint">@color/light_gray</item>
+    </style>
+
     <style name="Widget.MOBDEVEMP.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/rounded_rectangle_8</item>
         <item name="backgroundTint">@color/light_gray</item>

@@ -21,6 +21,7 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
     private lateinit var btnFeedbackContinue: Button
     private lateinit var btnFeedbackStop: Button
     private lateinit var btnFeedbackCancel: Button
+    private lateinit var btnFeedbackCancelForced: Button
 
     private val mForceTrigger: Boolean = forceTrigger
 
@@ -52,9 +53,14 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
             btnFeedbackContinue = view.findViewById(R.id.btn_feedback_continue)
             btnFeedbackStop = view.findViewById(R.id.btn_feedback_stop)
             btnFeedbackCancel = view.findViewById(R.id.btn_feedback_cancel)
+            btnFeedbackCancelForced = view.findViewById(R.id.btn_feedback_cancel_forced)
 
-            if (mForceTrigger)
+            if (mForceTrigger) {
                 btnFeedbackStop.visibility = View.GONE
+                btnFeedbackCancel.visibility = View.GONE
+            } else {
+                btnFeedbackCancelForced.visibility = View.GONE
+            }
 
             btnFeedbackContinue.setOnClickListener {
                 val feedbackRating = rbFeedbackRating.rating

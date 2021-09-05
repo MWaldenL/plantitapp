@@ -20,6 +20,7 @@
 
     <RatingBar
         android:id="@+id/rb_feedback_rating"
+        style="@style/Widget.MOBDEVEMP.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -41,7 +42,7 @@
         android:gravity="bottom|start"
         android:hint="@string/feedback_hint"
         android:inputType="textLongMessage|textMultiLine|textCapSentences"
-        android:minLines="3"
+        android:minLines="1"
         android:padding="16dp"
         android:singleLine="false"
         android:textAlignment="gravity"
@@ -96,6 +97,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_feedback_stop"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/btn_feedback_cancel_forced"
+        style="@style/Widget.MOBDEVEMP.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="cancel"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment"
         tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
