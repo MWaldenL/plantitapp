@@ -74,13 +74,10 @@ class MainActivity: BaseActivity(),
         }
     }
 
-    override fun toggleViews(connected: Boolean) {
-        super.toggleViews(connected)
-        bottomAppBar.visibility = if (connected) View.VISIBLE else View.GONE
-        bottomNav.visibility = if (connected) View.VISIBLE else View.GONE
-        fabAddPlant.visibility = if (connected) View.VISIBLE else View.GONE
+    override fun onDestroy() {
+        super.onDestroy()
+        PlantRepository.resetData()
     }
-
     // push notifications function
 
     private fun mHandleDailyNotificationsReady() {
