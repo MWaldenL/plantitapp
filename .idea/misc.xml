@@ -15,8 +15,10 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_fertilize_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_water_filled_24.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/logo.xml" value="0.1537037037037037" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/rounded_rectangle.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/rounded_rectangle_8.xml" value="0.14074074074074075" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/splash.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/toggle_selector.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/widget_spinner.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/font/work_sans_bold.xml" value="0.1" />
@@ -28,7 +30,7 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_home.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_login.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_profile.xml" value="0.33" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_view_all_journals.xml" value="0.5" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_view_all_plants.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/activity_view_single_plant.xml" value="0.33" />
