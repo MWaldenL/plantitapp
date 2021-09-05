@@ -51,11 +51,13 @@
 
                     <ImageButton
                         android:id="@+id/ib_gridview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="8dp"
                         android:background="#00FFFFFF"
+                        android:foreground="?selectableItemBackground"
+                        app:tint="@color/primary_color"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_alive"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -63,7 +65,6 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_alive"
                         app:srcCompat="@drawable/ic_bento_24"
                         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -114,14 +115,4 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <ImageView
-        android:id="@+id/iv_offline_viewallplants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

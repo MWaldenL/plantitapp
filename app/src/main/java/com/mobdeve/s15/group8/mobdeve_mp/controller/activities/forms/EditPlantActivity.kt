@@ -61,6 +61,7 @@ class EditPlantActivity : BaseActivity(),
                     getString(R.string.ADD_TASK_OCCURRENCE)).toString()
                 val repeat = result.data?.getIntExtra(
                     getString(R.string.ADD_TASK_REPEAT), 0) as Int
+                val weeklyRecurrence = result.data?.getIntegerArrayListExtra(getString(R.string.ADD_TASK_WEEKLY_RECURRENCE))
 
                 val newTask = Task(
                     id = UUID.randomUUID().toString(),
@@ -73,8 +74,10 @@ class EditPlantActivity : BaseActivity(),
                     lastCompleted = DateTimeService.getLastDueDate(
                         occurrence,
                         repeat,
-                        Date(startDate)
-                    ).time
+                        Date(startDate),
+                        weeklyRecurrence
+                    ).time,
+                    weeklyRecurrence = weeklyRecurrence!!
                 )
                 mNewTasks.add(newTask)
                 mPlantDataEditable.tasks.add(newTask.id)
@@ -209,7 +212,8 @@ class EditPlantActivity : BaseActivity(),
                     "startDate" to Timestamp(task.startDate),
                     "repeat" to task.repeat,
                     "occurrence" to task.occurrence,
-                    "lastCompleted" to Timestamp(task.lastCompleted)
+                    "lastCompleted" to Timestamp(task.lastCompleted),
+                    "weeklyRecurrence" to task.weeklyRecurrence
                 )
             )
 

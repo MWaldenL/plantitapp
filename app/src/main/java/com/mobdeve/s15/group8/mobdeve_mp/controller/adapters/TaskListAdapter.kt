@@ -51,7 +51,8 @@ class TaskListAdapter(private val data: ArrayList<Task>):
                 val lastDue = DateTimeService.getLastDueDate(
                     task.occurrence,
                     task.repeat,
-                    today.time
+                    today.time,
+                    task.weeklyRecurrence
                 ).time
 
                 // update repo

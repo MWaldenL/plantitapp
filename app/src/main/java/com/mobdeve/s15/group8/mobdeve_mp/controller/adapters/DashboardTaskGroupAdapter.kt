@@ -178,7 +178,8 @@ class DashboardTaskGroupAdapter(
                 val lastDue = DateTimeService.getLastDueDate(
                     task.occurrence,
                     task.repeat,
-                    dateToday.time
+                    dateToday.time,
+                    task.weeklyRecurrence
                 ).time
                 // update repo
                 task.lastCompleted = lastDue

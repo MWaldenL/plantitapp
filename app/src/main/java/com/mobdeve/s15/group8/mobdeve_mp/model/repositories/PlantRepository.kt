@@ -115,7 +115,8 @@ object PlantRepository: CoroutineScope {
                 startDate = (doc["startDate"] as Timestamp).toDate(),
                 repeat = doc["repeat"].toString().toInt(),
                 occurrence = doc["occurrence"].toString(),
-                lastCompleted = (doc["lastCompleted"] as Timestamp).toDate()
+                lastCompleted = (doc["lastCompleted"] as Timestamp).toDate(),
+                weeklyRecurrence = doc["weeklyRecurrence"] as ArrayList<Int>?
             ))
         }
     }

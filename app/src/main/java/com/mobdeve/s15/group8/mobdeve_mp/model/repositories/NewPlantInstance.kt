@@ -44,7 +44,8 @@ object NewPlantInstance {
                     (task["startDate"] as Timestamp).toDate(),
                     task["repeat"] as Int,
                     task["occurrence"].toString(),
-                    (task["lastCompleted"] as Timestamp).toDate()
+                    (task["lastCompleted"] as Timestamp).toDate(),
+                    task["weeklyRecurrence"] as ArrayList<Int>
                 ))
             return t
         }
@@ -69,7 +70,8 @@ object NewPlantInstance {
             "startDate" to Timestamp(newTask.startDate),
             "repeat" to newTask.repeat,
             "occurrence" to newTask.occurrence,
-            "lastCompleted" to Timestamp(newTask.lastCompleted)
+            "lastCompleted" to Timestamp(newTask.lastCompleted),
+            "weeklyRecurrence" to newTask.weeklyRecurrence!!
         ))
         (plant["tasks"] as ArrayList<String>).add(newTask.id) // TODO: Remove
     }
