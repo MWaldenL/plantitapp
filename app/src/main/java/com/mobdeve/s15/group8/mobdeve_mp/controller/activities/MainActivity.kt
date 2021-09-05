@@ -119,7 +119,7 @@ class MainActivity:
         }
     }
 
-    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Float, feedbackComment: String) {
+    override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String) {
         mEditor.putInt(
             getString(R.string.SP_FEED_TIME_KEY),
             TimeUnit.HOURS.convert(Date().time, TimeUnit.MILLISECONDS).toInt()

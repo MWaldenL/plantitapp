@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.fragment.app.DialogFragment
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
+import android.widget.TextView
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
@@ -22,13 +25,14 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
     private lateinit var btnFeedbackStop: Button
     private lateinit var btnFeedbackCancel: Button
     private lateinit var btnFeedbackCancelForced: Button
+    private lateinit var tvErrFeedback: TextView
 
     private val mForceTrigger: Boolean = forceTrigger
 
     internal lateinit var listener: AppFeedbackDialogListener
 
     interface AppFeedbackDialogListener {
-        fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Float, feedbackComment: String)
+        fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String)
         fun onFeedbackCancel(dialog: DialogFragment)
         fun onFeedbackStop(dialog: DialogFragment)
     }
@@ -54,6 +58,7 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
             btnFeedbackStop = view.findViewById(R.id.btn_feedback_stop)
             btnFeedbackCancel = view.findViewById(R.id.btn_feedback_cancel)
             btnFeedbackCancelForced = view.findViewById(R.id.btn_feedback_cancel_forced)
+            tvErrFeedback = view.findViewById(R.id.tv_err_feedback)
 
             if (mForceTrigger) {
                 btnFeedbackStop.visibility = View.GONE
@@ -62,12 +67,18 @@ class AppFeedbackDialogFragment(forceTrigger: Boolean = false) :
                 btnFeedbackCancelForced.visibility = View.GONE
             }
 
+            // TODO: hide error on listen?
+
             btnFeedbackContinue.setOnClickListener {
-                val feedbackRating = rbFeedbackRating.rating
+                val feedbackRating = rbFeedbackRating.rating.toInt()
                 val feedbackComment = etFeedbackComment.text.toString()
 
-                listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
-                this.dismiss()
+                if (feedbackRating == 0 && feedbackComment.isEmpty()) { // require comment if rating == 0. else, allow empty comment
+                    tvErrFeedback.visibility = View.VISIBLE
+                } else {
+                    listener.onFeedbackContinue(this, feedbackRating, feedbackComment)
+                    this.dismiss()
+                }
             }
 
             btnFeedbackStop.setOnClickListener {

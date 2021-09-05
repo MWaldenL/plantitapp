@@ -56,7 +56,7 @@
         style="@style/Widget.MOBDEVEMP.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -115,5 +115,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment"
         tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/tv_err_feedback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/err_no_rating"
+        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_feedback_comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
