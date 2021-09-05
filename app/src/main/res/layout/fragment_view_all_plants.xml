@@ -59,11 +59,13 @@
 
                         <ImageButton
                             android:id="@+id/ib_gridview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="8dp"
                             android:background="#00FFFFFF"
+                            android:foreground="?selectableItemBackground"
+                            android:tint="@color/primary_color"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_alive"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
