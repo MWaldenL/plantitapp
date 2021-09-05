@@ -20,9 +20,13 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 class DashboardFragment : Fragment(), DBCallback {
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
-    private var mTasks = ArrayList<Task>()
-    private lateinit var btnSignout: Button
     private lateinit var btnProfile: ImageButton
+
+    private lateinit var tvDashboardHeader: TextView
+    private lateinit var tvNoTaskTitle: TextView
+    private lateinit var tvNoTaskSubtitle: TextView
+
+    private var mTasks = ArrayList<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +47,38 @@ class DashboardFragment : Fragment(), DBCallback {
         if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty()) {
             mLoadTasks()
         }
+
+        mSetViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mSetViews()
+    }
+
+    private fun mSetViews() {
+        if (TaskService.getTasksToday().size == 0) {
+            tvDashboardHeader.visibility = View.INVISIBLE
+
+            tvNoTaskTitle.visibility = View.VISIBLE
+            tvNoTaskSubtitle.visibility = View.VISIBLE
+        } else {
+            tvDashboardHeader.visibility = View.VISIBLE
+
+            tvNoTaskTitle.visibility = View.GONE
+            tvNoTaskSubtitle.visibility = View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnSignout = view.findViewById(R.id.btn_signout)
         btnProfile = view.findViewById(R.id.ibtn_profile)
         elvTaskGroup = view.findViewById(R.id.elv_task_group)
         elvTaskGroup.setAdapter(taskGroupAdapter)
+
+        tvDashboardHeader = view.findViewById(R.id.tv_dashboard_header)
+        tvNoTaskTitle = view.findViewById(R.id.tv_no_task_title)
+        tvNoTaskSubtitle = view.findViewById(R.id.tv_no_task_subtitle)
     }
 
     private fun mLoadTasks() {

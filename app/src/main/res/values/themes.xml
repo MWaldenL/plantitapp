@@ -65,6 +65,13 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="TextAppearance.MOBDEVEMP.StyledHeadline" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/pacifico_regular</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/green</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!--  Widgets  -->
 
     <style name="TextAppearance.MOBDEVEMP.BadgeLight" parent="TextAppearance.MOBDEVEMP.Body">

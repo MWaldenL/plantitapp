@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +29,11 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var mEditor: SharedPreferences.Editor
     private lateinit var plantAliveAdapter: PlantListAdapter
     private lateinit var plantDeadAdapter: PlantListAdapter
+    private lateinit var tvAlive: TextView
     private lateinit var tvDead: TextView
+    private lateinit var tvNoPlantsTitle: TextView
+    private lateinit var tvNoPlantsSubtitle: TextView
+    private lateinit var ivNoPLantsImage: ImageView
 
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
     private var mAlive = arrayListOf<Plant>()
@@ -47,7 +52,11 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
         ibGridView = view.findViewById(R.id.ib_gridview)
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
+        tvAlive = view.findViewById(R.id.tv_alive)
         tvDead = view.findViewById(R.id.tv_dead)
+        tvNoPlantsTitle = view.findViewById(R.id.tv_no_plants_title)
+        tvNoPlantsSubtitle = view.findViewById(R.id.tv_no_plants_subtitle)
+        ivNoPLantsImage = view.findViewById(R.id.iv_no_plants_bg)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
@@ -103,19 +112,39 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
                 mAlive.add(plant)
         }
 
-        if (mDead.size == 0)
-            tvDead.visibility = View.GONE
-
+        mSetViews()
         onPlantAdded()
     }
 
     override fun onResume() {
         super.onResume()
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
+        mSetViews()
     }
 
     override fun onPlantAdded() {
         recyclerViewAlive.adapter?.notifyDataSetChanged()
         recyclerViewDead.adapter?.notifyDataSetChanged()
+    }
+
+    private fun mSetViews() {
+        if (mDead.size == 0)
+            tvDead.visibility = View.GONE
+
+        if (mDead.size == 0 && mAlive.size == 0) {
+            tvAlive.visibility = View.INVISIBLE
+            ibGridView.visibility = View.INVISIBLE
+
+            tvNoPlantsTitle.visibility = View.VISIBLE
+            tvNoPlantsSubtitle.visibility = View.VISIBLE
+            ivNoPLantsImage.visibility = View.VISIBLE
+        } else {
+            tvAlive.visibility = View.VISIBLE
+            ibGridView.visibility = View.VISIBLE
+
+            tvNoPlantsTitle.visibility = View.GONE
+            tvNoPlantsSubtitle.visibility = View.GONE
+            ivNoPLantsImage.visibility = View.GONE
+        }
     }
 }

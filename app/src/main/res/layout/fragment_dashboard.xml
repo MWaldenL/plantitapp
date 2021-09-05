@@ -22,17 +22,16 @@
             android:layout_height="wrap_content">
 
             <TextView
-              android:id="@+id/tv_dashboard_header"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="16dp"
-              android:layout_marginLeft="16dp"
-              android:layout_marginTop="16dp"
-              android:text="Today's tasks"
-              android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
-              android:textColor="@color/primary_color"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/tv_dashboard_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Today's Tasks"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Headline3"
+                android:textColor="@color/primary_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/ibtn_profile"
@@ -58,20 +57,9 @@
                 android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/btn_signout"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dashboard_header">
 
             </com.mobdeve.s15.group8.mobdeve_mp.view.UnscrollableExpandableListView>
-
-            <Button
-                android:id="@+id/btn_signout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/elv_task_group" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -84,6 +72,34 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/elv_task_group"
                 app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/tv_no_task_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginEnd="64dp"
+                android:text="rest day"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.StyledHeadline"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_no_task_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="64dp"
+                android:text="You don't have any tasks for today"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_no_task_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
