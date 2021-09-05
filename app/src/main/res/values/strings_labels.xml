@@ -41,7 +41,7 @@
     <string name="feedback_label">Your feedback is important to us</string>
     <string name="feedback_hint">What do you think of this app?</string>
 
-    <string name="push_question">Do you want to receive push notifications? You can always change this in your profile.</string>
+    <string name="push_question">Do you want to receive daily notifications about your plants? You can always change this in your profile.</string>
 
     <string name="delete_journal_label">Deleting Journal Entry</string>
     <string name="delete_journal_question">You are about to delete this journal entry. This action cannot be undone.</string>
@@ -54,5 +54,8 @@
     <string name="plant_death_question_2">You can still choose to revive it later on but the following functions will be disabled during the period when it\'s dead:</string>
     <string name="plant_death_question_3">- Edit Plant</string>
     <string name="plant_death_question_4">- Add New Journal (but you can still delete existing entries)</string>
+
+    <string name="plant_revival_label">Revive Plant</string>
+    <string name="plant_revival_question">This plant will no longer be labelled as dead. All of its functions will be restored.</string>
 
 </resources>
