@@ -62,4 +62,6 @@
     <string name="leave_label">Leaving?</string>
 
     <string name="leave_journal_question">This journal entry will not be saved. Are you sure you want to leave?</string>
+    <string name="leave_add_plant_question">This plant will not be saved. Are you sure you want to leave?</string>
+    <string name="leave_edit_plant_question">You have unsaved changes for this plant. Are you sure you want to leave?</string>
 </resources>

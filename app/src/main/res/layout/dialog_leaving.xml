@@ -18,20 +18,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/tv_leaving_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/leave_journal_question"
+        android:text="Placeholder"
         android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <Button
-        android:id="@+id/btn_leave_journal"
+        android:id="@+id/btn_leave"
         style="@style/Widget.MOBDEVEMP.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
@@ -45,11 +45,11 @@
         android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/tv_leaving_question"
         tools:ignore="TouchTargetSizeCheck" />
 
     <Button
-        android:id="@+id/btn_leave_journal_cancel"
+        android:id="@+id/btn_leave_cancel"
         style="@style/Widget.MOBDEVEMP.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
@@ -62,6 +62,6 @@
         android:textAlignment="viewStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/tv_leaving_question"
         tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
