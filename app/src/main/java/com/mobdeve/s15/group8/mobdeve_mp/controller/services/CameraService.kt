@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.FileProvider
 import com.mobdeve.s15.group8.mobdeve_mp.R
@@ -21,8 +22,11 @@ object CameraService {
     fun launchCameraAndGetFilename(context: Context,
                                    authority: String,
                                    launcher: ActivityResultLauncher<Intent>): String {
+        // Declare intent
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         takePictureIntent.resolveActivity(context.packageManager)
+
+        // Create image file
         val photoFile: File = mCreateImageFile(context) ?: return ""
         val photoURI: Uri = FileProvider.getUriForFile(context, authority, photoFile)
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -38,7 +42,9 @@ object CameraService {
                 MediaStore.Images.Media.getBitmap(contentResolver, uri)
             } else {
                 val source = ImageDecoder.createSource(contentResolver, uri)
-                ImageDecoder.decodeBitmap(source)
+                val res = ImageDecoder.decodeBitmap(source)
+                Log.d("MPCameraService", "$res")
+                res
             }
         } catch(e: Exception) {
             e.printStackTrace()

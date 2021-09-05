@@ -26,6 +26,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -47,6 +48,7 @@ class EditPlantActivity : BaseActivity(),
     private lateinit var tvErrName: TextView
     private lateinit var tvErrNickname: TextView
     private lateinit var mPhotoFilename: String
+    private lateinit var mTempPhotoFilename: String
     private lateinit var mPlantData: Plant
     private lateinit var mPlantDataEditable: Plant
     private var mOldNickname = "NULL"
@@ -88,8 +90,9 @@ class EditPlantActivity : BaseActivity(),
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            Log.d("MPEditPlant", "${result.data}")
+            mPhotoFilename = mTempPhotoFilename
             val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
+            Log.d("MPEditPlant", "$bitmap")
             ivPlant.setImageBitmap(bitmap)
         }
     }
@@ -117,16 +120,7 @@ class EditPlantActivity : BaseActivity(),
         val tasks = TaskService.findTasksByPlantId(id)
 
         mPhotoFilename = filePath
-        if (filePath == "") {
-            Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(ivPlant)
-        } else {
-            val imgFile = File(filePath)
-            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-            ivPlant.setImageBitmap(bmp)
-        }
+        ImageLoadingService.loadImage(mPlantData, this, ivPlant)
 
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
@@ -137,6 +131,7 @@ class EditPlantActivity : BaseActivity(),
     }
 
     override fun bindActions() {
+        CloudinaryService.setOnUploadSuccessListener(this)
         etPlantName.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -164,7 +159,7 @@ class EditPlantActivity : BaseActivity(),
     }
 
     private fun mLaunchCamera() {
-        mPhotoFilename = CameraService.launchCameraAndGetFilename(
+        mTempPhotoFilename = CameraService.launchCameraAndGetFilename(
             context=this,
             authority=getString(R.string.file_provider_authority),
             launcher=cameraLauncher)
@@ -204,7 +199,7 @@ class EditPlantActivity : BaseActivity(),
                 "name" to mPlantDataEditable.name,
                 "nickname" to mPlantDataEditable.nickname,
                 "tasks" to mPlantDataEditable.tasks,
-                "filePath" to mPhotoFilename
+//                "filePath" to mPhotoFilename
             )
         )
 

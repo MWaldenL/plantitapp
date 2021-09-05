@@ -28,6 +28,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.TaskListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -108,16 +109,6 @@ class ViewSinglePlantActivity : BaseActivity(),
     override val layoutResourceId: Int = R.layout.activity_view_single_plant
     override val mainViewId: Int = R.id.layout_view_plant
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mShowOrHideNoJournal()
-    }
-
     override fun inititalizeViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
         tvNickname = findViewById(R.id.tv_nickname)
@@ -139,8 +130,7 @@ class ViewSinglePlantActivity : BaseActivity(),
     }
 
     override fun bindData() {
-//        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-        Log.d("MPViewSinglePlant", "${mPlantData}")
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
         val tasksTodayAll = TaskService.getTasksToday(true)
         val tasks = ArrayList<Task>()
@@ -178,17 +168,7 @@ class ViewSinglePlantActivity : BaseActivity(),
             ibtnRevivePlant.visibility = View.GONE
         }
 
-        if (filePath == "") {
-            Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.bg_img_temp)
-                .into(ivPlant)
-        } else {
-            val imgFile = File(filePath)
-            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-            Log.d("MPViewSinglePlant", "$imgFile, $bmp")
-            ivPlant.setImageBitmap(bmp)
-        }
+        ImageLoadingService.loadImage(mPlantData, this, ivPlant)
 
         val size = journal.size
         mJournalLimited.clear()
@@ -210,6 +190,11 @@ class ViewSinglePlantActivity : BaseActivity(),
         ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
         ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
         btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mShowOrHideNoJournal()
     }
 
     // plant option functions

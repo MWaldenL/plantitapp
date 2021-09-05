@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import java.io.File
 
@@ -18,7 +19,7 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
     private val mTvName: TextView = itemView.findViewById(R.id.tv_list_plant_name)
 
     override fun bindData(plant: Plant) {
-        mLoadImage(plant)
+        ImageLoadingService.loadImage(plant, itemView.context, mImagePlant)
         if (plant.nickname == "") {
             mTvNick.text = plant.name
             mTvName.visibility = View.GONE
@@ -32,19 +33,6 @@ class PlantListViewHolder(itemView: View): PlantViewHolder(itemView) {
             val matrix = ColorMatrix()
             matrix.setSaturation(0f)
             mImagePlant.colorFilter = ColorMatrixColorFilter(matrix)
-        }
-    }
-
-    private fun mLoadImage(plant: Plant) {
-        if (plant.filePath == "") { // load the image from cloud
-            Glide.with(itemView.context)
-                .load(plant.imageUrl)
-                .placeholder(R.drawable.bg_img_temp)
-                .into(mImagePlant)
-        } else { // load the image from app storage
-            val imgFile = File(plant.filePath)
-            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-            mImagePlant.setImageBitmap(bmp)
         }
     }
 }

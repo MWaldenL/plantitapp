@@ -29,7 +29,8 @@ object CloudinaryService : UploadCallback, CoroutineScope {
             .upload(filename)
             .option("folder", F.auth.currentUser!!.uid)
             .unsigned(BuildConfig.UPLOAD_PRESET)
-            .callback(this).dispatch()
+            .callback(this)
+            .dispatch()
     }
 
     fun deleteFromCloud(url: String) {
