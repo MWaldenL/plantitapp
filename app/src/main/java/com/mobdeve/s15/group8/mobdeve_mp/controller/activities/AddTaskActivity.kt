@@ -20,8 +20,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTaskActivity :
-    AppCompatActivity(),
+class AddTaskActivity : BaseActivity(),
     DatePickerDialogFragment.OnDateSetListener,
     AdapterView.OnItemSelectedListener {
 
@@ -38,31 +37,33 @@ class AddTaskActivity :
     private lateinit var mOccurrence: String
     private lateinit var mStartDate: Calendar
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_task)
+    override val layoutResourceId: Int = R.layout.activity_add_task
+    override val mainViewId: Int = R.id.layout_add_task
 
+    override fun inititalizeViews() {
         llRepeatsOn = findViewById(R.id.ll_repeats_on)
         btnStartDate = findViewById(R.id.btn_start_date)
         ibtnSaveTask = findViewById(R.id.ibtn_save_task)
         etRepeat = findViewById(R.id.et_repeat)
-
         llRepeatsOn.visibility = View.INVISIBLE
+        mInitSpinnerAction()
+        mInitSpinnerOccurrence()
+    }
 
+    override fun bindData() {
         mAction = "Water"
         mOccurrence = "Day"
         mStartDate = DateTimeService.getCurrentDateWithoutTime()
-
         mDisplayDateInBtn()
+    }
+
+    override fun bindActions() {
         btnStartDate.setOnClickListener {
             val newFragment = DatePickerDialogFragment(mStartDate)
             newFragment.show(supportFragmentManager, "datePicker")
         }
-
         ibtnSaveTask.setOnClickListener {
-
             Toast.makeText(this, mAction, Toast.LENGTH_SHORT).show()
-
             val resultIntent = Intent()
             resultIntent.putExtra(
                 getString(R.string.ADD_TASK_ACTION), mAction)
@@ -76,9 +77,6 @@ class AddTaskActivity :
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
-
-        mInitSpinnerAction()
-        mInitSpinnerOccurrence()
     }
 
     private fun mInitSpinnerAction() {

@@ -34,8 +34,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class ViewAllJournalsActivity :
-    AppCompatActivity(),
+class ViewAllJournalsActivity : BaseActivity(),
     DeleteJournalDialogFragment.DeleteJournalDialogListener
 {
     private lateinit var recyclerView: RecyclerView
@@ -56,37 +55,24 @@ class ViewAllJournalsActivity :
                 }
             }
         }
+    override val layoutResourceId: Int = R.layout.activity_view_all_journals
+
+    override val mainViewId: Int = R.id.layout_all_journals
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_all_journals)
-
-        mInitViews()
-        mBindData()
         mPrepareSwipeCallback()
     }
 
-    override fun onBackPressed() {
-        val resultIntent = Intent()
-        resultIntent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
-
-        setResult(Activity.RESULT_OK, resultIntent)
-
-        super.onBackPressed()
-    }
-
-    private fun mInitViews() {
+    override fun inititalizeViews() {
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
         fabAddNewJournal = findViewById(R.id.fab_add_new_journal)
-
         recyclerView = findViewById(R.id.recyclerview_all_journal)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        fabAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
     }
 
-    private fun mBindData() {
+    override fun bindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
 
         val nickname = mPlantData.nickname
@@ -107,6 +93,17 @@ class ViewAllJournalsActivity :
         }
 
         recyclerView.adapter = JournalAllListAdapter(mJournal)
+    }
+
+    override fun bindActions() {
+        fabAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
+    }
+
+    override fun onBackPressed() {
+        val resultIntent = Intent()
+        resultIntent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
+        setResult(Activity.RESULT_OK, resultIntent)
+        super.onBackPressed()
     }
 
     // TODO: Fix display

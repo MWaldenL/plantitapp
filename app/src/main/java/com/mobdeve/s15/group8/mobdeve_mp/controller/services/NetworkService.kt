@@ -8,16 +8,13 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 
 class NetworkService(context: Context): LiveData<Boolean>() {
-    private var connectivityManager: ConnectivityManager =
+    private lateinit var mNetworkCallback: ConnectivityManager.NetworkCallback
+    private var mConnectivityManager: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
 
     override fun onActive() {
         super.onActive()
-        if (Build.VERSION.SDK_INT >= 29) {
-            connectivityManager.registerDefaultNetworkCallback(mGetConnCallback())
-        }
+        registerCallback()
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -26,7 +23,7 @@ class NetworkService(context: Context): LiveData<Boolean>() {
     }
 
     private fun mGetConnCallback(): ConnectivityManager.NetworkCallback {
-        return object: ConnectivityManager.NetworkCallback() {
+        mNetworkCallback = object: ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network : Network) {
                 super.onAvailable(network)
                 postValue(true)
@@ -37,5 +34,16 @@ class NetworkService(context: Context): LiveData<Boolean>() {
                 postValue(false)
             }
         }
+        return mNetworkCallback
+    }
+
+    fun registerCallback() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            mConnectivityManager.registerDefaultNetworkCallback(mGetConnCallback())
+        }
+    }
+
+    fun unregisterCallback() {
+        mConnectivityManager.unregisterNetworkCallback(mNetworkCallback)
     }
 }

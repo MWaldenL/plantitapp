@@ -40,8 +40,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class ViewSinglePlantActivity :
-    AppCompatActivity(),
+class ViewSinglePlantActivity : BaseActivity(),
     DeletePlantDialogFragment.DeletePlantDialogListener,
     PlantDeathDialogFragment.PlantDeathDialogListener,
     PlantRevivalDialogFragment.PlantRevivalDialogListener
@@ -101,19 +100,17 @@ class ViewSinglePlantActivity :
                 val data = result.data?.getParcelableExtra<Plant>(getString(R.string.PLANT_KEY))
                 if (data != null) {
                     mPlantData = data
-                    mBindData()
+                    bindData()
                     Log.d("hatdog", mPlantData.toString())
                 }
             }
         }
+    override val layoutResourceId: Int = R.layout.activity_view_single_plant
+    override val mainViewId: Int = R.id.layout_view_plant
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_single_plant)
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-
-        mInitViews()
-        mBindData()
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
@@ -121,9 +118,7 @@ class ViewSinglePlantActivity :
         mShowOrHideNoJournal()
     }
 
-    // activity init functions
-
-    private fun mInitViews() {
+    override fun inititalizeViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
         tvNickname = findViewById(R.id.tv_nickname)
         tvPurchaseDate = findViewById(R.id.tv_purchase_date)
@@ -137,20 +132,15 @@ class ViewSinglePlantActivity :
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
         tvNoJournal = findViewById(R.id.tv_single_plant_no_journal)
 
-        ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
-        ibtnEditPlant.setOnClickListener { mHandleEditPlant() }
-        ibtnKillPlant.setOnClickListener { mHandlePlantDeath() }
-        ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
-        ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
-        btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
-
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
         recyclerViewTask.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerViewJournal.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun mBindData() {
+    override fun bindData() {
+//        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+        Log.d("MPViewSinglePlant", "${mPlantData}")
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
         val tasksTodayAll = TaskService.getTasksToday(true)
         val tasks = ArrayList<Task>()
@@ -196,6 +186,7 @@ class ViewSinglePlantActivity :
         } else {
             val imgFile = File(filePath)
             val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
+            Log.d("MPViewSinglePlant", "$imgFile, $bmp")
             ivPlant.setImageBitmap(bmp)
         }
 
@@ -210,6 +201,15 @@ class ViewSinglePlantActivity :
 
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
+    }
+
+    override fun bindActions() {
+        ibtnAddNewJournal.setOnClickListener { mHandleNewJournalRequest() }
+        ibtnEditPlant.setOnClickListener { mHandleEditPlant() }
+        ibtnKillPlant.setOnClickListener { mHandlePlantDeath() }
+        ibtnRevivePlant.setOnClickListener { mHandlePlantRevival() }
+        ibtnDeletePlant.setOnClickListener { mHandlePlantDelete() }
+        btnViewAll.setOnClickListener { mGotoViewAllJournalsActivity() }
     }
 
     // plant option functions
@@ -237,7 +237,6 @@ class ViewSinglePlantActivity :
 
     override fun onPlantDelete(dialog: DialogFragment) {
         val name = if (mPlantData.nickname != "") mPlantData.nickname else mPlantData.name
-        Log.d("VSPA", "About to delete plant img")
         CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
 
         // delete from db

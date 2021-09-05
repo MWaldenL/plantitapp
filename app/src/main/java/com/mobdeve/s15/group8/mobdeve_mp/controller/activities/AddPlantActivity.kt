@@ -28,8 +28,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 
-class AddPlantActivity :
-    AppCompatActivity(),
+class AddPlantActivity : BaseActivity(),
     ImageUploadCallback,
     AddPlantTasksAdapter.OnTaskDeletedListener
 {
@@ -90,14 +89,16 @@ class AddPlantActivity :
             ivPlant.setImageBitmap(bitmap)
         }
     }
+    override val layoutResourceId: Int = R.layout.activity_add_plant
+    override val mainViewId: Int = R.id.layout_add_plant
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_plant)
-        CloudinaryService.setOnUploadSuccessListener(this)
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
+    }
 
+    override fun inititalizeViews() {
         groupNoPic = findViewById(R.id.group_no_pic)
         ivAddPlant = findViewById(R.id.iv_no_pic)
         ivPlant = findViewById(R.id.iv_add_plant)
@@ -112,7 +113,14 @@ class AddPlantActivity :
         cvNoTasks = findViewById(R.id.cv_no_tasks)
         tasksRV.adapter = AddPlantTasksAdapter(this, NewPlantInstance.tasksObject)
         tasksRV.layoutManager = LinearLayoutManager(this)
+    }
 
+    override fun bindData() {
+        mShowOrHideNoTasksCard()
+    }
+
+    override fun bindActions() {
+        CloudinaryService.setOnUploadSuccessListener(this)
         etPlantName.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -138,8 +146,6 @@ class AddPlantActivity :
             val i = Intent(this, AddTaskActivity::class.java)
             addTaskLauncher.launch(i)
         }
-
-        mShowOrHideNoTasksCard()
     }
 
     override fun notifyTaskDeleted(task: Task) {

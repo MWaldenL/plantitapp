@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.NavHostFragment
@@ -32,8 +33,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.PushPermissions
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MainActivity:
-    AppCompatActivity(),
+class MainActivity: BaseActivity(),
     AppFeedbackDialogFragment.AppFeedbackDialogListener,
     DailyNotificationsDialogFragment.DailyNotificationsDialogListener,
     RefreshCallback
@@ -42,53 +42,37 @@ class MainActivity:
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fabAddPlant: FloatingActionButton
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var layoutMain: CoordinatorLayout
     private lateinit var btnSetAlarm: Button
-    private lateinit var ivOffline: ImageView
     private lateinit var mSharedPreferences: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
 
+    override val layoutResourceId: Int = R.layout.activity_main
+    override val mainViewId: Int = R.id.layout_main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        mInitViews()
-        mInitListeners()
-
-        val navFragment = supportFragmentManager.findFragmentById(R.id.nav_fragment) as NavHostFragment
-        val navController = navFragment.navController
-        bottomNav.setupWithNavController(navController)
-
         mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
         mEditor = mSharedPreferences.edit()
-
         mHandleDailyNotificationsReady()
-        PlantRepository.setRefreshedListener(this)
-
-        val networkConnection = NetworkService(this)
-        networkConnection.observe(this, { connected ->
-            if (connected) {
-                Log.d("MPMainActivity", "connected")
-                ivOffline.visibility = View.GONE
-                mToggleMainViews(show=true)
-            } else {
-                Log.d("MPMainActivity", "disconnected")
-                ivOffline.visibility = View.VISIBLE
-                mToggleMainViews(show=false)
-            }
-        })
     }
 
-    private fun mInitViews() {
-        ivOffline = findViewById(R.id.iv_offline_dashboard)
-        layoutMain = findViewById(R.id.layout_main)
+    override fun inititalizeViews() {
         bottomNav = findViewById(R.id.bottom_nav_view)
         bottomAppBar = findViewById(R.id.bottom_appbar)
         fabAddPlant = findViewById(R.id.fab_add_plant)
         btnSetAlarm = findViewById(R.id.btn_set_alarm)
         swipeRefreshLayout = findViewById(R.id.swipe_refresh)
+
+        val navFragment = supportFragmentManager.findFragmentById(R.id.nav_fragment) as NavHostFragment
+        val navController = navFragment.navController
+        bottomNav.setupWithNavController(navController)
     }
 
-    private fun mInitListeners() {
+    override fun bindData() {
+    }
+
+    override fun bindActions() {
+        PlantRepository.setRefreshedListener(this)
         fabAddPlant.setOnClickListener {
             val addPlantIntent = Intent(this@MainActivity, AddPlantActivity::class.java)
             startActivity(addPlantIntent)
@@ -101,11 +85,11 @@ class MainActivity:
         }
     }
 
-    private fun mToggleMainViews(show: Boolean) {
-        bottomAppBar.visibility = if (show) View.VISIBLE else View.GONE
-        bottomNav.visibility = if (show) View.VISIBLE else View.GONE
-        fabAddPlant.visibility = if (show) View.VISIBLE else View.GONE
-        layoutMain.visibility = if (show) View.VISIBLE else View.GONE
+    override fun toggleViews(connected: Boolean) {
+        super.toggleViews(connected)
+        bottomAppBar.visibility = if (connected) View.VISIBLE else View.GONE
+        bottomNav.visibility = if (connected) View.VISIBLE else View.GONE
+        fabAddPlant.visibility = if (connected) View.VISIBLE else View.GONE
     }
 
     // push notifications function

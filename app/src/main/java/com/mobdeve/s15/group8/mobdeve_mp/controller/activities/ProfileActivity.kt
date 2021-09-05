@@ -6,14 +6,18 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NetworkService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
@@ -31,7 +35,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 class ProfileActivity :
-    AppCompatActivity(),
+    BaseActivity(),
     AppFeedbackDialogFragment.AppFeedbackDialogListener,
     CoroutineScope
 {
@@ -47,32 +51,24 @@ class ProfileActivity :
 
     private lateinit var mSharedPreferences: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
+
     override val coroutineContext: CoroutineContext = Dispatchers.IO
+    override val layoutResourceId: Int = R.layout.activity_profile
+    override val mainViewId: Int = R.id.layout_profile
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-
-        mInitViews()
-        mBindData()
-        mBindActions()
-    }
-
-    private fun mInitViews() {
+    override fun inititalizeViews() {
         tvProfileName = findViewById(R.id.tv_profile_name)
         tvDateJoined = findViewById(R.id.tv_profile_date)
         tvLiveCount = findViewById(R.id.tv_live_count)
         tvDeadCount = findViewById(R.id.tv_dead_count)
         tvTotalCount = findViewById(R.id.tv_total_count)
-
         switchPush = findViewById(R.id.switch_push)
         switchFeedback = findViewById(R.id.switch_feedback)
-
         btnFeedback = findViewById(R.id.btn_feedback)
         btnLogout = findViewById(R.id.btn_logout)
     }
 
-    private fun mBindData() {
+    override fun bindData() {
         mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
         mEditor = mSharedPreferences.edit()
 
@@ -102,7 +98,7 @@ class ProfileActivity :
         switchFeedback.isChecked = mSharedPreferences.getInt(getString(R.string.SP_FEED_KEY), -1) == FeedbackPermissions.ALLOWED.ordinal
     }
 
-    private fun mBindActions() {
+    override fun bindActions() {
         switchPush.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 NotificationService.scheduleNotification(this)

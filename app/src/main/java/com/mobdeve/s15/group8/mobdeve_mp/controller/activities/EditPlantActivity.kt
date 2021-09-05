@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
@@ -13,6 +14,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.solver.state.State
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,8 +34,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.io.File
 import java.util.*
 
-class EditPlantActivity :
-    AppCompatActivity(),
+class EditPlantActivity : BaseActivity(),
     ImageUploadCallback,
     AddPlantTasksAdapter.OnTaskDeletedListener
 {
@@ -86,19 +88,16 @@ class EditPlantActivity :
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
+            Log.d("MPEditPlant", "${result.data}")
             val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
             ivPlant.setImageBitmap(bitmap)
         }
     }
+    override val layoutResourceId: Int = R.layout.activity_edit_plant
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_plant)
-        mInitViews()
-        mBindData()
-    }
+    override val mainViewId: Int = R.id.layout_edit
 
-    private fun mInitViews() {
+    override fun inititalizeViews() {
         ivPlant = findViewById(R.id.iv_plant_edit)
         ibtnAddTask = findViewById(R.id.ibtn_add_task_edit)
         ibtnSave = findViewById(R.id.ibtn_save_plant_edit)
@@ -106,39 +105,11 @@ class EditPlantActivity :
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
         tvErrName = findViewById(R.id.tv_edit_err_name)
         tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
-
-        etPlantName.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!mFirstTime) {
-                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
-                }
-            }
-        })
-
-        etPlantNickname.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (mOldNickname != "NULL") {
-                    tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
-                }
-            }
-        })
-
-        ivPlant.setOnClickListener { mLaunchCamera() }
-        ibtnSave.setOnClickListener { mSavePlant() }
-        ibtnAddTask.setOnClickListener {
-            val i = Intent(this, AddTaskActivity::class.java)
-            addTaskLauncher.launch(i)
-        }
-
         rvTasks = findViewById(R.id.rv_tasks_edit)
         rvTasks.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun mBindData() {
+    override fun bindData() {
         mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         mPlantDataEditable = mPlantData.deepCopy()
 
@@ -146,7 +117,6 @@ class EditPlantActivity :
         val tasks = TaskService.findTasksByPlantId(id)
 
         mPhotoFilename = filePath
-
         if (filePath == "") {
             Glide.with(this)
                 .load(imageUrl)
@@ -164,6 +134,33 @@ class EditPlantActivity :
         mOldNickname.trim()
 
         rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
+    }
+
+    override fun bindActions() {
+        etPlantName.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!mFirstTime) {
+                    tvErrName.visibility = if (s!!.isNotEmpty()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+        etPlantNickname.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (mOldNickname != "NULL") {
+                    tvErrNickname.visibility = if (mCheckNickname()) View.GONE else View.VISIBLE
+                }
+            }
+        })
+        ivPlant.setOnClickListener { mLaunchCamera() }
+        ibtnSave.setOnClickListener { mSavePlant() }
+        ibtnAddTask.setOnClickListener {
+            val i = Intent(this, AddTaskActivity::class.java)
+            addTaskLauncher.launch(i)
+        }
     }
 
     private fun mLaunchCamera() {
