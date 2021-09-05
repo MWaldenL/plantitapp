@@ -100,9 +100,9 @@ class AddPlantActivity : BaseActivity(),
     override val mainViewId: Int = R.id.layout_add_plant
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
+        super.onCreate(savedInstanceState)
     }
 
     override fun inititalizeViews() {
