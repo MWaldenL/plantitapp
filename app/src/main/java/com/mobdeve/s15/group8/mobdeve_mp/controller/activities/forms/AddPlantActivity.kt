@@ -11,12 +11,14 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.LeaveDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
@@ -28,6 +30,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 import java.util.*
 
 class AddPlantActivity : BaseActivity(),
@@ -170,6 +173,15 @@ class AddPlantActivity : BaseActivity(),
         val plant = savedInstanceState.getSerializable(getString(R.string.SAVED_PLANT_KEY))
     }
 
+    override fun onBackPressed() {
+        if (mCheckFields("leave")) {
+            val fragment = LeaveDialogFragment(LeaveDialogType.ADD_PLANT.ordinal)
+            fragment.show(supportFragmentManager, "leave add plant")
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onImageUploadSuccess(imageUrl: String) {
         DBService.updateDocument(
             collection= F.plantsCollection,
@@ -193,22 +205,28 @@ class AddPlantActivity : BaseActivity(),
                 currentNickname != plant.nickname // changed nickname and unique
     }
 
-    private fun mCheckFields(): Boolean {
+    private fun mCheckFields(type: String): Boolean {
         mFirstTime = false
 
-        val nameFilled = etPlantName.text.trim().isNotEmpty()
-        val nicknameUnique = mCheckNickname()
-        val imageAdded = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
+        val nameValid = etPlantName.text.trim().isNotEmpty()
 
-        tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
-        tvErrNickname.visibility = if (!nicknameUnique) View.VISIBLE else View.GONE
-        tvErrImage.visibility = if (!imageAdded) View.VISIBLE else View.GONE
+        val nicknameValid = if (type == "save") mCheckNickname() else etPlantNickname.text.trim().isNotEmpty()
 
-        return nameFilled && nicknameUnique && imageAdded
+        val imageValid = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
+
+        if (type == "save") {
+            tvErrName.visibility = if (!nameValid) View.VISIBLE else View.GONE
+            tvErrNickname.visibility = if (!nicknameValid) View.VISIBLE else View.GONE
+            tvErrImage.visibility = if (!imageValid) View.VISIBLE else View.GONE
+
+            return nameValid && nicknameValid && imageValid
+        } else {
+            return nameValid || nicknameValid || imageValid
+        }
     }
 
     private fun mSavePlant() {
-        if (!mCheckFields()) {
+        if (!mCheckFields("save")) {
             return
         }
 

@@ -19,21 +19,6 @@ class LeaveDialogFragment(type: Int) :
     private lateinit var tvLeavingQuestion: TextView
     private val mType = type
 
-    internal lateinit var listener: LeaveDialogListener
-
-    interface LeaveDialogListener {
-        fun onJournalLeave(dialog: DialogFragment)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listener = context as LeaveDialogListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement LeaveDialogListener"))
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -56,8 +41,8 @@ class LeaveDialogFragment(type: Int) :
             }
 
             btnLeave.setOnClickListener {
-                listener.onJournalLeave(this)
                 this.dismiss()
+                requireActivity().finish()
             }
 
             btnLeaveCancel.setOnClickListener {

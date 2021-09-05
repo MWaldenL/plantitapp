@@ -14,8 +14,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 
 class AddNewJournalActivity :
-    BaseActivity(),
-    LeaveDialogFragment.LeaveDialogListener
+    BaseActivity()
 {
     private lateinit var etJournal: EditText
     private lateinit var tvName: TextView
@@ -64,9 +63,5 @@ class AddNewJournalActivity :
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onJournalLeave(dialog: DialogFragment) {
-        finish()
     }
 }
