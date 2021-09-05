@@ -7,7 +7,6 @@ import com.cloudinary.android.callback.UploadCallback
 import com.cloudinary.utils.ObjectUtils
 import com.mobdeve.s15.group8.mobdeve_mp.BuildConfig
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -16,9 +15,9 @@ import kotlin.coroutines.CoroutineContext
  * listen for results. Call uploadToCloud to upload the image to Cloudinary
  */
 object CloudinaryService : UploadCallback, CoroutineScope {
-    private var mListener: ImageUploadCallback? = null
+    private var mListener: ((imageUrl: String) -> Unit?)? = null
 
-    fun setOnUploadSuccessListener(listener: ImageUploadCallback) {
+    fun setOnUploadSuccessListener(listener: (s: String) -> Unit) {
         mListener = listener
     }
 
@@ -56,7 +55,7 @@ object CloudinaryService : UploadCallback, CoroutineScope {
     override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
         Log.d("CLOUDINARY", "Uploaded to cloud, $resultData")
         val imageUrl = resultData?.get("secure_url").toString()
-        mListener?.onImageUploadSuccess(imageUrl)
+        mListener?.invoke(imageUrl)
     }
 
     override fun onError(requestId: String?, error: ErrorInfo?) {

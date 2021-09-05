@@ -81,7 +81,7 @@ object PlantRepository: CoroutineScope {
                 id = doc["id"].toString(),
                 userId = doc["userId"].toString(),
                 imageUrl = doc["imageUrl"].toString(),
-                filePath = "",
+                filePath = doc["filePath"].toString(),
                 name = doc["name"].toString(),
                 nickname = doc["nickname"].toString(),
                 dateAdded = doc["dateAdded"].toString(),
