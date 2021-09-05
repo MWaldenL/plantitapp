@@ -1,23 +1,19 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
-import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NetworkService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService

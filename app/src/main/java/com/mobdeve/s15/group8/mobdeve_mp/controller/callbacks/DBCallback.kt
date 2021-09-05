@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces
+package com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks
 
 /**
  * Used to inform listeners when data is being retrieved and when all data fetching is done

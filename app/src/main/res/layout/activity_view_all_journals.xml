@@ -6,7 +6,7 @@
     android:id="@+id/cl_root_all_journal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.activities.ViewAllJournalsActivity">
+    tools:context=".controller.activities.viewing.ViewAllJournalsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_all_journals"

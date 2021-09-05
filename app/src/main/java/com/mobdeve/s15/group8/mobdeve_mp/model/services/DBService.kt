@@ -4,8 +4,6 @@ import android.util.Log
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.CoroutineContext

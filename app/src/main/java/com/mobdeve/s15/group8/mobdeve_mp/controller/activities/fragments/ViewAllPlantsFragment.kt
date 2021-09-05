@@ -3,7 +3,6 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.PlantListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository

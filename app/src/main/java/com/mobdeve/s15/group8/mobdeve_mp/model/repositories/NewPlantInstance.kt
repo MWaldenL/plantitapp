@@ -2,12 +2,11 @@ package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
 import android.util.Log
 import com.google.firebase.Timestamp
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 

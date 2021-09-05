@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NetworkService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F

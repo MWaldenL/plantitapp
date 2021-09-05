@@ -1,9 +1,7 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.forms
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,18 +11,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.solver.state.State
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.cloudinary.android.MediaManager
 import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
@@ -32,7 +27,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import java.io.File
 import java.util.*
 
 class EditPlantActivity : BaseActivity(),

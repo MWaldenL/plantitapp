@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.forms.AddNewJournalActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeleteJournalDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.JournalAllListAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal

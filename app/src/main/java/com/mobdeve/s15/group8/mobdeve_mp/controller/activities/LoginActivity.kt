@@ -16,19 +16,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {

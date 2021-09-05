@@ -1,14 +1,13 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.services
 
 import android.util.Log
-import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.cloudinary.utils.ObjectUtils
 import com.mobdeve.s15.group8.mobdeve_mp.BuildConfig
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 

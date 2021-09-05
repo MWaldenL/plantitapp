@@ -1,4 +1,4 @@
-package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
+package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.forms
 
 import android.app.Activity
 import android.content.Intent
@@ -8,16 +8,17 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.ImageUploadCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository

@@ -40,6 +40,8 @@ class NetworkService(context: Context): LiveData<Boolean>() {
     fun registerCallback() {
         if (Build.VERSION.SDK_INT >= 29) {
             mConnectivityManager.registerDefaultNetworkCallback(mGetConnCallback())
+        } else {
+            // TODO: Implement for API < 29
         }
     }
 

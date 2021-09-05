@@ -1,30 +1,21 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.net.*
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.ProfileActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing.ProfileActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NetworkService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class DashboardFragment : Fragment(), DBCallback {
     private lateinit var elvTaskGroup: ExpandableListView

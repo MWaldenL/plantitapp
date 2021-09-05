@@ -1,10 +1,9 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.RefreshCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task

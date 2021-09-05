@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.ViewSinglePlantActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing.ViewSinglePlantActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.PlantGridViewHolder
 import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.PlantListViewHolder
 import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.PlantViewHolder
