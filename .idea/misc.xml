@@ -67,7 +67,8 @@
         <entry key="app/src/main/res/layout/activity_view_single_plant.xml" value="0.335" />
         <entry key="app/src/main/res/layout/dialog_app_feedback.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_delete_journal.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/dialog_delete_plant.xml" value="0.10789473684210527" />
+        <entry key="app/src/main/res/layout/dialog_delete_plant.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_plant_death.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_push_notifications.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_view_all_plants.xml" value="0.17828947368421053" />

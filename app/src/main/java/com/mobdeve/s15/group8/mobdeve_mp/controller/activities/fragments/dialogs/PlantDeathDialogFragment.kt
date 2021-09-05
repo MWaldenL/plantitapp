@@ -4,12 +4,17 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
 class PlantDeathDialogFragment:
     DialogFragment()
 {
+    private lateinit var btnPlantDeath: Button
+    private lateinit var btnPlantDeathCancel: Button
+
     internal lateinit var listener: PlantDeathDialogListener
 
     interface PlantDeathDialogListener {
@@ -28,21 +33,22 @@ class PlantDeathDialogFragment:
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
+            val inflater = requireActivity().layoutInflater
+            val view = inflater.inflate(R.layout.dialog_plant_death, null)
 
-            builder
-                .setMessage(
-                    "This plant will be labelled as dead but it will not be deleted.\n\n" +
-                            "You can still choose to revive it later on but the following functions will be disabled during the period when it's dead: \n\n" +
-                            "- Edit Plant\n" +
-                            "- Add New Journal (but you can still delete entries)"
-                )
-                .setPositiveButton("Continue") { dialog, id ->
-                    listener.onPlantDeath(this)
-                }
-                .setNegativeButton("Cancel") { dialog, id ->
-                    getDialog()?.cancel()
-                }
-                .create()
+            btnPlantDeath = view.findViewById(R.id.btn_plant_death)
+            btnPlantDeathCancel = view.findViewById(R.id.btn_plant_death_cancel)
+
+            btnPlantDeath.setOnClickListener {
+                listener.onPlantDeath(this)
+                this.dismiss()
+            }
+
+            btnPlantDeathCancel.setOnClickListener {
+                this.dismiss()
+            }
+
+            builder.setView(view).create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }
