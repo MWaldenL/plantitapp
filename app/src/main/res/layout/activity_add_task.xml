@@ -270,6 +270,16 @@
                         android:textOn="S" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_err_weekly_recurrence"
+                    style="@style/TextAppearance.MOBDEVEMP.Error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ems="12"
+                    android:text="@string/err_no_weekly_recurrence"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>

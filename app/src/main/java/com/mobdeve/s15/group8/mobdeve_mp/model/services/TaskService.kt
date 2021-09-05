@@ -1,10 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.services
 
 import android.util.Log
-import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import java.util.*
 import kotlin.collections.ArrayList
 
 object TaskService {
@@ -34,7 +32,8 @@ object TaskService {
             val nextDue = DateTimeService.getNextDueDate(
                 task.occurrence,
                 task.repeat,
-                task.lastCompleted
+                task.lastCompleted,
+                task.weeklyRecurrence
             )
             Log.d("Dashboard", "${task.lastCompleted} lc vs dt ${dateToday.time}")
 
@@ -54,7 +53,8 @@ object TaskService {
         val nextDue = DateTimeService.getNextDueDate(
             task.occurrence,
             task.repeat,
-            task.lastCompleted
+            task.lastCompleted,
+            task.weeklyRecurrence
         )
         return nextDue.before(dateToday)
     }

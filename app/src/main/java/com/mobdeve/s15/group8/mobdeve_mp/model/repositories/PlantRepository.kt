@@ -1,6 +1,5 @@
 package com.mobdeve.s15.group8.mobdeve_mp.model.repositories
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
@@ -119,7 +118,8 @@ object PlantRepository: CoroutineScope {
                 startDate = (doc["startDate"] as Timestamp).toDate(),
                 repeat = doc["repeat"].toString().toInt(),
                 occurrence = doc["occurrence"].toString(),
-                lastCompleted = (doc["lastCompleted"] as Timestamp).toDate()
+                lastCompleted = (doc["lastCompleted"] as Timestamp).toDate(),
+                weeklyRecurrence = doc["weeklyRecurrence"] as ArrayList<Int>?
             ))
         }
     }
