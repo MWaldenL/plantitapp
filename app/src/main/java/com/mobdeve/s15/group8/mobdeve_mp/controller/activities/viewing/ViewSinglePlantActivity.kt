@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -98,12 +99,16 @@ class ViewSinglePlantActivity : BaseActivity(),
                 if (data != null) {
                     mPlantData = data
                     bindData()
-                    Log.d("hatdog", mPlantData.toString())
                 }
             }
         }
     override val layoutResourceId: Int = R.layout.activity_view_single_plant
     override val mainViewId: Int = R.id.layout_view_plant
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
+        super.onCreate(savedInstanceState)
+    }
 
     override fun inititalizeViews() {
         tvCommonName = findViewById(R.id.tv_common_name)
@@ -126,7 +131,6 @@ class ViewSinglePlantActivity : BaseActivity(),
     }
 
     override fun bindData() {
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
         val tasksTodayAll = TaskService.getTasksToday(true)
         val tasks = ArrayList<Task>()

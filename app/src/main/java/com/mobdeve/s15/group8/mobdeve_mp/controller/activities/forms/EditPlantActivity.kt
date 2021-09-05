@@ -193,7 +193,7 @@ class EditPlantActivity : BaseActivity(),
                 "name" to mPlantDataEditable.name,
                 "nickname" to mPlantDataEditable.nickname,
                 "tasks" to mPlantDataEditable.tasks,
-//                "filePath" to mPhotoFilename
+                "filePath" to mPhotoFilename
             )
         )
 
@@ -236,7 +236,6 @@ class EditPlantActivity : BaseActivity(),
         PlantRepository.plantList[index] = mPlantDataEditable
 
         mPlantData = PlantRepository.plantList[index]
-
         val resultIntent = Intent()
         resultIntent.putExtra(getString(R.string.PLANT_KEY), mPlantData)
         setResult(Activity.RESULT_OK, resultIntent)
