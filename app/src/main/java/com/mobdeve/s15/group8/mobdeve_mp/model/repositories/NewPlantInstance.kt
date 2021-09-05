@@ -7,7 +7,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -45,7 +44,8 @@ object NewPlantInstance {
                     (task["startDate"] as Timestamp).toDate(),
                     task["repeat"] as Int,
                     task["occurrence"].toString(),
-                    (task["lastCompleted"] as Timestamp).toDate()
+                    (task["lastCompleted"] as Timestamp).toDate(),
+                    task["weeklyRecurrence"] as ArrayList<Int>
                 ))
             return t
         }
@@ -70,7 +70,8 @@ object NewPlantInstance {
             "startDate" to Timestamp(newTask.startDate),
             "repeat" to newTask.repeat,
             "occurrence" to newTask.occurrence,
-            "lastCompleted" to Timestamp(newTask.lastCompleted)
+            "lastCompleted" to Timestamp(newTask.lastCompleted),
+            "weeklyRecurrence" to newTask.weeklyRecurrence!!
         ))
         (plant["tasks"] as ArrayList<String>).add(newTask.id) // TODO: Remove
     }
