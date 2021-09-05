@@ -1,9 +1,13 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.services
 
 import android.annotation.TargetApi
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Build
 import androidx.lifecycle.LiveData
 
@@ -14,12 +18,22 @@ class NetworkService(context: Context): LiveData<Boolean>() {
 
     override fun onActive() {
         super.onActive()
+        updateConnection()
         registerCallback()
+    }
+
+    override fun onInactive() {
+        super.onInactive()
+        unregisterCallback()
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun makeNetworkRequest() {
-//        TODO: Implement for lower versions
+        val requestBuilder = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        mConnectivityManager.registerNetworkCallback(requestBuilder.build(), mGetConnCallback())
     }
 
     private fun mGetConnCallback(): ConnectivityManager.NetworkCallback {
@@ -38,14 +52,25 @@ class NetworkService(context: Context): LiveData<Boolean>() {
     }
 
     fun registerCallback() {
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (Build.VERSION.SDK_INT >= 25) {
             mConnectivityManager.registerDefaultNetworkCallback(mGetConnCallback())
         } else {
-            // TODO: Implement for API < 29
+            makeNetworkRequest()
         }
     }
 
     fun unregisterCallback() {
         mConnectivityManager.unregisterNetworkCallback(mNetworkCallback)
+    }
+
+    private val networkReceiver = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateConnection()
+        }
+    }
+
+    fun updateConnection() {
+        val activeNetwork = mConnectivityManager.activeNetworkInfo
+        postValue(activeNetwork?.isConnected == true)
     }
 }
