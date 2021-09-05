@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,8 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var mEditor: SharedPreferences.Editor
     private lateinit var plantAliveAdapter: PlantListAdapter
     private lateinit var plantDeadAdapter: PlantListAdapter
+    private lateinit var tvDead: TextView
+
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
     private var mAlive = arrayListOf<Plant>()
     private var mDead = arrayListOf<Plant>()
@@ -44,6 +47,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
         ibGridView = view.findViewById(R.id.ib_gridview)
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
+        tvDead = view.findViewById(R.id.tv_dead)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
@@ -98,6 +102,10 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
             else
                 mAlive.add(plant)
         }
+
+        if (mDead.size == 0)
+            tvDead.visibility = View.GONE
+
         onPlantAdded()
     }
 
