@@ -58,4 +58,8 @@
 
     <string name="plant_revival_label">Revive Plant</string>
     <string name="plant_revival_question">This plant will no longer be labelled as dead. All of its functions will be restored.</string>
+
+    <string name="leave_label">Leaving?</string>
+
+    <string name="leave_journal_question">This journal entry will not be saved. Are you sure you want to leave?</string>
 </resources>
