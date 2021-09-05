@@ -209,19 +209,17 @@ class AddPlantActivity : BaseActivity(),
         mFirstTime = false
 
         val nameValid = etPlantName.text.trim().isNotEmpty()
-
         val nicknameValid = if (type == "save") mCheckNickname() else etPlantNickname.text.trim().isNotEmpty()
-
         val imageValid = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
 
-        if (type == "save") {
+        return if (type == "save") {
             tvErrName.visibility = if (!nameValid) View.VISIBLE else View.GONE
             tvErrNickname.visibility = if (!nicknameValid) View.VISIBLE else View.GONE
             tvErrImage.visibility = if (!imageValid) View.VISIBLE else View.GONE
 
-            return nameValid && nicknameValid && imageValid
+            nameValid && nicknameValid && imageValid
         } else {
-            return nameValid || nicknameValid || imageValid
+            nameValid || nicknameValid || imageValid
         }
     }
 

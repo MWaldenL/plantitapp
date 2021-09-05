@@ -17,6 +17,7 @@ import com.cloudinary.android.MediaManager
 import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.LeaveDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
@@ -27,6 +28,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 import java.util.*
 
 class EditPlantActivity : BaseActivity(),
@@ -93,8 +95,8 @@ class EditPlantActivity : BaseActivity(),
             ivPlant.setImageBitmap(bitmap)
         }
     }
-    override val layoutResourceId: Int = R.layout.activity_edit_plant
 
+    override val layoutResourceId: Int = R.layout.activity_edit_plant
     override val mainViewId: Int = R.id.layout_edit
 
     override fun inititalizeViews() {
@@ -162,6 +164,15 @@ class EditPlantActivity : BaseActivity(),
             launcher=cameraLauncher)
     }
 
+    override fun onBackPressed() {
+        if (mCheckChanges()) {
+            val fragment = LeaveDialogFragment(LeaveDialogType.EDIT_PLANT.ordinal)
+            fragment.show(supportFragmentManager, "leave edit plant")
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun mCheckNickname(): Boolean {
         val currentNickname = etPlantNickname.text.toString().trim()
         val plant = PlantService.findPlantByNickname(currentNickname)
@@ -169,6 +180,20 @@ class EditPlantActivity : BaseActivity(),
                 currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
                 currentNickname == mOldNickname || // if did not change nickname
                 currentNickname != plant.nickname // changed nickname and unique
+    }
+
+    private fun mCheckChanges(): Boolean {
+        val nameChanged = mPlantData.name != etPlantName.text.toString()
+        val nicknameChanged = mPlantData.nickname != etPlantNickname.text.toString()
+        val tasksChanged = !mPlantData.tasks.equals(mPlantDataEditable.tasks)
+        val photoChanged = mPlantData.filePath != mPhotoFilename
+
+        Log.d("hatdog", nameChanged.toString())
+        Log.d("hatdog", nicknameChanged.toString())
+        Log.d("hatdog", tasksChanged.toString())
+        Log.d("hatdog", photoChanged.toString())
+
+        return nameChanged || nicknameChanged || tasksChanged || photoChanged
     }
 
     private fun mCheckFields(): Boolean {
