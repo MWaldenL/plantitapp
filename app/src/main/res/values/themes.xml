@@ -13,6 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
+        <item name="android:datePickerDialogTheme">@style/CustomDatePicker</item>
+    </style>
+
+    <!--  Date Picker Dialog  -->
+    <style name="CustomDatePicker" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/green</item>
     </style>
 
     <!--  Text  -->
@@ -74,6 +80,11 @@
         <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
+    <style name="Widget.MOBDEVEMP.RatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressTint">@color/green</item>
+        <item name="android:progressBackgroundTint">@color/light_gray</item>
+    </style>
+
     <style name="Widget.MOBDEVEMP.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/rounded_rectangle_8</item>
         <item name="backgroundTint">@color/light_gray</item>
@@ -122,8 +133,10 @@
         <item name="android:tint">@color/white</item>
     </style>
 
+<!--    TODO-->
     <style name="Widget.MOBDEVEMP.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="backgroundTint">@color/primary_color</item>
+        <item name="android:colorControlActivated">#1b5e20</item>
+        <item name="android:colorForeground">#f57f17</item>
     </style>
 
     <style name="Widget.MOBDEVEMP.IconBtnWhite" parent="Widget.AppCompat.ImageButton">
@@ -166,8 +179,8 @@
     </style>
 
     <style name="Widget.MOBDEVEMP.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="android:backgroundTint">@color/primary_color</item>
-        <item name="tint">@color/light_gray</item>
+        <item name="android:backgroundTint">@color/fab_color</item>
+        <item name="tint">@color/white</item>
         <item name="borderWidth">0dp</item>
     </style>
 

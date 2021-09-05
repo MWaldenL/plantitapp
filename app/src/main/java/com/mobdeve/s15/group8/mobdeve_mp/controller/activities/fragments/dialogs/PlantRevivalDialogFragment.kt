@@ -4,12 +4,17 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
 class PlantRevivalDialogFragment:
     DialogFragment()
 {
+    private lateinit var btnPlantRevival: Button
+    private lateinit var btnPlantRevivalCancel: Button
+
     internal lateinit var listener: PlantRevivalDialogListener
 
     interface PlantRevivalDialogListener {
@@ -28,18 +33,22 @@ class PlantRevivalDialogFragment:
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
+            val inflater = requireActivity().layoutInflater
+            val view = inflater.inflate(R.layout.dialog_plant_revival, null)
 
-            // TODO: change message to be more specific
+            btnPlantRevival = view.findViewById(R.id.btn_plant_revival)
+            btnPlantRevivalCancel = view.findViewById(R.id.btn_plant_revival_cancel)
 
-            builder
-                .setMessage("This plant will no longer be labelled as dead. Its functions will be restored.")
-                .setPositiveButton("Continue") { dialog, id ->
-                    listener.onPlantRevival(this)
-                }
-                .setNegativeButton("Cancel") { dialog, id ->
-                    getDialog()?.cancel()
-                }
-                .create()
+            btnPlantRevival.setOnClickListener {
+                listener.onPlantRevival(this)
+                this.dismiss()
+            }
+
+            btnPlantRevivalCancel.setOnClickListener {
+                this.dismiss()
+            }
+
+            builder.setView(view).create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

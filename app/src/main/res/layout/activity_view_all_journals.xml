@@ -25,6 +25,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_no_journal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/no_journals"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nickname_journal" />
+
+        <TextView
             android:id="@+id/tv_common_name_journal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,5 +85,8 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <include layout="@layout/view_offline" />
+
+    <include
+        layout="@layout/view_offline"
+        android:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

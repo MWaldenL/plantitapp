@@ -7,12 +7,10 @@
 
     <string name="date_label">Added on:</string>
 
-    <string name="feedback_label">Your feedback is important to us</string>
-    <string name="feedback_hint">What do you think of this app?</string>
-
     <string name="task_header">Daily Tasks</string>
     <string name="journal_header">Plant Journal</string>
     <string name="add_journal_header">New Journal Entry</string>
+    <string name="no_journals">You do not have any journal entries yet for this plant. Add one now by clicking the + button.</string>
 
     <string name="view_all_button">View All Entries</string>
     <string name="dead_button">Mark the Plant as Dead</string>
@@ -39,4 +37,25 @@
     <string name="feedback_switch_label">Feedback Prompts</string>
 
     <string name="log_out_label">Sign Out</string>
+<!--    Dialogs-->
+
+    <string name="feedback_label">Your feedback is important to us</string>
+    <string name="feedback_hint">What do you think of this app?</string>
+
+    <string name="push_question">Do you want to receive daily notifications about your plants? You can always change this in your profile.</string>
+
+    <string name="delete_journal_label">Deleting Journal Entry</string>
+    <string name="delete_journal_question">You are about to delete this journal entry. This action cannot be undone.</string>
+
+    <string name="delete_plant_label">Deleting a Plant</string>
+    <string name="delete_plant_question">You are about to delete this plant. This action cannot be undone.</string>
+
+    <string name="plant_death_label">Mark as Dead</string>
+    <string name="plant_death_question_1">This plant will be labelled as dead but it will not be deleted.</string>
+    <string name="plant_death_question_2">You can still choose to revive it later on but the following functions will be disabled during the period when it\'s dead:</string>
+    <string name="plant_death_question_3">- Edit Plant</string>
+    <string name="plant_death_question_4">- Add New Journal (but you can still delete existing entries)</string>
+
+    <string name="plant_revival_label">Revive Plant</string>
+    <string name="plant_revival_question">This plant will no longer be labelled as dead. All of its functions will be restored.</string>
 </resources>

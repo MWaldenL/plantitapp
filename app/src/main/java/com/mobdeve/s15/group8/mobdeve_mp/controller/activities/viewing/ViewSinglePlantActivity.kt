@@ -5,16 +5,13 @@ import android.content.Intent
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
-import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.forms.AddNewJournalActivity
@@ -34,9 +31,9 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class ViewSinglePlantActivity : BaseActivity(),
     DeletePlantDialogFragment.DeletePlantDialogListener,
@@ -158,12 +155,8 @@ class ViewSinglePlantActivity : BaseActivity(),
 
         if (death) {
             ibtnKillPlant.visibility = View.GONE
-
-            val params = ibtnEditPlant.layoutParams as ConstraintLayout.LayoutParams
-            params.bottomToBottom = tvNickname.id
-            params.topToTop = tvNickname.id
-            params.endToStart = ibtnRevivePlant.id
-            ibtnEditPlant.requestLayout()
+            ibtnEditPlant.visibility = View.GONE
+            ibtnAddNewJournal.visibility = View.GONE
         } else {
             ibtnRevivePlant.visibility = View.GONE
         }
@@ -250,7 +243,6 @@ class ViewSinglePlantActivity : BaseActivity(),
             Toast.LENGTH_SHORT
         ).show()
 
-        // launch main activity after deletion TODO
         finish()
     }
 
@@ -366,9 +358,14 @@ class ViewSinglePlantActivity : BaseActivity(),
     }
 
     private fun mShowOrHideNoJournal() {
-        if (mJournalLimited.size == 0)
+        if (mJournalLimited.size == 0) {
+            if (mPlantData.death) {
+                tvNoJournal.text = "You do not have any journal entries for this plant."
+                btnViewAll.visibility = View.GONE
+            }
+
             tvNoJournal.visibility = View.VISIBLE
-        else
+        } else
             tvNoJournal.visibility = View.GONE
     }
 }

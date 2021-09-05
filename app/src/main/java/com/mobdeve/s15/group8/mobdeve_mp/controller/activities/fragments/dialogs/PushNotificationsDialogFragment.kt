@@ -9,24 +9,25 @@ import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import java.lang.ClassCastException
 
-class DeletePlantDialogFragment:
+class PushNotificationsDialogFragment:
     DialogFragment()
 {
-    private lateinit var btnDeletePlant: Button
-    private lateinit var btnDeletePlantCancel: Button
+    private lateinit var btnPushAccept: Button
+    private lateinit var btnPushDecline: Button
 
-    internal lateinit var listener: DeletePlantDialogListener
+    internal lateinit var listener: PushNotificationsDialogListener
 
-    interface DeletePlantDialogListener {
-        fun onPlantDelete(dialog: DialogFragment)
+    interface PushNotificationsDialogListener {
+        fun onPushAccept(dialog: DialogFragment)
+        fun onPushDecline(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            listener = context as DeletePlantDialogListener
+            listener = context as PushNotificationsDialogListener
         } catch (e: ClassCastException) {
-            throw ClassCastException(("$context must implement DeletePlantDialogListener"))
+            throw ClassCastException(("$context must implement PushNotificationsDialogListener"))
         }
     }
 
@@ -34,17 +35,18 @@ class DeletePlantDialogFragment:
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_delete_plant, null)
+            val view = inflater.inflate(R.layout.dialog_push_notifications, null)
 
-            btnDeletePlant = view.findViewById(R.id.btn_delete_plant)
-            btnDeletePlantCancel = view.findViewById(R.id.btn_delete_plant_cancel)
+            btnPushAccept = view.findViewById(R.id.btn_push_accept)
+            btnPushDecline = view.findViewById(R.id.btn_push_decline)
 
-            btnDeletePlant.setOnClickListener {
-                listener.onPlantDelete(this)
+            btnPushAccept.setOnClickListener {
+                listener.onPushAccept(this)
                 this.dismiss()
             }
 
-            btnDeletePlantCancel.setOnClickListener {
+            btnPushDecline.setOnClickListener {
+                listener.onPushDecline(this)
                 this.dismiss()
             }
 

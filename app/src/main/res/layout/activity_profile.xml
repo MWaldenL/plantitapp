@@ -8,12 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_profile"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent">
 
         <ImageView
             android:id="@+id/iv_profile_logo"
@@ -177,6 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="64dp"
+            android:checked="false"
             android:minWidth="48dp"
             android:minHeight="24dp"
             android:paddingEnd="0dp"
@@ -210,7 +207,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <include layout="@layout/view_offline"/>
+
+    <include
+        layout="@layout/view_offline"
+        android:visibility="gone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

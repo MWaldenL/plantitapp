@@ -2,6 +2,7 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -40,6 +41,8 @@ class ViewAllJournalsActivity : BaseActivity(),
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvNickname: TextView
     private lateinit var tvCommonName: TextView
+    private lateinit var tvJournalHeader: TextView
+    private lateinit var tvNoJournal: TextView
     private lateinit var fabAddNewJournal: FloatingActionButton
     private lateinit var mJournal: ArrayList<Journal>
     private lateinit var mPlantData: Plant
@@ -60,6 +63,7 @@ class ViewAllJournalsActivity : BaseActivity(),
     override val mainViewId: Int = R.id.layout_all_journals
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
         super.onCreate(savedInstanceState)
         mPrepareSwipeCallback()
     }
@@ -67,22 +71,15 @@ class ViewAllJournalsActivity : BaseActivity(),
     override fun inititalizeViews() {
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
+        tvJournalHeader = findViewById(R.id.tv_journal_header)
+        tvNoJournal = findViewById(R.id.tv_no_journal)
         fabAddNewJournal = findViewById(R.id.fab_add_new_journal)
         recyclerView = findViewById(R.id.recyclerview_all_journal)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun bindData() {
-        mPlantData = intent.getParcelableExtra(getString(R.string.PLANT_KEY))!!
-
-        val nickname = mPlantData.nickname
-        val name = mPlantData.name
-        mJournal = mPlantData.journal
-
-        mJournal = mJournal
-            .indices
-            .map{i: Int -> mJournal[mJournal.size - 1 - i]}
-            .toCollection(ArrayList())
+        val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -92,7 +89,19 @@ class ViewAllJournalsActivity : BaseActivity(),
             tvNickname.text = nickname
         }
 
+        mJournal = journal
+        mJournal = mJournal
+            .indices
+            .map{i: Int -> mJournal[mJournal.size - 1 - i]}
+            .toCollection(ArrayList())
+
         recyclerView.adapter = JournalAllListAdapter(mJournal)
+
+        if (death) {
+            fabAddNewJournal.isEnabled = false
+        }
+
+        mToggleJournalDisplay()
     }
 
     override fun bindActions() {
@@ -129,7 +138,6 @@ class ViewAllJournalsActivity : BaseActivity(),
                 mHandleDeleteJournalRequest()
             }
 
-            // TODO: Check why icon not showing
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -188,6 +196,16 @@ class ViewAllJournalsActivity : BaseActivity(),
         fragment.show(supportFragmentManager, "delete_journal")
     }
 
+    private fun mToggleJournalDisplay() {
+        if (mJournal.size == 0) {
+            tvJournalHeader.visibility = View.GONE
+            tvNoJournal.visibility = View.VISIBLE
+        } else {
+            tvNoJournal.visibility = View.GONE
+            tvJournalHeader.visibility = View.VISIBLE
+        }
+    }
+
     private fun mOnJournalSave(text: String) {
         val body = text
         val date = DateTimeService.getCurrentDateTime()
@@ -218,6 +236,8 @@ class ViewAllJournalsActivity : BaseActivity(),
 
         // notify adapter of addition
         mJournal.add(0, Journal(body, date))
+        mToggleJournalDisplay()
+
         recyclerView.layoutManager?.smoothScrollToPosition(recyclerView, null, 0)
         recyclerView.adapter?.notifyItemInserted(0)
     }
@@ -246,6 +266,7 @@ class ViewAllJournalsActivity : BaseActivity(),
 
         // update plant data
         mPlantData = PlantRepository.plantList[index]
+        mToggleJournalDisplay()
 
         Log.d("hatdog", mPlantData.journal.toString())
 
