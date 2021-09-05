@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.RefreshCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -32,6 +33,13 @@ object PlantRepository: CoroutineScope {
 
     init {
         resetData()
+        CloudinaryService.setOnUploadSuccessListener { imageUrl ->
+            DBService.updateDocument(
+                collection= F.plantsCollection,
+                id=CloudinaryService.getPublicId(imageUrl, withFolder=false),
+                field="imageUrl",
+                value=imageUrl)
+        }
     }
 
     fun setOnDataFetchedListener(listener: DBCallback?) {
@@ -97,6 +105,11 @@ object PlantRepository: CoroutineScope {
                     date = journalEntry["date"].toString()
                 ))
             plantList.add(newPlant)
+            if (doc["imageUrl"].toString().isEmpty() && doc["filePath"].toString().isNotEmpty()) {
+                CloudinaryService.uploadToCloud(
+                    filename=doc["filePath"].toString(),
+                    plantId=doc["id"].toString())
+            }
         }
     }
 

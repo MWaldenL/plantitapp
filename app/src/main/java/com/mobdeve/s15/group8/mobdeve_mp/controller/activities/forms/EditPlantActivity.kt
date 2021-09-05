@@ -233,7 +233,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         }
 
         try {
-            CloudinaryService.uploadToCloud(mPhotoFilename)
+            CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
+            CloudinaryService.uploadToCloud(mPhotoFilename, mPlantData.id)
         } catch (err: Error) {
             MediaManager.init(this)
         }
