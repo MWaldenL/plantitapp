@@ -19,7 +19,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
@@ -29,10 +28,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 
-class EditPlantActivity : BaseActivity(),
-    ImageUploadCallback,
-    AddPlantTasksAdapter.OnTaskDeletedListener
-{
+class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListener {
     private lateinit var rvTasks: RecyclerView
     private lateinit var ivPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
@@ -128,7 +124,13 @@ class EditPlantActivity : BaseActivity(),
     }
 
     override fun bindActions() {
-        CloudinaryService.setOnUploadSuccessListener(this)
+        CloudinaryService.setOnUploadSuccessListener { imageUrl ->
+            DBService.updateDocument(
+                F.plantsCollection,
+                mPlantData.id,
+                "imageUrl",
+                imageUrl)
+        }
         etPlantName.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -231,7 +233,8 @@ class EditPlantActivity : BaseActivity(),
         }
 
         try {
-            CloudinaryService.uploadToCloud(mPhotoFilename)
+            CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
+            CloudinaryService.uploadToCloud(mPhotoFilename, mPlantData.id)
         } catch (err: Error) {
             MediaManager.init(this)
         }
@@ -249,13 +252,5 @@ class EditPlantActivity : BaseActivity(),
     override fun notifyTaskDeleted(task: Task) {
         mDeletedTasks.add(task.id)
         mPlantDataEditable.tasks.remove(task.id)
-    }
-
-    override fun onImageUploadSuccess(imageUrl: String) {
-        DBService.updateDocument(
-            F.plantsCollection,
-            mPlantData.id,
-            "imageUrl",
-            imageUrl)
     }
 }

@@ -7,7 +7,6 @@ import com.cloudinary.android.callback.UploadCallback
 import com.cloudinary.utils.ObjectUtils
 import com.mobdeve.s15.group8.mobdeve_mp.BuildConfig
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
-import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -16,27 +15,26 @@ import kotlin.coroutines.CoroutineContext
  * listen for results. Call uploadToCloud to upload the image to Cloudinary
  */
 object CloudinaryService : UploadCallback, CoroutineScope {
-    private var mListener: ImageUploadCallback? = null
+    private var mListener: ((imageUrl: String) -> Unit?)? = null
 
-    fun setOnUploadSuccessListener(listener: ImageUploadCallback) {
+    fun setOnUploadSuccessListener(listener: (s: String) -> Unit) {
         mListener = listener
     }
 
-    fun uploadToCloud(filename: String) {
+    fun uploadToCloud(filename: String, plantId: String) {
         MediaManager
             .get()
             .upload(filename)
             .option("folder", F.auth.currentUser!!.uid)
+            .option("public_id", plantId)
             .unsigned(BuildConfig.UPLOAD_PRESET)
             .callback(this)
             .dispatch()
     }
 
     fun deleteFromCloud(url: String) {
-        val urlSplit = url.split('/')
-        val folder = urlSplit[urlSplit.lastIndex-1]
-        val id = urlSplit[urlSplit.lastIndex].split('.')[0]
-        val imageId = "$folder/$id"
+        if (url.isEmpty()) return
+        val imageId = getPublicId(url)
         Log.d("CService", "Deleting $imageId")
         launch(Dispatchers.IO) {
             val result = MediaManager.get().cloudinary
@@ -44,6 +42,13 @@ object CloudinaryService : UploadCallback, CoroutineScope {
                 .destroy(imageId, ObjectUtils.emptyMap())
             Log.d("CService", "deleted image $result")
         }
+    }
+
+    fun getPublicId(url: String, withFolder: Boolean=true): String {
+        val urlSplit = url.split('/')
+        val folder = urlSplit[urlSplit.lastIndex-1]
+        val id = urlSplit[urlSplit.lastIndex].split('.')[0]
+        return if (withFolder) "$folder/$id" else id
     }
 
     override fun onStart(requestId: String?) {
@@ -56,11 +61,11 @@ object CloudinaryService : UploadCallback, CoroutineScope {
     override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
         Log.d("CLOUDINARY", "Uploaded to cloud, $resultData")
         val imageUrl = resultData?.get("secure_url").toString()
-        mListener?.onImageUploadSuccess(imageUrl)
+        mListener?.invoke(imageUrl)
     }
 
     override fun onError(requestId: String?, error: ErrorInfo?) {
-        Log.d("CLOUDINARY", "Error: $error, $requestId")
+        Log.d("CLOUDINARY", "Error: ${error.toString()}, $requestId")
     }
 
     override fun onReschedule(requestId: String?, error: ErrorInfo?) {

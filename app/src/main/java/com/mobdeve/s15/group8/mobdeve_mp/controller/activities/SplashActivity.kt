@@ -11,12 +11,14 @@ import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 
 class SplashActivity : AppCompatActivity(), DBCallback {
     private lateinit var mNetworkConnection: NetworkService
+    private var loaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mNetworkConnection = NetworkService(this)
         mNetworkConnection.observe(this, { connected ->
-            if (connected) { // only try to fetch if connected
+            if (connected && !loaded) { // only try to fetch if connected and prevent loading multiple times
+                loaded = true
                 Log.d("MPSplashActivity", "connected")
                 PlantRepository.setOnDataFetchedListener(this) // Wait on the plant repository's fetching
                 PlantRepository.getData() // The plant repository will inform us when they are done
@@ -40,7 +42,7 @@ class SplashActivity : AppCompatActivity(), DBCallback {
     }
 
     override fun onComplete(tag: String) { // Once the plant repo has informed us, go to MainActivity
-        Log.d("MPSplashActivity", "onComplete $tag")
+        Log.d("MPSplashActivity", "onComplete ${PlantRepository.plantList}")
         PlantRepository.setOnDataFetchedListener(null)
         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         finish()

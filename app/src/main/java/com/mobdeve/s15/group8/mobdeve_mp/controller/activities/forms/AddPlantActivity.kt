@@ -19,7 +19,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.ImageUploadCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -30,10 +29,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import java.util.*
 
-class AddPlantActivity : BaseActivity(),
-    ImageUploadCallback,
-    AddPlantTasksAdapter.OnTaskDeletedListener
-{
+class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListener {
     private lateinit var tasksRV: RecyclerView
     private lateinit var cvNoTasks: CardView
     private lateinit var ivPlant: ImageView
@@ -100,9 +96,9 @@ class AddPlantActivity : BaseActivity(),
     override val mainViewId: Int = R.id.layout_add_plant
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
+        super.onCreate(savedInstanceState)
     }
 
     override fun inititalizeViews() {
@@ -127,7 +123,14 @@ class AddPlantActivity : BaseActivity(),
     }
 
     override fun bindActions() {
-        CloudinaryService.setOnUploadSuccessListener(this)
+        CloudinaryService.setOnUploadSuccessListener { imageUrl ->
+            DBService.updateDocument(
+                collection= F.plantsCollection,
+                id=mPlantId,
+                field="imageUrl",
+                value=imageUrl)
+        }
+
         etPlantName.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -168,14 +171,6 @@ class AddPlantActivity : BaseActivity(),
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val plant = savedInstanceState.getSerializable(getString(R.string.SAVED_PLANT_KEY))
-    }
-
-    override fun onImageUploadSuccess(imageUrl: String) {
-        DBService.updateDocument(
-            collection= F.plantsCollection,
-            id=mPlantId,
-            field="imageUrl",
-            value=imageUrl)
     }
 
     private fun mLaunchCamera() {
@@ -250,7 +245,7 @@ class AddPlantActivity : BaseActivity(),
 
         // Then upload to cloudinary and reset the new plant instance
         try {
-            CloudinaryService.uploadToCloud(mPhotoFilename)
+            CloudinaryService.uploadToCloud(mPhotoFilename, mPlantId)
         } catch (err: Error) {
             MediaManager.init(this)
         }
