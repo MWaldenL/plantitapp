@@ -204,7 +204,7 @@ class DashboardTaskGroupAdapter(
     fun updateData(data: ArrayList<Task>) {
         mTasks = data
         mLoadTaskMaps()
-//        notifyDataSetChanged()
+        notifyDataSetChanged()
     }
 
     fun groupIsCompleted(groupPosition: Int): Boolean {
