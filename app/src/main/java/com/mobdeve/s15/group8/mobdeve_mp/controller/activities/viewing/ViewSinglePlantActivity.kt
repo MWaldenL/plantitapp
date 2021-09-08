@@ -369,13 +369,12 @@ class ViewSinglePlantActivity : BaseActivity(),
 
     private fun mShowOrHideNoJournal() {
         if (mJournalLimited.size == 0) {
-            if (mPlantData.death) {
+            if (mPlantData.death)
                 tvNoJournal.text = "You do not have any journal entries for this plant."
-                btnViewAll.visibility = View.GONE
-            }
 
             tvNoJournal.visibility = View.VISIBLE
-        } else
-            tvNoJournal.visibility = View.GONE
+        } else {
+            tvNoJournal.visibility = View.INVISIBLE
+        }
     }
 }
