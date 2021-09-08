@@ -54,7 +54,7 @@
     <string name="plant_death_question_1">This plant will be labelled as dead but it will not be deleted.</string>
     <string name="plant_death_question_2">You can still choose to revive it later on but the following functions will be disabled during the period when it\'s dead:</string>
     <string name="plant_death_question_3">- Edit Plant</string>
-    <string name="plant_death_question_4">- Add New Journal (but you can still delete existing entries)</string>
+    <string name="plant_death_question_4">- Add New Journal Entry (but you can still delete existing entries)</string>
 
     <string name="plant_revival_label">Revive Plant</string>
     <string name="plant_revival_question">This plant will no longer be labelled as dead. All of its functions will be restored.</string>
