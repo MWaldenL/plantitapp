@@ -20,36 +20,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.211" />
 
-    <TextView
-        android:id="@+id/tv_view_offline"
-        style="@style/TextAppearance.MOBDEVEMP.Headline3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Your plants are waiting!"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="354dp" />
-
-    <TextView
-        android:id="@+id/tv_subtitle"
-        style="@style/TextAppearance.MOBDEVEMP.BodyLarger"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Go online to continue using the app."
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="405dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.518">
+
+        <TextView
+            android:id="@+id/tv_view_offline"
+            style="@style/TextAppearance.MOBDEVEMP.Headline3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Your plants are waiting!"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            style="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Go online to continue using the app."
+            android:textAlignment="center" />
 
     </LinearLayout>
 
