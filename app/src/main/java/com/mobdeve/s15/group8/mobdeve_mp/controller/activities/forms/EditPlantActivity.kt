@@ -192,6 +192,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         mPlantDataEditable.name = etPlantName.text.toString().trim()
         mPlantDataEditable.nickname = etPlantNickname.text.toString().trim()
         mPlantDataEditable.filePath = mPhotoFilename
+        mPlantDataEditable.imageUrl = ""
 
         DBService.updateDocument(
             F.plantsCollection,

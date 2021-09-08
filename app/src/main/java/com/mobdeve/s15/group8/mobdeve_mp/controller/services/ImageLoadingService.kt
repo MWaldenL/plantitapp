@@ -10,15 +10,26 @@ import java.io.File
 
 object ImageLoadingService {
     fun loadImage(plant: Plant, context: Context, imageView: ImageView) {
-        if (plant.filePath == "") { // load the image from cloud
+        if (plant.imageUrl.isNotEmpty()) {
             Glide.with(context)
                 .load(plant.imageUrl)
                 .placeholder(R.drawable.bg_img_temp)
                 .into(imageView)
-        } else { // load the image from app storage
-            val imgFile = File(plant.filePath)
-            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-            imageView.setImageBitmap(bmp)
+            return
         }
+        val imgFile = File(plant.filePath)
+        val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
+        imageView.setImageBitmap(bmp)
+//
+//        if (plant.filePath == "") { // load the image from cloud
+//            Glide.with(context)
+//                .load(plant.imageUrl)
+//                .placeholder(R.drawable.bg_img_temp)
+//                .into(imageView)
+//        } else { // load the image from app storage
+//            val imgFile = File(plant.filePath)
+//            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
+//            imageView.setImageBitmap(bmp)
+//        }
     }
 }
