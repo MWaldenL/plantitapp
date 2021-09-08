@@ -86,6 +86,7 @@ class DashboardFragment : Fragment(), DBCallback {
         taskGroupAdapter.updateData(mTasks)
         mExpandIncompleteGroups()
         btnProfile.setOnClickListener {
+            Log.d("MPDashboardFragment", "btnProfile clicked")
             startActivity(Intent(this@DashboardFragment.activity, ProfileActivity::class.java))
         }
     }

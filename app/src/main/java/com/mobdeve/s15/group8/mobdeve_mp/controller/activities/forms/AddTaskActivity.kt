@@ -9,7 +9,10 @@ import android.widget.*
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DatePickerDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -25,6 +28,7 @@ class AddTaskActivity : BaseActivity(),
     private lateinit var etRepeat: EditText
     private lateinit var ibtnSaveTask: ImageButton
     private lateinit var tvErrWeeklyRecurrence: TextView
+    private lateinit var tvErrActionExists: TextView
 
     private lateinit var tbtnSun: ToggleButton
     private lateinit var tbtnMon: ToggleButton
@@ -39,6 +43,8 @@ class AddTaskActivity : BaseActivity(),
     private lateinit var mAction: String
     private lateinit var mOccurrence: String
     private lateinit var mStartDate: Calendar
+    private var mNewTasks: ArrayList<Task>? = null
+    private var mOldTasks: ArrayList<String>? = null
 
     override val layoutResourceId: Int = R.layout.activity_add_task
     override val mainViewId: Int = R.id.layout_add_task
@@ -48,6 +54,7 @@ class AddTaskActivity : BaseActivity(),
         btnStartDate = findViewById(R.id.btn_start_date)
         ibtnSaveTask = findViewById(R.id.ibtn_save_task)
         tvErrWeeklyRecurrence = findViewById(R.id.tv_err_weekly_recurrence)
+        tvErrActionExists = findViewById(R.id.tv_err_action_exists)
         etRepeat = findViewById(R.id.et_repeat)
         tbtnSun = findViewById(R.id.tbtn_sun)
         tbtnMon = findViewById(R.id.tbtn_mon)
@@ -66,6 +73,8 @@ class AddTaskActivity : BaseActivity(),
         mAction = "Water"
         mOccurrence = "Day"
         mStartDate = DateTimeService.getCurrentDateWithoutTime()
+        mNewTasks = intent.getSerializableExtra(getString(R.string.EDIT_PLANT_TASKS)) as ArrayList<Task>?
+        mOldTasks = intent.getSerializableExtra(getString(R.string.EDIT_PLANT_OLD_TASKS)) as ArrayList<String>?
         mDisplayDateInBtn()
     }
 
@@ -146,6 +155,22 @@ class AddTaskActivity : BaseActivity(),
         btnStartDate.text = format.format(mStartDate.time)
     }
 
+    private fun mDoesTaskHaveExistingAction(): Boolean {
+        val newPlantTasksNotUnique = NewPlantInstance.tasks.any { t -> t["action"] == mAction } // for new plants
+        var editPlantTasksNotUnique = false
+        if (mNewTasks != null) {
+            editPlantTasksNotUnique = mNewTasks!!.any { t -> t.action == mAction }
+        }
+        if (mOldTasks != null) {
+            editPlantTasksNotUnique = editPlantTasksNotUnique || mOldTasks!!.any { task ->
+                val t = TaskService.findTaskById(task)
+                Log.d("MPAddTask", "$t")
+                t?.action == mAction
+            }
+        }
+        return newPlantTasksNotUnique || editPlantTasksNotUnique
+    }
+
     private fun mCheckFields(): Boolean {
         var atLeastOneDaySelected = false
         if (mOccurrence == "Week") {
@@ -160,14 +185,10 @@ class AddTaskActivity : BaseActivity(),
         } else
             atLeastOneDaySelected = true
 
-        if (atLeastOneDaySelected)
-            tvErrWeeklyRecurrence.visibility = View.GONE
-        else
-            tvErrWeeklyRecurrence.visibility = View.VISIBLE
+        tvErrWeeklyRecurrence.visibility = if (atLeastOneDaySelected) View.GONE else View.VISIBLE
+        tvErrActionExists.visibility = if (mDoesTaskHaveExistingAction()) View.VISIBLE else View.GONE
 
-        // TODO: validation on other fields
-
-        return atLeastOneDaySelected
+        return atLeastOneDaySelected && !mDoesTaskHaveExistingAction()
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
@@ -178,8 +199,10 @@ class AddTaskActivity : BaseActivity(),
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent?.id) {
-            R.id.spinner_actions ->
+            R.id.spinner_actions -> {
                 mAction = parent.getItemAtPosition(position).toString()
+                tvErrActionExists.visibility = if (mDoesTaskHaveExistingAction()) View.VISIBLE else View.GONE
+            }
             R.id.spinner_occurrence -> {
                 mOccurrence = parent.getItemAtPosition(position).toString()
                 if ((mOccurrence == "Week") or (mOccurrence == "Weeks"))
