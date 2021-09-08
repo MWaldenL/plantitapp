@@ -44,10 +44,8 @@ class DashboardFragment : Fragment(), DBCallback {
 
     override fun onStart() {
         super.onStart()
-        if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty()) {
-            mLoadTasks()
-        }
 
+        mLoadTasks()
         mSetViews()
     }
 
