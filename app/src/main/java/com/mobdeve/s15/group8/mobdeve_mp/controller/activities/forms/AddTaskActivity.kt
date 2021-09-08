@@ -157,7 +157,7 @@ class AddTaskActivity : BaseActivity(),
 
     private fun mDoesTaskHaveExistingAction(): Boolean {
         val newPlantTasksNotUnique = NewPlantInstance.tasks.any { t -> t["action"] == mAction } // for new plants
-        var editPlantTasksNotUnique = true
+        var editPlantTasksNotUnique = false
         if (mNewTasks != null) {
             editPlantTasksNotUnique = mNewTasks!!.any { t -> t.action == mAction }
         }
@@ -168,7 +168,6 @@ class AddTaskActivity : BaseActivity(),
                 t?.action == mAction
             }
         }
-        Log.d("MPAddTask", "${mNewTasks}\n${mOldTasks}")
         return newPlantTasksNotUnique || editPlantTasksNotUnique
     }
 
