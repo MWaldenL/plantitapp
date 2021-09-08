@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing.ProfileActivity
@@ -23,8 +24,7 @@ class DashboardFragment : Fragment(), DBCallback {
     private lateinit var btnProfile: ImageButton
 
     private lateinit var tvDashboardHeader: TextView
-    private lateinit var tvNoTaskTitle: TextView
-    private lateinit var tvNoTaskSubtitle: TextView
+    private lateinit var clNoTasks: ConstraintLayout
 
     private var mTasks = ArrayList<Task>()
 
@@ -59,14 +59,10 @@ class DashboardFragment : Fragment(), DBCallback {
     private fun mSetViews() {
         if (TaskService.getTasksToday().size == 0) {
             tvDashboardHeader.visibility = View.INVISIBLE
-
-            tvNoTaskTitle.visibility = View.VISIBLE
-            tvNoTaskSubtitle.visibility = View.VISIBLE
+            clNoTasks.visibility = View.VISIBLE
         } else {
             tvDashboardHeader.visibility = View.VISIBLE
-
-            tvNoTaskTitle.visibility = View.GONE
-            tvNoTaskSubtitle.visibility = View.GONE
+            clNoTasks.visibility = View.GONE
         }
     }
 
@@ -77,8 +73,7 @@ class DashboardFragment : Fragment(), DBCallback {
         elvTaskGroup.setAdapter(taskGroupAdapter)
 
         tvDashboardHeader = view.findViewById(R.id.tv_dashboard_header)
-        tvNoTaskTitle = view.findViewById(R.id.tv_no_task_title)
-        tvNoTaskSubtitle = view.findViewById(R.id.tv_no_task_subtitle)
+        clNoTasks = view.findViewById(R.id.cl_no_tasks)
     }
 
     private fun mLoadTasks() {

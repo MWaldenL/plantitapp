@@ -60,7 +60,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):
 
     private fun getMessages(): ArrayList<String> {
         val messages = arrayListOf<String>()
-        val tasks = TaskService.getTasksToday(false)
+        val tasks = TaskService.getTasksFromDB()
 
         if (tasks.size == 0) {
             messages.add("Hooray!")

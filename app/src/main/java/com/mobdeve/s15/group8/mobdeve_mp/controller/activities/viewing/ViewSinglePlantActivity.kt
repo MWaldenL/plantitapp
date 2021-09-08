@@ -132,7 +132,7 @@ class ViewSinglePlantActivity : BaseActivity(),
 
     override fun bindData() {
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
-        val tasksTodayAll = TaskService.getTasksToday(true)
+        val tasksTodayAll = TaskService.getTasksToday()
         val tasks = ArrayList<Task>()
         for (t in tasksTodayAll)
             if (t.plantId == id)

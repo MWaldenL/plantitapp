@@ -73,33 +73,40 @@
                 app:layout_constraintTop_toBottomOf="@+id/elv_task_group"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/tv_no_task_title"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_no_tasks"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
                 android:layout_marginTop="160dp"
                 android:layout_marginEnd="64dp"
-                android:text="rest day"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.StyledHeadline"
-                android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_no_task_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="64dp"
-                android:text="You don't have any tasks for today"
-                android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_no_task_title" />
+                <TextView
+                    android:id="@+id/tv_no_task_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="You don't have any tasks for today"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_no_task_title" />
+
+                <TextView
+                    android:id="@+id/tv_no_task_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="time to rest"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.StyledHeadline"
+                    android:textSize="34sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

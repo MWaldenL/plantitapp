@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +32,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var plantDeadAdapter: PlantListAdapter
     private lateinit var tvAlive: TextView
     private lateinit var tvDead: TextView
-    private lateinit var tvNoPlantsTitle: TextView
-    private lateinit var tvNoPlantsSubtitle: TextView
-    private lateinit var tvNoPlantsSubtitle2: TextView
+    private lateinit var clNoPlants: ConstraintLayout
     private lateinit var ivNoPLantsImage: ImageView
 
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
@@ -55,10 +54,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
         tvAlive = view.findViewById(R.id.tv_alive)
         tvDead = view.findViewById(R.id.tv_dead)
-        tvNoPlantsTitle = view.findViewById(R.id.tv_no_plants_title)
-        tvNoPlantsSubtitle = view.findViewById(R.id.tv_no_plants_subtitle)
-        tvNoPlantsSubtitle2 = view.findViewById(R.id.tv_no_plants_subtitle_2)
-        ivNoPLantsImage = view.findViewById(R.id.iv_no_plants_bg)
+        clNoPlants = view.findViewById(R.id.cl_no_plants)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
@@ -137,18 +133,12 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
             tvAlive.visibility = View.INVISIBLE
             ibGridView.visibility = View.INVISIBLE
 
-            tvNoPlantsTitle.visibility = View.VISIBLE
-            tvNoPlantsSubtitle.visibility = View.VISIBLE
-            tvNoPlantsSubtitle2.visibility = View.VISIBLE
-            ivNoPLantsImage.visibility = View.VISIBLE
+            clNoPlants.visibility = View.VISIBLE
         } else {
             tvAlive.visibility = View.VISIBLE
             ibGridView.visibility = View.VISIBLE
 
-            tvNoPlantsTitle.visibility = View.GONE
-            tvNoPlantsSubtitle.visibility = View.GONE
-            tvNoPlantsSubtitle2.visibility = View.GONE
-            ivNoPLantsImage.visibility = View.GONE
+            clNoPlants.visibility = View.GONE
         }
     }
 }
