@@ -16,6 +16,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupA
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 
 class DashboardFragment : Fragment(), DBCallback {
@@ -44,8 +45,10 @@ class DashboardFragment : Fragment(), DBCallback {
 
     override fun onStart() {
         super.onStart()
+        if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty()) {
+            mLoadTasks()
+        }
 
-        mLoadTasks()
         mSetViews()
     }
 
@@ -62,6 +65,11 @@ class DashboardFragment : Fragment(), DBCallback {
             tvDashboardHeader.visibility = View.VISIBLE
             clNoTasks.visibility = View.GONE
         }
+
+        btnProfile.setOnClickListener {
+            Log.d("MPDashboardFragment", "btnProfile clicked")
+            startActivity(Intent(this@DashboardFragment.activity, ProfileActivity::class.java))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,13 +83,18 @@ class DashboardFragment : Fragment(), DBCallback {
     }
 
     private fun mLoadTasks() {
+        val toRemove = ArrayList<Task>()
         mTasks = TaskService.getTasksToday()
+
+        for (task in mTasks) {
+            if (PlantService.getPlantDeath(task.plantId))
+                toRemove.add(task)
+        }
+
+        mTasks.removeAll(toRemove)
+
         taskGroupAdapter.updateData(mTasks)
         mExpandIncompleteGroups()
-        btnProfile.setOnClickListener {
-            Log.d("MPDashboardFragment", "btnProfile clicked")
-            startActivity(Intent(this@DashboardFragment.activity, ProfileActivity::class.java))
-        }
     }
 
     private fun mExpandIncompleteGroups() {
