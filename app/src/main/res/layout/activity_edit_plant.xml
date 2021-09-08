@@ -179,6 +179,33 @@
                     app:layout_constraintStart_toEndOf="@+id/et_plant_name_edit"
                     app:layout_constraintTop_toBottomOf="@+id/tv_gen_info_edit" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_no_tasks_edit"
+                    style="MOBDEVE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    app:contentPadding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_care_methods_edit">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="You do not have any tasks yet for this plant. Add one now."
+                        android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                        android:textStyle="italic" />
+                </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:id="@+id/tv_edit_err_name"
                     style="@style/TextAppearance.MOBDEVEMP.Error"

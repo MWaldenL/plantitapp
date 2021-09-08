@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
@@ -24,6 +25,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
@@ -32,6 +34,7 @@ import java.util.*
 
 class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListener {
     private lateinit var rvTasks: RecyclerView
+    private lateinit var cvNoTasks: CardView
     private lateinit var ivPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
     private lateinit var ibtnSave: ImageButton
@@ -80,6 +83,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
                 mNewTasks.add(newTask)
                 mPlantDataEditable.tasks.add(newTask.id)
                 (rvTasks.adapter as AddPlantTasksAdapter).addNewTask(newTask)
+
+                mShowOrHideNoTasksCard()
             }
         }
 
@@ -103,6 +108,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
         tvErrName = findViewById(R.id.tv_edit_err_name)
         tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
+        cvNoTasks = findViewById(R.id.cv_no_tasks_edit)
         rvTasks = findViewById(R.id.rv_tasks_edit)
         rvTasks.layoutManager = LinearLayoutManager(this)
     }
@@ -123,6 +129,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         mOldNickname.trim()
 
         rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
+
+        mShowOrHideNoTasksCard()
     }
 
     override fun bindActions() {
@@ -198,6 +206,13 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         Log.d("hatdog", photoChanged.toString())
 
         return nameChanged || nicknameChanged || tasksChanged || photoChanged
+    }
+
+    private fun mShowOrHideNoTasksCard() {
+        if (mPlantDataEditable.tasks.size == 0)
+            cvNoTasks.visibility = View.VISIBLE
+        else
+            cvNoTasks.visibility = View.GONE
     }
 
     private fun mCheckFields(): Boolean {
@@ -280,5 +295,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     override fun notifyTaskDeleted(task: Task) {
         mDeletedTasks.add(task.id)
         mPlantDataEditable.tasks.remove(task.id)
+
+        mShowOrHideNoTasksCard()
     }
 }

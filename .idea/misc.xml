@@ -64,6 +64,8 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/menu/bottom_nav.xml" value="0.18645833333333334" />
         <entry key="app/src/main/res/drawable/baseline_more_vert_36.xml" value="0.23782894736842106" />
         <entry key="app/src/main/res/drawable/outline_edit_24.xml" value="0.23782894736842106" />
+        <entry key="app/src/main/res/layout/activity_add_plant.xml" value="0.22763157894736843" />
+        <entry key="app/src/main/res/layout/activity_edit_plant.xml" value="0.22763157894736843" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/activity_view_all_journal.xml" value="0.22763157894736843" />
