@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="err_no_weekly_recurrence">Please select at least one day.</string>
+    <!--Add/edit plant-->
     <string name="err_no_name">Please enter a name.</string>
     <string name="err_dup_nickname">This nickname already exists.</string>
     <string name="err_no_picture">Please add a picture.</string>
 
+    <!-- Feedback -->
     <string name="err_no_rating">Please enter any comment or a rating of at least one star.</string>
+
+    <!-- Tasks -->
+    <string name="err_no_weekly_recurrence">Please select at least one day.</string>
+    <string name="err_action_exists">This action already has a task.</string>
 </resources>

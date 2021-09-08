@@ -153,6 +153,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         ibtnSave.setOnClickListener { mSavePlant() }
         ibtnAddTask.setOnClickListener {
             val i = Intent(this, AddTaskActivity::class.java)
+            i.putExtra(getString(R.string.EDIT_PLANT_TASKS), mNewTasks)
+            i.putExtra(getString(R.string.EDIT_PLANT_OLD_TASKS), mPlantDataEditable.tasks)
             addTaskLauncher.launch(i)
         }
     }
