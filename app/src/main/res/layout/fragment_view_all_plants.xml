@@ -53,12 +53,26 @@
                 android:layout_marginStart="64dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="64dp"
-                android:text="You don't have any plants \n\nYou can add one by clicking on the + button below"
+                android:text="You don't have any plants"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_no_plants_title" />
+
+            <TextView
+                android:id="@+id/tv_no_plants_subtitle_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="64dp"
+                android:text="You can add one by clicking on the + button below"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_no_plants_subtitle" />
 
             <LinearLayout
                 android:id="@+id/layout_alive"

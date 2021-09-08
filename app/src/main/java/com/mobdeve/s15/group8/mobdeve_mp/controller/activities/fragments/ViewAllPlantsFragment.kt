@@ -33,6 +33,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var tvDead: TextView
     private lateinit var tvNoPlantsTitle: TextView
     private lateinit var tvNoPlantsSubtitle: TextView
+    private lateinit var tvNoPlantsSubtitle2: TextView
     private lateinit var ivNoPLantsImage: ImageView
 
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
@@ -56,6 +57,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
         tvDead = view.findViewById(R.id.tv_dead)
         tvNoPlantsTitle = view.findViewById(R.id.tv_no_plants_title)
         tvNoPlantsSubtitle = view.findViewById(R.id.tv_no_plants_subtitle)
+        tvNoPlantsSubtitle2 = view.findViewById(R.id.tv_no_plants_subtitle_2)
         ivNoPLantsImage = view.findViewById(R.id.iv_no_plants_bg)
 
         // Setup listeners
@@ -137,6 +139,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
 
             tvNoPlantsTitle.visibility = View.VISIBLE
             tvNoPlantsSubtitle.visibility = View.VISIBLE
+            tvNoPlantsSubtitle2.visibility = View.VISIBLE
             ivNoPLantsImage.visibility = View.VISIBLE
         } else {
             tvAlive.visibility = View.VISIBLE
@@ -144,6 +147,7 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
 
             tvNoPlantsTitle.visibility = View.GONE
             tvNoPlantsSubtitle.visibility = View.GONE
+            tvNoPlantsSubtitle2.visibility = View.GONE
             ivNoPLantsImage.visibility = View.GONE
         }
     }

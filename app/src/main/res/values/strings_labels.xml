@@ -39,7 +39,7 @@
     <string name="log_out_label">Sign Out</string>
 <!--    Dialogs-->
 
-    <string name="feedback_label">Your feedback is important to us</string>
+    <string name="feedback_label">Your feedback is important</string>
     <string name="feedback_hint">What do you think of this app?</string>
 
     <string name="push_question">Do you want to receive daily notifications about your plants? You can always change this in your profile.</string>
