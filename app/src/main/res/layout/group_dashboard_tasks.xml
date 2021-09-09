@@ -59,7 +59,7 @@
             android:id="@+id/tv_plants_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/rounded_rectangle_16"
             android:backgroundTint="@color/light_green"
             android:gravity="center"
@@ -70,8 +70,19 @@
             android:text="190"
             android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_expand_group"
+            app:layout_constraintEnd_toStartOf="@+id/ibtn_mark_all_done"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ibtn_mark_all_done"
+            style="@style/Widget.MOBDEVEMP.IconBtnColorless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_expand_group"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_check_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
