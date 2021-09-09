@@ -25,6 +25,7 @@
         <entry key="..\:/Users/Oshino/AndroidStudioProjects/MOBDEVE-MP/app/src/main/res/layout/item_task.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Oshino/AndroidStudioProjects/MOBDEVE-MP/app/src/main/res/layout/view_offline.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/baseline_delete_outline_24.xml" value="0.1" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/bg_img_temp.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_less_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.1" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
@@ -50,7 +51,7 @@
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_dashboard.xml" value="0.22" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_home.xml" value="0.15" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/fragment_view_all_plants.xml" value="0.25" />
-        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/group_dashboard_tasks.xml" value="0.9" />
+        <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/group_dashboard_tasks.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_dashboard_plant.xml" value="0.67" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_journal.xml" value="0.33" />
         <entry key="..\:/Users/kbadu/Desktop/Github Projects/MOBDEVE-MP/app/src/main/res/layout/item_journal_all.xml" value="0.5" />
