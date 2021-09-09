@@ -26,7 +26,7 @@ object TaskService {
     /*
     * Retrieves a list of tasks for today, including those that have been completed
     * */
-    fun getTasksToday(): ArrayList<Task> {
+    fun getTasksToday(includeComplete: Boolean = true): ArrayList<Task> {
         val tasksToday = ArrayList<Task>()
         val dateToday = DateTimeService.getCurrentDateWithoutTime()
         Log.d("MPTaskService", "${PlantRepository.taskList}")
@@ -39,10 +39,11 @@ object TaskService {
             )
             Log.d("Dashboard", "${task.lastCompleted} lc vs dt ${dateToday.time}")
 
-            if (!nextDue.after(dateToday) or (task.lastCompleted == dateToday.time))
+            if (!nextDue.after(dateToday) || (includeComplete && task.lastCompleted == dateToday.time))
                 tasksToday.add(task)
         }
         Log.d("MPTaskService", "finished getting: $tasksToday")
+
         return tasksToday
     }
 

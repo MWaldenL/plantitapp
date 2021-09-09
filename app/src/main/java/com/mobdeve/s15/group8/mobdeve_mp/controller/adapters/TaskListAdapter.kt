@@ -1,11 +1,13 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.controller.viewholders.TaskViewHolder
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
@@ -47,6 +49,9 @@ class TaskListAdapter(private val data: ArrayList<Task>):
                     field = "lastCompleted",
                     value = today.time
                 )
+
+                Log.d("hello", "checked this")
+                NotificationService.sendCompleteNotification(holder.itemView.context)
             } else {
                 val lastDue = DateTimeService.getLastDueDate(
                     task.occurrence,
