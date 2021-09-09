@@ -20,16 +20,9 @@ object ImageLoadingService {
         val imgFile = File(plant.filePath)
         val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
         imageView.setImageBitmap(bmp)
-//
-//        if (plant.filePath == "") { // load the image from cloud
-//            Glide.with(context)
-//                .load(plant.imageUrl)
-//                .placeholder(R.drawable.bg_img_temp)
-//                .into(imageView)
-//        } else { // load the image from app storage
-//            val imgFile = File(plant.filePath)
-//            val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-//            imageView.setImageBitmap(bmp)
-//        }
+    }
+
+    fun loadImageLocal(filename: String, context: Context, imageView: ImageView) {
+        Glide.with(context).load("file:$filename").into(imageView)
     }
 }

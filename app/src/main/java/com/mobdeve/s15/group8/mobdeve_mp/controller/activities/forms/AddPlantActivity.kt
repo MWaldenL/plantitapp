@@ -27,6 +27,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
@@ -89,10 +90,9 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
 
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) { // fetch bitmap and show image to user
-            val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
             groupNoPic.visibility = View.GONE
             ivPlant.visibility = View.VISIBLE
-            ivPlant.setImageBitmap(bitmap)
+            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
         }
     }
     override val layoutResourceId: Int = R.layout.activity_add_plant
