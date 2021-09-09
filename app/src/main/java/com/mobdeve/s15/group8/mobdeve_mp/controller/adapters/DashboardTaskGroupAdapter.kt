@@ -149,7 +149,7 @@ class DashboardTaskGroupAdapter(
                     ) { _, _ -> }
                 }
 
-                builder.setMessage("All plants in this task will be marked as done.")
+                builder.setMessage("All plants in this task will be checked.")
                     .setTitle("Mark all as done?")
 
                 builder.create()
