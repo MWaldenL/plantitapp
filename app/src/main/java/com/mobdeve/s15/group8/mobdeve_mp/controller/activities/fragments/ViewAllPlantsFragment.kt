@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,11 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var mEditor: SharedPreferences.Editor
     private lateinit var plantAliveAdapter: PlantListAdapter
     private lateinit var plantDeadAdapter: PlantListAdapter
+    private lateinit var tvAlive: TextView
+    private lateinit var tvDead: TextView
+    private lateinit var clNoPlants: ConstraintLayout
+    private lateinit var ivNoPLantsImage: ImageView
+
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
     private var mAlive = arrayListOf<Plant>()
     private var mDead = arrayListOf<Plant>()
@@ -44,6 +52,9 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
         ibGridView = view.findViewById(R.id.ib_gridview)
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
+        tvAlive = view.findViewById(R.id.tv_alive)
+        tvDead = view.findViewById(R.id.tv_dead)
+        clNoPlants = view.findViewById(R.id.cl_no_plants)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
@@ -98,16 +109,36 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
             else
                 mAlive.add(plant)
         }
+
+        mSetViews()
         onPlantAdded()
     }
 
     override fun onResume() {
         super.onResume()
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
+        mSetViews()
     }
 
     override fun onPlantAdded() {
         recyclerViewAlive.adapter?.notifyDataSetChanged()
         recyclerViewDead.adapter?.notifyDataSetChanged()
+    }
+
+    private fun mSetViews() {
+        if (mDead.size == 0)
+            tvDead.visibility = View.GONE
+
+        if (mDead.size == 0 && mAlive.size == 0) {
+            tvAlive.visibility = View.INVISIBLE
+            ibGridView.visibility = View.INVISIBLE
+
+            clNoPlants.visibility = View.VISIBLE
+        } else {
+            tvAlive.visibility = View.VISIBLE
+            ibGridView.visibility = View.VISIBLE
+
+            clNoPlants.visibility = View.GONE
+        }
     }
 }

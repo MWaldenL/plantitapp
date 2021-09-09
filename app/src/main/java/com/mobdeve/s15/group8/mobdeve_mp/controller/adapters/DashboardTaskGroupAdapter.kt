@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
@@ -215,6 +217,9 @@ class DashboardTaskGroupAdapter(
                     field = "lastCompleted",
                     value = dateToday.time
                 )
+
+                Log.d("hello", "checked this")
+                NotificationService.sendCompleteNotification(mContext)
             } else {
                 val lastDue = DateTimeService.getLastDueDate(
                     task.occurrence,

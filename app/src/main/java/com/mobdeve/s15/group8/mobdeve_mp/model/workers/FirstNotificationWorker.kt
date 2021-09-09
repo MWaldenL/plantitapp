@@ -36,7 +36,7 @@ class FirstNotificationWorker(context: Context, params: WorkerParameters):
             val workManager = WorkManager.getInstance(applicationContext)
 
             val c = Calendar.getInstance()
-            c.set(Calendar.HOUR_OF_DAY, 10)
+            c.set(Calendar.HOUR_OF_DAY, 9)
             c.set(Calendar.MINUTE, 0)
             c.set(Calendar.SECOND, 0)
 
@@ -68,7 +68,7 @@ class FirstNotificationWorker(context: Context, params: WorkerParameters):
             .setSmallIcon(R.drawable.ic_plant_24)
             .setContentTitle("Hello!")
             .setContentText("Thank you for enabling notifications :> you'll receive notifications if your plants need help <3")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("Thank you for enabling notifications :> you'll receive notifications if your plants need your help."))
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Thank you for enabling notifications :> you'll receive notifications if your plants need help."))
             .setDefaults(DEFAULT_ALL)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

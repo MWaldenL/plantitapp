@@ -39,7 +39,7 @@
     <string name="log_out_label">Sign Out</string>
 <!--    Dialogs-->
 
-    <string name="feedback_label">Your feedback is important to us</string>
+    <string name="feedback_label">Your feedback is important</string>
     <string name="feedback_hint">What do you think of this app?</string>
 
     <string name="push_question">Do you want to receive daily notifications about your plants? You can always change this in your profile.</string>
@@ -52,10 +52,17 @@
 
     <string name="plant_death_label">Mark as Dead</string>
     <string name="plant_death_question_1">This plant will be labelled as dead but it will not be deleted.</string>
-    <string name="plant_death_question_2">You can still choose to revive it later on but the following functions will be disabled during the period when it\'s dead:</string>
+    <string name="plant_death_question_2">You can still choose to revive it later on but the following functions will be disabled or modified in the meantime:</string>
     <string name="plant_death_question_3">- Edit Plant</string>
-    <string name="plant_death_question_4">- Add New Journal (but you can still delete existing entries)</string>
+    <string name="plant_death_question_4">- Add New Journal Entry (you can still delete existing entries)</string>
+    <string name="plant_death_question_5">- Task Controls (tasks will not be visible in the dashboard but will still be visible without interactions in this plant\'s own page)</string>
 
     <string name="plant_revival_label">Revive Plant</string>
     <string name="plant_revival_question">This plant will no longer be labelled as dead. All of its functions will be restored.</string>
+
+    <string name="leave_label">Leaving?</string>
+
+    <string name="leave_journal_question">This journal entry will not be saved. Are you sure you want to leave?</string>
+    <string name="leave_add_plant_question">This plant will not be saved. Are you sure you want to leave?</string>
+    <string name="leave_edit_plant_question">You have unsaved changes for this plant. Are you sure you want to leave?</string>
 </resources>

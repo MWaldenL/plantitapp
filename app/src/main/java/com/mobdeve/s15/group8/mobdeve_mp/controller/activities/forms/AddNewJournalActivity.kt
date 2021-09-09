@@ -7,10 +7,15 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.LeaveDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 
-class AddNewJournalActivity : BaseActivity() {
+class AddNewJournalActivity :
+    BaseActivity()
+{
     private lateinit var etJournal: EditText
     private lateinit var tvName: TextView
     private lateinit var tvCharCount: TextView
@@ -48,6 +53,15 @@ class AddNewJournalActivity : BaseActivity() {
             setResult(Activity.RESULT_OK, resultIntent)
 
             finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (etJournal.text.toString().isNotEmpty()) {
+            val fragment = LeaveDialogFragment(LeaveDialogType.ADD_JOURNAL.ordinal)
+            fragment.show(supportFragmentManager, "leave journal")
+        } else {
+            super.onBackPressed()
         }
     }
 }

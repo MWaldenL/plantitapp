@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.viewing.ProfileActivity
@@ -15,14 +16,18 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.DashboardTaskGroupA
 import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.DBCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 
 class DashboardFragment : Fragment(), DBCallback {
     private lateinit var elvTaskGroup: ExpandableListView
     private lateinit var taskGroupAdapter: DashboardTaskGroupAdapter
-    private var mTasks = ArrayList<Task>()
-    private lateinit var btnSignout: Button
     private lateinit var btnProfile: ImageButton
+
+    private lateinit var tvDashboardHeader: TextView
+    private lateinit var clNoTasks: ConstraintLayout
+
+    private var mTasks = ArrayList<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,24 +48,53 @@ class DashboardFragment : Fragment(), DBCallback {
         if (PlantRepository.plantList.isNotEmpty() and PlantRepository.taskList.isNotEmpty()) {
             mLoadTasks()
         }
+
+        mSetViews()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        btnSignout = view.findViewById(R.id.btn_signout)
-        btnProfile = view.findViewById(R.id.ibtn_profile)
-        elvTaskGroup = view.findViewById(R.id.elv_task_group)
-        elvTaskGroup.setAdapter(taskGroupAdapter)
+    override fun onResume() {
+        super.onResume()
+        mSetViews()
     }
 
-    private fun mLoadTasks() {
-        mTasks = TaskService.getTasksToday()
-        taskGroupAdapter.updateData(mTasks)
-        mExpandIncompleteGroups()
+    private fun mSetViews() {
+        if (TaskService.getTasksToday().size == 0) {
+            tvDashboardHeader.visibility = View.INVISIBLE
+            clNoTasks.visibility = View.VISIBLE
+        } else {
+            tvDashboardHeader.visibility = View.VISIBLE
+            clNoTasks.visibility = View.GONE
+        }
+
         btnProfile.setOnClickListener {
             Log.d("MPDashboardFragment", "btnProfile clicked")
             startActivity(Intent(this@DashboardFragment.activity, ProfileActivity::class.java))
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        btnProfile = view.findViewById(R.id.ibtn_profile)
+        elvTaskGroup = view.findViewById(R.id.elv_task_group)
+        elvTaskGroup.setAdapter(taskGroupAdapter)
+
+        tvDashboardHeader = view.findViewById(R.id.tv_dashboard_header)
+        clNoTasks = view.findViewById(R.id.cl_no_tasks)
+    }
+
+    private fun mLoadTasks() {
+        val toRemove = ArrayList<Task>()
+        mTasks = TaskService.getTasksToday()
+
+        for (task in mTasks) {
+            if (PlantService.getPlantDeath(task.plantId))
+                toRemove.add(task)
+        }
+
+        mTasks.removeAll(toRemove)
+
+        taskGroupAdapter.updateData(mTasks)
+        mExpandIncompleteGroups()
     }
 
     private fun mExpandIncompleteGroups() {
