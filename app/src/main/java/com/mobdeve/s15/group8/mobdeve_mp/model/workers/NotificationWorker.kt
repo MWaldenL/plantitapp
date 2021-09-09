@@ -14,11 +14,13 @@ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.O
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.PushPermissions
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -39,7 +41,7 @@ class NotificationWorker(context: Context, params: WorkerParameters):
             val workManager = WorkManager.getInstance(applicationContext)
 
             val c = Calendar.getInstance()
-            c.set(Calendar.HOUR_OF_DAY, 10)
+            c.set(Calendar.HOUR_OF_DAY, 9)
             c.set(Calendar.MINUTE, 0)
             c.set(Calendar.SECOND, 0)
 
@@ -58,21 +60,6 @@ class NotificationWorker(context: Context, params: WorkerParameters):
         return Result.success()
     }
 
-    private fun getMessages(): ArrayList<String> {
-        val messages = arrayListOf<String>()
-        val tasks = TaskService.getTasksFromDB()
-
-        if (tasks.size == 0) {
-            messages.add("Hooray!")
-            messages.add("Your plants are all taken care of for today. You can take a break!")
-        } else {
-            messages.add("Your plants are calling...")
-            messages.add("Your plants need you to take care of them. Open PlantitApp to see what you need to do.")
-        }
-
-        return messages
-    }
-
     private fun sendNotification(id: Int) {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
@@ -80,13 +67,9 @@ class NotificationWorker(context: Context, params: WorkerParameters):
 
         val notificationManager = applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val pendingIntent = getActivity(applicationContext, 0, intent, 0)
-        val messages = getMessages()
 
         val notification = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.ic_plant_24)
-            .setContentTitle(messages[0])
-            .setContentText(messages[1])
-            .setStyle(NotificationCompat.BigTextStyle().bigText(messages[1]))
             .setDefaults(DEFAULT_ALL)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -103,7 +86,30 @@ class NotificationWorker(context: Context, params: WorkerParameters):
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(id, notification.build())
+        F.tasksCollection
+            .whereEqualTo("userId", F.auth.uid)
+            .get()
+            .addOnSuccessListener { docs ->
+                Log.d("hello", TaskService.isTasksToday(docs).toString())
+                if (TaskService.isTasksToday(docs)) {
+                    notification
+                        .setContentTitle("Your plants are calling...")
+                        .setContentText("Your plants need you to take care of them. Open PlantitApp to see what you need to do.")
+                } else {
+                    notification
+                        .setContentTitle("Hooray!")
+                        .setContentText("Your plants are all taken care of for today. You can take a break!")
+                }
+
+                notificationManager.notify(id, notification.build())
+            }
+            .addOnFailureListener {
+                notification
+                    .setContentTitle("Error")
+                    .setContentText("I can't get your plant data right now. Please go online and open PlantitApp to see your plants.")
+
+                notificationManager.notify(id, notification.build())
+            }
     }
 
     companion object {
