@@ -91,9 +91,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             mPhotoFilename = mTempPhotoFilename
-            val bitmap = CameraService.getBitmap(mPhotoFilename, contentResolver)
-            Log.d("MPEditPlant", "$bitmap")
-            ivPlant.setImageBitmap(bitmap)
+            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
         }
     }
 
