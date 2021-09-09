@@ -155,20 +155,29 @@ class AddTaskActivity : BaseActivity(),
         btnStartDate.text = format.format(mStartDate.time)
     }
 
-    private fun mDoesTaskHaveExistingAction(): Boolean {
-        val newPlantTasksNotUnique = NewPlantInstance.tasks.any { t -> t["action"] == mAction } // for new plants
+    private fun mNewPlantTasksNotUnique(): Boolean {
+        Log.d("MPAddTaskActivity", "newPlantInstance: $mNewTasks")
+        return NewPlantInstance.tasks.any { t -> t["action"] == mAction }
+    }
+
+    private fun mEditPlantTasksNotUnique(): Boolean {
         var editPlantTasksNotUnique = false
-        if (mNewTasks != null) {
+        if (!mNewTasks.isNullOrEmpty()) {
+            Log.d("MPAddTaskActivity", "new: $mNewTasks")
             editPlantTasksNotUnique = mNewTasks!!.any { t -> t.action == mAction }
         }
-        if (mOldTasks != null) {
+        if (!mOldTasks.isNullOrEmpty()) {
+            Log.d("MPAddTaskActivity", "old: $mOldTasks")
             editPlantTasksNotUnique = editPlantTasksNotUnique || mOldTasks!!.any { task ->
                 val t = TaskService.findTaskById(task)
-                Log.d("MPAddTask", "$t")
                 t?.action == mAction
             }
         }
-        return newPlantTasksNotUnique || editPlantTasksNotUnique
+        return editPlantTasksNotUnique
+    }
+
+    private fun mDoesTaskHaveExistingAction(): Boolean {
+        return mNewPlantTasksNotUnique() || mEditPlantTasksNotUnique()
     }
 
     private fun mCheckFields(): Boolean {
