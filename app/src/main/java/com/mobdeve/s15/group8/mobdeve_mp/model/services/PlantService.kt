@@ -31,4 +31,13 @@ object PlantService {
         }
         return null
     }
+
+    fun getPlantDeath(id: String): Boolean {
+        for (plant in PlantRepository.plantList) {
+            if (plant.id == id)
+                return plant.death
+        }
+
+        return false
+    }
 }

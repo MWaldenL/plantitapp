@@ -11,25 +11,30 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
 import com.google.firebase.Timestamp
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.LeaveDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
+import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 import java.util.*
 
 class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListener {
     private lateinit var rvTasks: RecyclerView
+    private lateinit var cvNoTasks: CardView
     private lateinit var ivPlant: ImageView
     private lateinit var ibtnAddTask: ImageButton
     private lateinit var ibtnSave: ImageButton
@@ -78,6 +83,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
                 mNewTasks.add(newTask)
                 mPlantDataEditable.tasks.add(newTask.id)
                 (rvTasks.adapter as AddPlantTasksAdapter).addNewTask(newTask)
+
+                mShowOrHideNoTasksCard()
             }
         }
 
@@ -89,8 +96,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             ivPlant.setImageBitmap(bitmap)
         }
     }
-    override val layoutResourceId: Int = R.layout.activity_edit_plant
 
+    override val layoutResourceId: Int = R.layout.activity_edit_plant
     override val mainViewId: Int = R.id.layout_edit
 
     override fun inititalizeViews() {
@@ -101,6 +108,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         etPlantNickname = findViewById(R.id.et_plant_nickname_edit)
         tvErrName = findViewById(R.id.tv_edit_err_name)
         tvErrNickname = findViewById(R.id.tv_edit_err_nickname)
+        cvNoTasks = findViewById(R.id.cv_no_tasks_edit)
         rvTasks = findViewById(R.id.rv_tasks_edit)
         rvTasks.layoutManager = LinearLayoutManager(this)
     }
@@ -121,6 +129,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         mOldNickname.trim()
 
         rvTasks.adapter = AddPlantTasksAdapter(this, tasks)
+
+        mShowOrHideNoTasksCard()
     }
 
     override fun bindActions() {
@@ -166,6 +176,15 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             launcher=cameraLauncher)
     }
 
+    override fun onBackPressed() {
+        if (mCheckChanges()) {
+            val fragment = LeaveDialogFragment(LeaveDialogType.EDIT_PLANT.ordinal)
+            fragment.show(supportFragmentManager, "leave edit plant")
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun mCheckNickname(): Boolean {
         val currentNickname = etPlantNickname.text.toString().trim()
         val plant = PlantService.findPlantByNickname(currentNickname)
@@ -173,6 +192,22 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
                 currentNickname.isEmpty() || // empty nicknames are not counted as duplicates
                 currentNickname == mOldNickname || // if did not change nickname
                 currentNickname != plant.nickname // changed nickname and unique
+    }
+
+    private fun mCheckChanges(): Boolean {
+        val nameChanged = mPlantData.name != etPlantName.text.toString()
+        val nicknameChanged = mPlantData.nickname != etPlantNickname.text.toString()
+        val tasksChanged = !mPlantData.tasks.equals(mPlantDataEditable.tasks)
+        val photoChanged = mPlantData.filePath != mPhotoFilename
+
+        return nameChanged || nicknameChanged || tasksChanged || photoChanged
+    }
+
+    private fun mShowOrHideNoTasksCard() {
+        if (mPlantDataEditable.tasks.size == 0)
+            cvNoTasks.visibility = View.VISIBLE
+        else
+            cvNoTasks.visibility = View.GONE
     }
 
     private fun mCheckFields(): Boolean {
@@ -256,5 +291,6 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         mDeletedTasks.add(task.id)
         mPlantDataEditable.tasks.remove(task.id)
         mNewTasks.remove(task)
+        mShowOrHideNoTasksCard()
     }
 }

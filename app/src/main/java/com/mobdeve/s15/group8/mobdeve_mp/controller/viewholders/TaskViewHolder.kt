@@ -48,7 +48,6 @@ class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 ResourcesCompat.getColor(itemView.resources, R.color.dark_gray, null))
             cvPlantTaskItem.isClickable = false
             cvPlantTaskItem.foreground = null
-
         } else if (today.time == task.lastCompleted) {
             ivPlantTaskIcon.setImageResource(R.drawable.ic_check_24)
 

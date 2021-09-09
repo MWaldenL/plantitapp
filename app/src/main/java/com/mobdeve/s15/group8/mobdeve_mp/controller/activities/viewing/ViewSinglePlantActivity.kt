@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,7 @@ class ViewSinglePlantActivity : BaseActivity(),
     private lateinit var tvNickname: TextView
     private lateinit var tvPurchaseDate: TextView
     private lateinit var tvNoJournal: TextView
+    private lateinit var tvNoTasks: TextView
     private lateinit var ivPlant: ImageView
     private lateinit var ivPlantNameIcon: ImageView
     private lateinit var btnViewAll: Button
@@ -120,6 +122,7 @@ class ViewSinglePlantActivity : BaseActivity(),
         ibtnRevivePlant = findViewById(R.id.ibtn_revive_plant)
         ibtnDeletePlant = findViewById(R.id.ibtn_delete_plant)
         tvNoJournal = findViewById(R.id.tv_single_plant_no_journal)
+        tvNoTasks = findViewById(R.id.tv_single_plant_no_tasks)
 
         recyclerViewTask = findViewById(R.id.recyclerview_tasks)
         recyclerViewJournal = findViewById(R.id.recyclerview_all_journal)
@@ -129,11 +132,13 @@ class ViewSinglePlantActivity : BaseActivity(),
 
     override fun bindData() {
         val (id, userId, imageUrl, filePath, name, nickname, datePurchased, death, taskIds, journal) = mPlantData
-        val tasksTodayAll = TaskService.getTasksToday(true)
+        val tasksTodayAll = TaskService.getTasksToday()
         val tasks = ArrayList<Task>()
         for (t in tasksTodayAll)
             if (t.plantId == id)
                 tasks.add(t)
+
+        Log.d("hello", tasks.toString())
 
         if (nickname == "") {
             tvCommonName.visibility = View.GONE
@@ -171,6 +176,11 @@ class ViewSinglePlantActivity : BaseActivity(),
                 break
             mJournalLimited.add(journal[size - i])
         }
+
+        if (tasks.size == 0)
+            tvNoTasks.visibility = View.VISIBLE
+        else
+            tvNoTasks.visibility = View.GONE
 
         recyclerViewTask.adapter = TaskListAdapter(tasks)
         recyclerViewJournal.adapter = JournalListAdapter(mJournalLimited)
@@ -359,13 +369,12 @@ class ViewSinglePlantActivity : BaseActivity(),
 
     private fun mShowOrHideNoJournal() {
         if (mJournalLimited.size == 0) {
-            if (mPlantData.death) {
+            if (mPlantData.death)
                 tvNoJournal.text = "You do not have any journal entries for this plant."
-                btnViewAll.visibility = View.GONE
-            }
 
             tvNoJournal.visibility = View.VISIBLE
-        } else
-            tvNoJournal.visibility = View.GONE
+        } else {
+            tvNoJournal.visibility = View.INVISIBLE
+        }
     }
 }

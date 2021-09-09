@@ -11,12 +11,14 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.MainActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.LeaveDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CameraService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.AddPlantTasksAdapter
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
@@ -27,6 +29,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
+import com.mobdeve.s15.group8.mobdeve_mp.singletons.LeaveDialogType
 import java.util.*
 
 class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListener {
@@ -173,6 +176,15 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
         val plant = savedInstanceState.getSerializable(getString(R.string.SAVED_PLANT_KEY))
     }
 
+    override fun onBackPressed() {
+        if (mCheckFields("leave")) {
+            val fragment = LeaveDialogFragment(LeaveDialogType.ADD_PLANT.ordinal)
+            fragment.show(supportFragmentManager, "leave add plant")
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun mLaunchCamera() {
         mPhotoFilename = CameraService.launchCameraAndGetFilename(
             context=this,
@@ -188,22 +200,26 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
                 currentNickname != plant.nickname // changed nickname and unique
     }
 
-    private fun mCheckFields(): Boolean {
+    private fun mCheckFields(type: String): Boolean {
         mFirstTime = false
 
-        val nameFilled = etPlantName.text.trim().isNotEmpty()
-        val nicknameUnique = mCheckNickname()
-        val imageAdded = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
+        val nameValid = etPlantName.text.trim().isNotEmpty()
+        val nicknameValid = if (type == "save") mCheckNickname() else etPlantNickname.text.trim().isNotEmpty()
+        val imageValid = groupNoPic.visibility == View.GONE && ivPlant.visibility == View.VISIBLE
 
-        tvErrName.visibility = if (!nameFilled) View.VISIBLE else View.GONE
-        tvErrNickname.visibility = if (!nicknameUnique) View.VISIBLE else View.GONE
-        tvErrImage.visibility = if (!imageAdded) View.VISIBLE else View.GONE
+        return if (type == "save") {
+            tvErrName.visibility = if (!nameValid) View.VISIBLE else View.GONE
+            tvErrNickname.visibility = if (!nicknameValid) View.VISIBLE else View.GONE
+            tvErrImage.visibility = if (!imageValid) View.VISIBLE else View.GONE
 
-        return nameFilled && nicknameUnique && imageAdded
+            nameValid && nicknameValid && imageValid
+        } else {
+            nameValid || nicknameValid || imageValid
+        }
     }
 
     private fun mSavePlant() {
-        if (!mCheckFields()) {
+        if (!mCheckFields("save")) {
             return
         }
 
@@ -243,12 +259,16 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
         PlantRepository.plantList.add(NewPlantInstance.plantObject)
         NewPlantInstance.notifyPlantRV()
 
-        // Then upload to cloudinary and reset the new plant instance
+        // Then upload to cloudinary
         try {
             CloudinaryService.uploadToCloud(mPhotoFilename, mPlantId)
         } catch (err: Error) {
             MediaManager.init(this)
         }
+
+        // Reset the new plant instance
+        NewPlantInstance.resetPlant()
+        NewPlantInstance.resetTasks()
 
         // Go back to MainActivity
         Intent(this@AddPlantActivity, MainActivity::class.java)

@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
@@ -42,7 +43,7 @@ class ViewAllJournalsActivity : BaseActivity(),
     private lateinit var tvNickname: TextView
     private lateinit var tvCommonName: TextView
     private lateinit var tvJournalHeader: TextView
-    private lateinit var tvNoJournal: TextView
+    private lateinit var clNoJournal: ConstraintLayout
     private lateinit var fabAddNewJournal: FloatingActionButton
     private lateinit var mJournal: ArrayList<Journal>
     private lateinit var mPlantData: Plant
@@ -72,7 +73,7 @@ class ViewAllJournalsActivity : BaseActivity(),
         tvNickname = findViewById(R.id.tv_nickname_journal)
         tvCommonName = findViewById(R.id.tv_common_name_journal)
         tvJournalHeader = findViewById(R.id.tv_journal_header)
-        tvNoJournal = findViewById(R.id.tv_no_journal)
+        clNoJournal = findViewById(R.id.cl_no_journal)
         fabAddNewJournal = findViewById(R.id.fab_add_new_journal)
         recyclerView = findViewById(R.id.recyclerview_all_journal)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -199,9 +200,9 @@ class ViewAllJournalsActivity : BaseActivity(),
     private fun mToggleJournalDisplay() {
         if (mJournal.size == 0) {
             tvJournalHeader.visibility = View.GONE
-            tvNoJournal.visibility = View.VISIBLE
+            clNoJournal.visibility = View.VISIBLE
         } else {
-            tvNoJournal.visibility = View.GONE
+            clNoJournal.visibility = View.GONE
             tvJournalHeader.visibility = View.VISIBLE
         }
     }

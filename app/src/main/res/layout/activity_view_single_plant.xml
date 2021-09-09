@@ -155,6 +155,18 @@
                             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
 
+                        <TextView
+                            android:id="@+id/tv_single_plant_no_tasks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="None for today. You can rest up!"
+                            android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                            android:textStyle="italic"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_task_header" />
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerview_tasks"
                             android:layout_width="match_parent"

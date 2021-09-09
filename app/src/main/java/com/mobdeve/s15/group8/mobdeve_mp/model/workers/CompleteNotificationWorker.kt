@@ -26,7 +26,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class NotificationWorker(context: Context, params: WorkerParameters):
+class CompleteNotificationWorker(context: Context, params: WorkerParameters):
     Worker(context, params)
 {
     override fun doWork(): Result {
@@ -34,27 +34,10 @@ class NotificationWorker(context: Context, params: WorkerParameters):
 
         val pushStatus = applicationContext.getSharedPreferences(applicationContext.getString(R.string.SP_NAME), Context.MODE_PRIVATE)
                 .getInt(applicationContext.getString(R.string.SP_PUSH_KEY), -1)
+        val tasksStatus = TaskService.getTasksToday(false).isEmpty()
 
-        if (pushStatus == PushPermissions.ALLOWED.ordinal) {
+        if (pushStatus == PushPermissions.ALLOWED.ordinal && tasksStatus) {
             sendNotification(id)
-
-            val workManager = WorkManager.getInstance(applicationContext)
-
-            val c = Calendar.getInstance()
-            c.set(Calendar.HOUR_OF_DAY, 9)
-            c.set(Calendar.MINUTE, 0)
-            c.set(Calendar.SECOND, 0)
-
-            if (c.before(Calendar.getInstance()))
-                c.add(Calendar.DATE, 1)
-
-            val delay = c.timeInMillis - Calendar.getInstance().timeInMillis
-
-            val dailyWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-                .build()
-
-            workManager.enqueue(dailyWorkRequest)
         }
 
         return Result.success()
@@ -74,6 +57,9 @@ class NotificationWorker(context: Context, params: WorkerParameters):
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(PRIORITY_MAX)
+            .setContentTitle("Hooray!")
+            .setContentText("Your plants are all taken care of for today. Rest up, take a break, and see you tomorrow!")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Your plants are all taken care of for today. Rest up, take a break, and see you tomorrow!"))
 
         if (SDK_INT >= O) {
             notification.setChannelId(FirstNotificationWorker.NOTIFICATION_CHANNEL)
@@ -86,37 +72,12 @@ class NotificationWorker(context: Context, params: WorkerParameters):
             notificationManager.createNotificationChannel(channel)
         }
 
-        F.tasksCollection
-            .whereEqualTo("userId", F.auth.uid)
-            .get()
-            .addOnSuccessListener { docs ->
-                Log.d("hello", TaskService.isTasksToday(docs).toString())
-                if (TaskService.isTasksToday(docs)) {
-                    notification
-                        .setContentTitle("Your plants are calling...")
-                        .setContentText("Your plants need you to take care of them. Open PlantitApp to see what you need to do.")
-                        .setStyle(NotificationCompat.BigTextStyle().bigText("Your plants need you to take care of them. Open PlantitApp to see what you need to do."))
-                } else {
-                    notification
-                        .setContentTitle("Hooray!")
-                        .setContentText("No tasks for today. You can take a break!")
-                        .setStyle(NotificationCompat.BigTextStyle().bigText("No tasks for today. You can take a break!"))
-                }
-
-                notificationManager.notify(id, notification.build())
-            }
-            .addOnFailureListener {
-                notification
-                    .setContentTitle("Error")
-                    .setContentText("I can't get your plant data right now. Please go online and open PlantitApp to see your plants.")
-
-                notificationManager.notify(id, notification.build())
-            }
+        notificationManager.notify(id, notification.build())
     }
 
     companion object {
-        const val NOTIFICATION_ID = "appName_notification_id"
-        const val NOTIFICATION_NAME = "appName"
-        const val NOTIFICATION_CHANNEL = "appName_channel_01"
+        const val NOTIFICATION_ID = "appName_notification_id3"
+        const val NOTIFICATION_NAME = "appName3"
+        const val NOTIFICATION_CHANNEL = "appName_channel_03"
     }
 }
