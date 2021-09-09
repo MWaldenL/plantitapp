@@ -290,7 +290,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     override fun notifyTaskDeleted(task: Task) {
         mDeletedTasks.add(task.id)
         mPlantDataEditable.tasks.remove(task.id)
-
+        mNewTasks.remove(task)
         mShowOrHideNoTasksCard()
     }
 }

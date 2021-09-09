@@ -259,12 +259,16 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
         PlantRepository.plantList.add(NewPlantInstance.plantObject)
         NewPlantInstance.notifyPlantRV()
 
-        // Then upload to cloudinary and reset the new plant instance
+        // Then upload to cloudinary
         try {
             CloudinaryService.uploadToCloud(mPhotoFilename, mPlantId)
         } catch (err: Error) {
             MediaManager.init(this)
         }
+
+        // Reset the new plant instance
+        NewPlantInstance.resetPlant()
+        NewPlantInstance.resetTasks()
 
         // Go back to MainActivity
         Intent(this@AddPlantActivity, MainActivity::class.java)
