@@ -200,11 +200,6 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         val tasksChanged = !mPlantData.tasks.equals(mPlantDataEditable.tasks)
         val photoChanged = mPlantData.filePath != mPhotoFilename
 
-        Log.d("hatdog", nameChanged.toString())
-        Log.d("hatdog", nicknameChanged.toString())
-        Log.d("hatdog", tasksChanged.toString())
-        Log.d("hatdog", photoChanged.toString())
-
         return nameChanged || nicknameChanged || tasksChanged || photoChanged
     }
 
