@@ -24,7 +24,7 @@ object ImageLoadingService {
     fun loadImageLocal(filename: String, context: Context, imageView: ImageView) {
         Glide.with(context)
             .load("file:$filename")
-            .apply(RequestOptions().override(300, 300).centerCrop())
+            .apply(RequestOptions().override(480, 480).centerCrop())
             .into(imageView)
     }
 }
