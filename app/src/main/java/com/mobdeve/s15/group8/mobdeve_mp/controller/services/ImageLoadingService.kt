@@ -23,6 +23,9 @@ object ImageLoadingService {
     }
 
     fun loadImageLocal(filename: String, context: Context, imageView: ImageView) {
-        Glide.with(context).load("file:$filename").into(imageView)
+        Glide.with(context)
+            .load("file:$filename")
+            .thumbnail(0.5f)
+            .into(imageView)
     }
 }
