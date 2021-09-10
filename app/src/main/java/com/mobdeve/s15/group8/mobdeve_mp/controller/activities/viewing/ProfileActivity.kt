@@ -14,9 +14,11 @@ import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeleteDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.PlantService
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.FeedbackPermissions
@@ -33,6 +35,7 @@ import kotlin.coroutines.CoroutineContext
 class ProfileActivity :
     BaseActivity(),
     AppFeedbackDialogFragment.AppFeedbackDialogListener,
+    DeleteDialogFragment.DeleteDialogListener,
     CoroutineScope
 {
     private lateinit var tvProfileName: TextView
@@ -43,6 +46,8 @@ class ProfileActivity :
     private lateinit var switchPush: Switch
     private lateinit var switchFeedback: Switch
     private lateinit var btnFeedback: Button
+    private lateinit var btnDeleteDead: Button
+    private lateinit var btnDeleteAll: Button
     private lateinit var btnLogout: Button
 
     private lateinit var mSharedPreferences: SharedPreferences
@@ -61,6 +66,8 @@ class ProfileActivity :
         switchPush = findViewById(R.id.switch_push)
         switchFeedback = findViewById(R.id.switch_feedback)
         btnFeedback = findViewById(R.id.btn_feedback)
+        btnDeleteDead = findViewById(R.id.btn_delete_all_dead)
+        btnDeleteAll = findViewById(R.id.btn_delete_all)
         btnLogout = findViewById(R.id.btn_logout)
     }
 
@@ -122,6 +129,16 @@ class ProfileActivity :
             fragment.show(supportFragmentManager, "feedback")
         }
 
+        btnDeleteDead.setOnClickListener {
+            val fragment = DeleteDialogFragment(true)
+            fragment.show(supportFragmentManager, "delete dead")
+        }
+
+        btnDeleteAll.setOnClickListener {
+            val fragment = DeleteDialogFragment(false)
+            fragment.show(supportFragmentManager, "delete all")
+        }
+
         btnLogout.setOnClickListener {
             PlantRepository.resetData()
             F.auth.signOut()
@@ -130,6 +147,10 @@ class ProfileActivity :
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+    }
+
+    override fun onDeleteConfirm(dialog: DialogFragment, justDead: Boolean) {
+        PlantService.deleteAllPlants(justDead)
     }
 
     override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String) {
