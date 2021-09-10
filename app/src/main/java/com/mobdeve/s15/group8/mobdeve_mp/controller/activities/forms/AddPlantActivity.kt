@@ -85,6 +85,7 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
                 (tasksRV.adapter as AddPlantTasksAdapter).addNewTask(newTask)
 
                 mShowOrHideNoTasksCard()
+                mShowOrHideAddTaskBtn()
             }
         }
 
@@ -102,6 +103,11 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
         NewPlantInstance.resetPlant()
         NewPlantInstance.resetTasks()
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mShowOrHideAddTaskBtn()
     }
 
     override fun inititalizeViews() {
@@ -164,6 +170,7 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
     override fun notifyTaskDeleted(task: Task) {
         NewPlantInstance.removeTask(task)
         mShowOrHideNoTasksCard()
+        mShowOrHideAddTaskBtn()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -283,5 +290,14 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
             cvNoTasks.visibility = View.VISIBLE
         else
             cvNoTasks.visibility = View.GONE
+    }
+
+    private fun mShowOrHideAddTaskBtn() {
+        if (NewPlantInstance.tasks.size
+            >= resources.getStringArray(R.array.actions_array).size) {
+            ibtnAddTask.visibility = View.GONE
+        } else {
+            ibtnAddTask.visibility = View.VISIBLE
+        }
     }
 }

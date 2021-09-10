@@ -96,13 +96,6 @@
                             android:minWidth="100dp"
                             android:minHeight="48dp" />
 
-                        <TextView
-                            android:id="@+id/tv_err_action_exists"
-                            style="@style/TextAppearance.MOBDEVEMP.Error"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/err_action_exists"
-                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout

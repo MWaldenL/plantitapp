@@ -85,6 +85,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
                 (rvTasks.adapter as AddPlantTasksAdapter).addNewTask(newTask)
 
                 mShowOrHideNoTasksCard()
+                mShowOrHideAddTaskBtn()
             }
         }
 
@@ -97,6 +98,11 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
 
     override val layoutResourceId: Int = R.layout.activity_edit_plant
     override val mainViewId: Int = R.id.layout_edit
+
+    override fun onStart() {
+        super.onStart()
+        mShowOrHideAddTaskBtn()
+    }
 
     override fun inititalizeViews() {
         ivPlant = findViewById(R.id.iv_plant_edit)
@@ -208,6 +214,14 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             cvNoTasks.visibility = View.GONE
     }
 
+    private fun mShowOrHideAddTaskBtn() {
+        if (rvTasks.adapter!!.itemCount >= resources.getStringArray(R.array.actions_array).size) {
+            ibtnAddTask.visibility = View.GONE
+        } else {
+            ibtnAddTask.visibility = View.VISIBLE
+        }
+    }
+
     private fun mCheckFields(): Boolean {
         mFirstTime = false
         val nameFilled = etPlantName.text.isNotEmpty()
@@ -290,5 +304,6 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         mPlantDataEditable.tasks.remove(task.id)
         mNewTasks.remove(task)
         mShowOrHideNoTasksCard()
+        mShowOrHideAddTaskBtn()
     }
 }
