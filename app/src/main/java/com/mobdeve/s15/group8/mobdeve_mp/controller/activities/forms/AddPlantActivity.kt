@@ -46,7 +46,7 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
     private lateinit var etPlantName: EditText
     private lateinit var etPlantNickname: EditText
     private lateinit var groupNoPic: ConstraintLayout
-    private lateinit var mPhotoFilename: String
+    private var mPhotoFilename = ""
     private var mFirstTime = true
     private val mPlantId = UUID.randomUUID().toString()
 
@@ -186,10 +186,12 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
     }
 
     private fun mLaunchCamera() {
+        Log.d("CAM", "open cam")
         mPhotoFilename = CameraService.launchCameraAndGetFilename(
             context=this,
             authority=getString(R.string.file_provider_authority),
             launcher=cameraLauncher)
+        Log.d("CAM", "Filename: $mPhotoFilename")
     }
 
     private fun mCheckNickname(): Boolean {

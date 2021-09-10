@@ -62,9 +62,10 @@ object CameraService {
     }
 
     private fun mCreateImageFile(context: Context): File? {
-        val timeStamp = DateTimeService.getCurrentDateTime()
+        val timeStamp = DateTimeService.getCurrentDateCal().timeInMillis
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val filename = "plant_${timeStamp}"
+
         return try {
             File.createTempFile(filename, ".jpg", storageDir)
         } catch(e: Exception) {

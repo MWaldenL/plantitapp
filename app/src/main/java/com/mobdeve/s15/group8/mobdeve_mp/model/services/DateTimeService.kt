@@ -12,6 +12,10 @@ object DateTimeService {
         return SimpleDateFormat.getDateInstance(DateFormat.LONG).format(Date())
     }
 
+    fun getCurrentDateCal(): Calendar {
+        return Calendar.getInstance()
+    }
+
     fun getCurrentTime(): String {
         return SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(Date())
     }
