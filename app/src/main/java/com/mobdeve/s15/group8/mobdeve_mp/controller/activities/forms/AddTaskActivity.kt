@@ -28,7 +28,6 @@ class AddTaskActivity : BaseActivity(),
     private lateinit var etRepeat: EditText
     private lateinit var ibtnSaveTask: ImageButton
     private lateinit var tvErrWeeklyRecurrence: TextView
-    private lateinit var tvErrActionExists: TextView
 
     private lateinit var tbtnSun: ToggleButton
     private lateinit var tbtnMon: ToggleButton
@@ -54,7 +53,6 @@ class AddTaskActivity : BaseActivity(),
         btnStartDate = findViewById(R.id.btn_start_date)
         ibtnSaveTask = findViewById(R.id.ibtn_save_task)
         tvErrWeeklyRecurrence = findViewById(R.id.tv_err_weekly_recurrence)
-        tvErrActionExists = findViewById(R.id.tv_err_action_exists)
         etRepeat = findViewById(R.id.et_repeat)
         tbtnSun = findViewById(R.id.tbtn_sun)
         tbtnMon = findViewById(R.id.tbtn_mon)
@@ -125,14 +123,26 @@ class AddTaskActivity : BaseActivity(),
 
     private fun mInitSpinnerAction() {
         spinnerAction = findViewById(R.id.spinner_actions)
-        ArrayAdapter.createFromResource(
+
+        val actionsArray = ArrayList<String>(
+            resources.getStringArray(R.array.actions_array).toMutableList())
+
+        val i = actionsArray.iterator()
+        while (i.hasNext()) {
+            val a = i.next()
+            if (mNewPlantTaskNotUnique(a) || mEditPlantTaskNotUnique(a))
+                i.remove()
+        }
+
+        ArrayAdapter(
             this,
-            R.array.actions_array,
-            R.layout.item_spinner
+            R.layout.item_spinner,
+            actionsArray
         ).also { adapter ->
             adapter.setDropDownViewResource(R.layout.item_spinner)
             spinnerAction.adapter = adapter
         }
+
         spinnerAction.onItemSelectedListener = this
     }
 
@@ -155,29 +165,23 @@ class AddTaskActivity : BaseActivity(),
         btnStartDate.text = format.format(mStartDate.time)
     }
 
-    private fun mNewPlantTasksNotUnique(): Boolean {
-        Log.d("MPAddTaskActivity", "newPlantInstance: $mNewTasks")
-        return NewPlantInstance.tasks.any { t -> t["action"] == mAction }
+    private fun mNewPlantTaskNotUnique(action: String): Boolean {
+        return NewPlantInstance.tasks.any { t -> t["action"] == action }
     }
 
-    private fun mEditPlantTasksNotUnique(): Boolean {
-        var editPlantTasksNotUnique = false
+    private fun mEditPlantTaskNotUnique(action: String): Boolean {
+        var editPlantTaskNotUnique = false
         if (!mNewTasks.isNullOrEmpty()) {
-            Log.d("MPAddTaskActivity", "new: $mNewTasks")
-            editPlantTasksNotUnique = mNewTasks!!.any { t -> t.action == mAction }
+            editPlantTaskNotUnique = mNewTasks!!.any { t -> t.action == action }
         }
         if (!mOldTasks.isNullOrEmpty()) {
-            Log.d("MPAddTaskActivity", "old: $mOldTasks")
-            editPlantTasksNotUnique = editPlantTasksNotUnique || mOldTasks!!.any { task ->
+            editPlantTaskNotUnique = editPlantTaskNotUnique || mOldTasks!!.any { task ->
                 val t = TaskService.findTaskById(task)
-                t?.action == mAction
+                t?.action == action
             }
         }
-        return editPlantTasksNotUnique
-    }
 
-    private fun mDoesTaskHaveExistingAction(): Boolean {
-        return mNewPlantTasksNotUnique() || mEditPlantTasksNotUnique()
+        return editPlantTaskNotUnique
     }
 
     private fun mCheckFields(): Boolean {
@@ -195,9 +199,8 @@ class AddTaskActivity : BaseActivity(),
             atLeastOneDaySelected = true
 
         tvErrWeeklyRecurrence.visibility = if (atLeastOneDaySelected) View.GONE else View.VISIBLE
-        tvErrActionExists.visibility = if (mDoesTaskHaveExistingAction()) View.VISIBLE else View.GONE
 
-        return atLeastOneDaySelected && !mDoesTaskHaveExistingAction()
+        return atLeastOneDaySelected
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
@@ -210,7 +213,6 @@ class AddTaskActivity : BaseActivity(),
         when(parent?.id) {
             R.id.spinner_actions -> {
                 mAction = parent.getItemAtPosition(position).toString()
-                tvErrActionExists.visibility = if (mDoesTaskHaveExistingAction()) View.VISIBLE else View.GONE
             }
             R.id.spinner_occurrence -> {
                 mOccurrence = parent.getItemAtPosition(position).toString()
