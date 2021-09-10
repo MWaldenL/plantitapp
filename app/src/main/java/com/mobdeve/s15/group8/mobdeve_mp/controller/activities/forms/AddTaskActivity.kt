@@ -63,8 +63,6 @@ class AddTaskActivity : BaseActivity(),
         tbtnSat = findViewById(R.id.tbtn_sat)
 
         llRepeatsOn.visibility = View.INVISIBLE
-        mInitSpinnerAction()
-        mInitSpinnerOccurrence()
     }
 
     override fun bindData() {
@@ -74,6 +72,8 @@ class AddTaskActivity : BaseActivity(),
         mNewTasks = intent.getSerializableExtra(getString(R.string.EDIT_PLANT_TASKS)) as ArrayList<Task>?
         mOldTasks = intent.getSerializableExtra(getString(R.string.EDIT_PLANT_OLD_TASKS)) as ArrayList<String>?
         mDisplayDateInBtn()
+        mInitSpinnerAction()
+        mInitSpinnerOccurrence()
     }
 
     override fun bindActions() {
