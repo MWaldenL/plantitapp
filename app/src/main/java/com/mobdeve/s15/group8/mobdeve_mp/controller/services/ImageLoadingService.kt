@@ -17,15 +17,13 @@ object ImageLoadingService {
                 .into(imageView)
             return
         }
-        val imgFile = File(plant.filePath)
-        val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-        imageView.setImageBitmap(bmp)
+        loadImageLocal(plant.filePath, context, imageView)
+//        val imgFile = File(plant.filePath)
+//        val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
+//        imageView.setImageBitmap(bmp)
     }
 
     fun loadImageLocal(filename: String, context: Context, imageView: ImageView) {
-        Glide.with(context)
-            .load("file:$filename")
-            .thumbnail(0.5f)
-            .into(imageView)
+        Glide.with(context).load("file:$filename").into(imageView)
     }
 }
