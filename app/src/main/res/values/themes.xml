@@ -128,7 +128,7 @@
     </style>
 
     <style name="Widget.MOBDEVEMP.IconBtnColorless" parent="Widget.AppCompat.ImageButton">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
         <item name="android:tint">@color/primary_color</item>
         <item name="android:padding">4dp</item>
     </style>
