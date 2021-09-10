@@ -215,8 +215,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     }
 
     private fun mShowOrHideAddTaskBtn() {
-        if (mPlantDataEditable.tasks.size + mNewTasks.size - mDeletedTasks.size
-            >= resources.getStringArray(R.array.actions_array).size) {
+        if (rvTasks.adapter!!.itemCount >= resources.getStringArray(R.array.actions_array).size) {
             ibtnAddTask.visibility = View.GONE
         } else {
             ibtnAddTask.visibility = View.VISIBLE
