@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import java.io.File
@@ -18,12 +19,12 @@ object ImageLoadingService {
             return
         }
         loadImageLocal(plant.filePath, context, imageView)
-//        val imgFile = File(plant.filePath)
-//        val bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-//        imageView.setImageBitmap(bmp)
     }
 
     fun loadImageLocal(filename: String, context: Context, imageView: ImageView) {
-        Glide.with(context).load("file:$filename").into(imageView)
+        Glide.with(context)
+            .load("file:$filename")
+            .apply(RequestOptions().override(600, 600).centerCrop())
+            .into(imageView)
     }
 }
