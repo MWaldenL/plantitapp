@@ -35,11 +35,10 @@
 
             <ImageButton
                 android:id="@+id/ibtn_profile"
+                style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:foreground="?selectableItemBackground"
                 android:src="@drawable/ic_profile_24"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_dashboard_header"
                 app:layout_constraintEnd_toEndOf="parent"

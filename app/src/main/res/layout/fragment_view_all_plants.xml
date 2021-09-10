@@ -62,19 +62,17 @@
 
                     <ImageButton
                         android:id="@+id/ib_gridview"
+                        style="@style/Widget.MOBDEVEMP.IconBtnColorless"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_marginEnd="8dp"
-                        android:background="#00FFFFFF"
-                        android:foreground="?selectableItemBackground"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_alive"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toEndOf="@+id/tv_alive"
                         app:layout_constraintTop_toTopOf="@+id/tv_alive"
                         app:srcCompat="@drawable/ic_bento_24"
-                        app:tint="@color/primary_color"
                         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
