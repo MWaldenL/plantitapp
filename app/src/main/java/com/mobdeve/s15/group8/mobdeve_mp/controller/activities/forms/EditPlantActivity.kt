@@ -282,11 +282,14 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             PlantRepository.taskList.remove(task)
         }
 
-        try {
-            CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
-            CloudinaryService.uploadToCloud(mPhotoFilename, mPlantData.id)
-        } catch (err: Error) {
-            MediaManager.init(this)
+        if (mPlantData.filePath != mPhotoFilename) {
+            Log.d("CAM", "image changed")
+            try {
+                CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
+                CloudinaryService.uploadToCloud(mPhotoFilename, mPlantData.id)
+            } catch (err: Error) {
+                MediaManager.init(this)
+            }
         }
 
         val index = PlantRepository.plantList.indexOf(mPlantData)
