@@ -42,10 +42,10 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     private lateinit var etPlantNickname: EditText
     private lateinit var tvErrName: TextView
     private lateinit var tvErrNickname: TextView
-    private lateinit var mPhotoFilename: String
-    private lateinit var mTempPhotoFilename: String
     private lateinit var mPlantData: Plant
     private lateinit var mPlantDataEditable: Plant
+    private var mPhotoFilename = ""
+    private var mTempPhotoFilename = ""
     private var mOldNickname = "NULL"
     private var mFirstTime = true
     private val mNewTasks: ArrayList<Task> = arrayListOf()
