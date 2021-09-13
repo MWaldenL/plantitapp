@@ -25,7 +25,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
@@ -92,7 +91,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             mPhotoFilename = mTempPhotoFilename
-            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
+//            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
+            ImageLoadingService.loadImage(mPhotoFilename, mPlantData.imageUrl, this, ivPlant)
         }
     }
 
@@ -125,7 +125,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         val tasks = TaskService.findTasksByPlantId(id)
 
         mPhotoFilename = filePath
-        ImageLoadingService.loadImage(mPlantData, this, ivPlant)
+        ImageLoadingService.loadImage(filePath, imageUrl, this, ivPlant)
 
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
