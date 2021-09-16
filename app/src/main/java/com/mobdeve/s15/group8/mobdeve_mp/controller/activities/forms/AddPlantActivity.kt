@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudinary.android.MediaManager
@@ -95,7 +94,10 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
         if (result.resultCode == RESULT_OK) { // fetch bitmap and show image to user
             groupNoPic.visibility = View.GONE
             ivPlant.visibility = View.VISIBLE
-            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
+            ImageLoadingService.loadImage(
+                filePath=mPhotoFilename,
+                context=this,
+                imageView=ivPlant)
         }
     }
     override val layoutResourceId: Int = R.layout.activity_add_plant

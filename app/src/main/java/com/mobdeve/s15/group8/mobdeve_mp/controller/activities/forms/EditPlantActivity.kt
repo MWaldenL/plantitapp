@@ -25,7 +25,6 @@ import com.mobdeve.s15.group8.mobdeve_mp.controller.services.CloudinaryService
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.ImageLoadingService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.*
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
@@ -92,7 +91,8 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
     private val cameraLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             mPhotoFilename = mTempPhotoFilename
-            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
+//            ImageLoadingService.loadImageLocal(mPhotoFilename, this, ivPlant)
+            ImageLoadingService.loadImage(mPhotoFilename, mPlantData.imageUrl, this, ivPlant)
         }
     }
 
@@ -125,7 +125,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
         val tasks = TaskService.findTasksByPlantId(id)
 
         mPhotoFilename = filePath
-        ImageLoadingService.loadImage(mPlantData, this, ivPlant)
+        ImageLoadingService.loadImage(filePath, imageUrl, this, ivPlant)
 
         etPlantName.setText(name)
         etPlantNickname.setText(nickname)
@@ -238,9 +238,13 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
 
         mPlantDataEditable.name = etPlantName.text.toString().trim()
         mPlantDataEditable.nickname = etPlantNickname.text.toString().trim()
-        mPlantDataEditable.filePath = mPhotoFilename
-        mPlantDataEditable.imageUrl = ""
+        if (mPlantData.filePath !== mPhotoFilename) {
+            Log.d("MPEditPlant", "changed filename")
+            mPlantDataEditable.filePath = mPhotoFilename
+        }
+//        mPlantDataEditable.imageUrl = ""
 
+        // Update the changed plant fields in firebase
         DBService.updateDocument(
             F.plantsCollection,
             mPlantData.id,
@@ -252,6 +256,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             )
         )
 
+        // Update the tasks in firebase
         for (task in mNewTasks) {
             DBService.addDocument(
                 F.tasksCollection,
@@ -268,22 +273,21 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
                     "weeklyRecurrence" to task.weeklyRecurrence
                 )
             )
-
             PlantRepository.taskList.add(task)
         }
 
+        // Delete tasks from firebase and locally
         for (taskID in mDeletedTasks) {
             DBService.deleteDocument(
                 F.tasksCollection,
                 taskID
             )
-
             val task = TaskService.findTaskById(taskID)
             PlantRepository.taskList.remove(task)
         }
 
+        // Upload image to cloud only if it has been changed
         if (mPlantData.filePath != mPhotoFilename) {
-            Log.d("CAM", "image changed")
             try {
                 CloudinaryService.deleteFromCloud(mPlantData.imageUrl)
                 CloudinaryService.uploadToCloud(mPhotoFilename, mPlantData.id)
@@ -292,6 +296,7 @@ class EditPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedList
             }
         }
 
+        // Prepare to send updated data back to plant view
         val index = PlantRepository.plantList.indexOf(mPlantData)
         PlantRepository.plantList[index] = mPlantDataEditable
 

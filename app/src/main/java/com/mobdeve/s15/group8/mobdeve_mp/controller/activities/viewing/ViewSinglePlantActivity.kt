@@ -166,7 +166,11 @@ class ViewSinglePlantActivity : BaseActivity(),
             ibtnRevivePlant.visibility = View.GONE
         }
 
-        ImageLoadingService.loadImage(mPlantData, this, ivPlant)
+        ImageLoadingService.loadImage(
+            filePath=mPlantData.filePath,
+            imageUrl=mPlantData.imageUrl,
+            context=this,
+            imageView=ivPlant)
 
         val size = journal.size
         mJournalLimited.clear()

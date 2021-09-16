@@ -34,33 +34,6 @@ object CameraService {
         return photoFile.absolutePath
     }
 
-    fun getBitmap(filename: String, contentResolver: ContentResolver): Bitmap? {
-        mReduceImageQuality(filename)
-        val uri = Uri.fromFile(File(filename))
-        return try {
-            if (Build.VERSION.SDK_INT < 28) {
-                MediaStore.Images.Media.getBitmap(contentResolver, uri)
-            } else {
-                val source = ImageDecoder.createSource(contentResolver, uri)
-                val res = ImageDecoder.decodeBitmap(source)
-                Log.d("MPCameraService", "$res")
-                res
-            }
-        } catch(e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    private fun mReduceImageQuality(filename: String) {
-        val bm = BitmapFactory.decodeFile(filename)
-        val file = File(filename)
-        file.createNewFile()
-        val fos = FileOutputStream(file)
-        bm.compress(Bitmap.CompressFormat.JPEG, 20, fos)
-        fos.close()
-    }
-
     private fun mCreateImageFile(context: Context): File? {
         val timeStamp = DateTimeService.getCurrentDateCal().timeInMillis
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
