@@ -41,11 +41,11 @@ class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             }
 
             tvPlantTask.setTextColor(
-                ResourcesCompat.getColor(itemView.resources, R.color.primary_color, null))
+                ResourcesCompat.getColor(itemView.resources, R.color.gray, null))
             ivPlantTaskIcon.setColorFilter(
                 ResourcesCompat.getColor(itemView.resources, R.color.gray, null))
             cvPlantTaskItem.setCardBackgroundColor(
-                ResourcesCompat.getColor(itemView.resources, R.color.dark_gray, null))
+                ResourcesCompat.getColor(itemView.resources, R.color.light_gray, null))
             cvPlantTaskItem.isClickable = false
             cvPlantTaskItem.foreground = null
         } else if (today.time == task.lastCompleted) {

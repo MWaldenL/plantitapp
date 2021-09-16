@@ -146,7 +146,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="32dp"
                             android:text="@string/task_header"
                             android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                             android:textColor="@color/primary_color"
@@ -187,7 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="32dp"
                             android:text="@string/journal_header"
                             android:textAppearance="@style/TextAppearance.MOBDEVEMP.BodyLarger"
                             android:textColor="@color/primary_color"
@@ -195,75 +195,57 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cv_journal_wrapper"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_height="match_parent"
                             android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            app:cardBackgroundColor="@color/light_gray"
-                            app:cardCornerRadius="10dp"
-                            app:cardElevation="0dp"
-                            app:cardPreventCornerOverlap="true"
-                            app:cardUseCompatPadding="false"
-                            app:contentPaddingBottom="8dp"
-                            app:contentPaddingLeft="16dp"
-                            app:contentPaddingRight="16dp"
-                            app:contentPaddingTop="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_journal_header">
 
-                            <androidx.constraintlayout.widget.ConstraintLayout
+                            <TextView
+                                android:id="@+id/tv_single_plant_no_journal"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="64dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="64dp"
+                                android:layout_marginBottom="16dp"
+                                android:gravity="center"
+                                android:text="You do not have any journal entries yet for this plant. Add one now."
+                                android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
+                                android:textStyle="italic"
+                                app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/btn_view_all"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/source_sans_pro"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:text="@string/view_all_button"
+                                android:textColor="@color/primary_color"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:ignore="TouchTargetSizeCheck" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerview_all_journal"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"
+                                android:overScrollMode="never"
+                                app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                                <TextView
-                                    android:id="@+id/tv_single_plant_no_journal"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="16dp"
-                                    android:layout_marginBottom="16dp"
-                                    android:gravity="center"
-                                    android:text="You do not have any journal entries yet for this plant. Add one now."
-                                    android:textAppearance="@style/TextAppearance.MOBDEVEMP.Body"
-                                    android:textStyle="italic"
-                                    app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <Button
-                                    android:id="@+id/btn_view_all"
-                                    style="@style/Widget.AppCompat.Button.Borderless"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/source_sans_pro"
-                                    android:insetTop="0dp"
-                                    android:insetBottom="0dp"
-                                    android:text="@string/view_all_button"
-                                    android:textColor="@color/primary_color"
-                                    android:textStyle="bold"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    tools:ignore="TouchTargetSizeCheck" />
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/recyclerview_all_journal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:overScrollMode="never"
-                                    app:layout_constraintBottom_toTopOf="@+id/btn_view_all"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </androidx.cardview.widget.CardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <ImageButton
                             android:id="@+id/ibtn_add_journal"

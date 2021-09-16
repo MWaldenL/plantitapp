@@ -58,9 +58,9 @@ object DateTimeService {
                 var minDays = 7
                 if (weeklyRecurrence != null) {
                     for (dayOfWeek: Int in weeklyRecurrence) {
-                        val days = dayOfWeek + 7 - currDayOfWeek
-                        if (days < minDays)
-                            minDays = days
+                        var days = dayOfWeek + 7 - currDayOfWeek
+                        if (days > 7) days %= 7
+                        if (days < minDays) minDays = days
                     }
                 }
                 nextDue.add(Calendar.DATE, minDays)
@@ -84,6 +84,7 @@ object DateTimeService {
             "Day" ->
                 cal.add(Calendar.DATE, -taskRepeat)
             "Week" -> {
+                Log.d("RECURRENCE", "weekly daw")
                 // get current day of week (1 = Sunday, and so on)
                 val currCal = Calendar.getInstance()
                 currCal.time = currDate
@@ -94,12 +95,13 @@ object DateTimeService {
                 if (weeklyRecurrence != null) {
                     for (dayOfWeek: Int in weeklyRecurrence) {
                         var days = dayOfWeek - currDayOfWeek
-                        if (days > 0) days -= 7
+                        if (days >= 0) days -= 7
                         if (days > maxDays) maxDays = days
                     }
                 }
 
                 cal.add(Calendar.DATE, maxDays)
+                Log.d("RECURRENCE", "result: ${cal}")
             }
             "Month" ->
                 cal.add(Calendar.MONTH, -taskRepeat)
