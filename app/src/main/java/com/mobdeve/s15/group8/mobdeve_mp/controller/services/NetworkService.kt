@@ -9,6 +9,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 class NetworkService(context: Context): LiveData<Boolean>() {
@@ -60,7 +61,11 @@ class NetworkService(context: Context): LiveData<Boolean>() {
     }
 
     fun unregisterCallback() {
-        mConnectivityManager.unregisterNetworkCallback(mNetworkCallback)
+        try{
+            mConnectivityManager.unregisterNetworkCallback(mNetworkCallback)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        }
     }
 
     private val networkReceiver = object: BroadcastReceiver() {
