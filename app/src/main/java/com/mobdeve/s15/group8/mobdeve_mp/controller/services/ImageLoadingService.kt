@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
@@ -51,6 +52,7 @@ object ImageLoadingService {
     private fun mLoadImageRemote(imageUrl: String, context: Context, imageView: ImageView) {
         Glide.with(context)
             .load(imageUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.bg_img_temp)
             .into(imageView)
     }
@@ -58,6 +60,7 @@ object ImageLoadingService {
     private fun mLoadImageLocal(filePath: String, context: Context, imageView: ImageView) {
         Glide.with(context)
             .load("file:${filePath}")
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .apply(RequestOptions().override(480, 480).centerCrop())
             .placeholder(R.drawable.bg_img_temp)
             .into(imageView)
