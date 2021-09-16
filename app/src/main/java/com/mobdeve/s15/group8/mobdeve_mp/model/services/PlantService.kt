@@ -44,37 +44,34 @@ object PlantService {
     }
 
     fun deleteAllPlants(justDead: Boolean) {
-        val toDelete = if (justDead) PlantRepository.plantList.filter { p -> p.death } else PlantRepository.plantList
+        if (justDead) {
+            val toDelete = PlantRepository.plantList.filter { p -> p.death }
 
-        for (plant in toDelete) {
-            delete(plant)
-        }
+            for (plant in toDelete) {
+                deleteFromCloudDB(plant)
+                PlantRepository.deletePlant(plant)
+            }
+        } else {
+            for (plant in PlantRepository.plantList) {
+                deleteFromCloudDB(plant)
+            }
 
-        if (!justDead) // to clean
             PlantRepository.resetData()
+        }
     }
 
-    private fun delete(plant: Plant) {
-        CloudinaryService.deleteFromCloud(plant.imageUrl)
-
-        // delete from db
-        DBService.deleteDocument(
-            F.plantsCollection,
-            plant.id
-        )
-
-        // delete from local repo
-        PlantRepository.plantList.remove(plant)
-
-        // delete plant's tasks
+    private fun deleteFromCloudDB(plant: Plant) {
         for (taskId in plant.tasks) {
-            // remove from local
-            PlantRepository.taskList.remove(TaskService.findTaskById(taskId))
-            // remove from db
             DBService.deleteDocument(
                 F.tasksCollection,
                 taskId
             )
         }
+
+        CloudinaryService.deleteFromCloud(plant.imageUrl)
+        DBService.deleteDocument(
+            F.plantsCollection,
+            plant.id
+        )
     }
 }

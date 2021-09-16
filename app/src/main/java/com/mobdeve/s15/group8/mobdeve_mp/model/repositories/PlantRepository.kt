@@ -9,6 +9,7 @@ import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Journal
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.TaskService
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,6 +78,14 @@ object PlantRepository: CoroutineScope {
     fun resetData() {
         plantList = ArrayList()
         taskList = ArrayList()
+    }
+
+    fun deletePlant(plant: Plant) {
+        plantList.remove(plant)
+
+        for (task in plant.tasks) {
+            taskList.remove(TaskService.findTaskById(task))
+        }
     }
 
     private fun mGetPlantData(docs: QuerySnapshot?) {
