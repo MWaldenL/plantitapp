@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MOBDEVEMP"
         android:windowSoftInputMode="stateAlwaysHidden"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:fullBackupContent">
         <activity
             android:name=".controller.activities.viewing.ProfileActivity"
