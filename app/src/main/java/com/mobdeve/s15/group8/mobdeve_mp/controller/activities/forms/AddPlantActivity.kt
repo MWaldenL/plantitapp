@@ -63,22 +63,24 @@ class AddPlantActivity : BaseActivity(), AddPlantTasksAdapter.OnTaskDeletedListe
                     getString(R.string.ADD_TASK_REPEAT), 0) as Int
                 val weeklyRecurrence = result.data?.getIntegerArrayListExtra(getString(R.string.ADD_TASK_WEEKLY_RECURRENCE))
 
-                Log.d("RECURRENCE", weeklyRecurrence.toString())
+                val lastCompleted = DateTimeService.getLastDueDate(
+                    occurrence,
+                    repeat,
+                    Date(startDate!!),
+                    weeklyRecurrence
+                )
+
+                Log.d("RECURRENCE", "last completed: ${lastCompleted}")
 
                 val newTask = Task(
                     id = UUID.randomUUID().toString(),
                     plantId = mPlantId,
                     userId = F.auth.uid!!,
                     action = action,
-                    startDate = Date(startDate!!),
+                    startDate = Date(startDate),
                     occurrence = occurrence,
                     repeat = repeat,
-                    lastCompleted = DateTimeService.getLastDueDate(
-                        occurrence,
-                        repeat,
-                        Date(startDate),
-                        weeklyRecurrence
-                    ).time,
+                    lastCompleted = lastCompleted.time,
                     weeklyRecurrence = weeklyRecurrence!!
                 )
                 NewPlantInstance.addTask(newTask)
