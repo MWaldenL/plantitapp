@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.SplashActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeleteDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
@@ -151,6 +152,8 @@ class ProfileActivity :
 
     override fun onDeleteConfirm(dialog: DialogFragment, justDead: Boolean) {
         PlantService.deleteAllPlants(justDead)
+        startActivity(Intent(this, SplashActivity::class.java))
+        finish()
     }
 
     override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String) {
