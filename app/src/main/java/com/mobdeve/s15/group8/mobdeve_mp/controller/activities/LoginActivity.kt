@@ -1,6 +1,8 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -14,17 +16,23 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.F
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.GoogleSingleton
 import com.mobdeve.s15.group8.mobdeve_mp.R
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.DBCallback
-import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
-import com.mobdeve.s15.group8.mobdeve_mp.model.services.DateTimeService
-import java.text.SimpleDateFormat
+import com.mobdeve.s15.group8.mobdeve_mp.model.services.UserService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
+import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : AppCompatActivity(), DBCallback {
+class LoginActivity : AppCompatActivity(), CoroutineScope {
     private lateinit var btnLogin: SignInButton
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    private lateinit var mSharedPreferences: SharedPreferences
+    private lateinit var mEditor: SharedPreferences.Editor
+
+    override val coroutineContext: CoroutineContext = Dispatchers.IO + Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +40,9 @@ class LoginActivity : AppCompatActivity(), DBCallback {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener { googleLauncher.launch(mGoogleSignInClient.signInIntent) }
-        PlantRepository.setOnDataFetchedListener(this)
+
+        mSharedPreferences = this.getSharedPreferences(getString(R.string.SP_NAME), Context.MODE_PRIVATE)
+        mEditor = mSharedPreferences.edit()
     }
 
     private val googleLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -41,7 +51,7 @@ class LoginActivity : AppCompatActivity(), DBCallback {
             try { // then with firebase
                 val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
                 mFirebaseAuthWithGoogle(account?.idToken!!)
-            } catch (e: ApiException) { // possibly because
+            } catch (e: ApiException) {
                 Log.e("TAG","signInResult:failed code=" + e.statusCode)
             }
         }
@@ -53,40 +63,22 @@ class LoginActivity : AppCompatActivity(), DBCallback {
             .signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) { // get the completed user object
-                    val user = F.auth.currentUser
-                    val userId = user?.uid.toString()
-                    val userDoc = F.usersCollection.document(userId)
-                    val now = DateTimeService.getCurrentDateTime()
-                    userDoc.get().addOnSuccessListener { doc -> // if the user doesn't exist yet in firestore,
-                        if (doc.data == null) {
-                            DBService.addDocument( // create a new user document
-                                collection= F.usersCollection,
-                                id=userId,
-                                data=hashMapOf(
-                                    "name" to user?.displayName,
-                                    "dateJoined" to now,
-                                    "plants" to ArrayList<String>(),
-                                    "feedbackStop" to false,
-                                    "feedbackLastSent" to now,
-                                    "pushAsked" to false
-                                )
+                    val userId = F.auth.currentUser!!.uid
+                    launch(coroutineContext) {
+                        val doc = UserService.getUserById(userId)
+                        if (doc?.data == null) {
+                            UserService.addUser(userId)
+
+                            mEditor.putInt(
+                                getString(R.string.SP_FEED_TIME_KEY),
+                                TimeUnit.HOURS.convert(Date().time, TimeUnit.MILLISECONDS).toInt()
                             )
+                            mEditor.apply()
                         }
                     }
-                    PlantRepository.getData() // fetch the user's plants
+                    startActivity(Intent(this@LoginActivity, SplashActivity::class.java))
+                    finish()
                 }
             }
-    }
-
-    override fun onDataRetrieved(doc: MutableMap<String, Any>, id: String, type: String) {
-    }
-
-    override fun onDataRetrieved(docs: ArrayList<MutableMap<String, Any>>, type: String) {
-    }
-
-    override fun onComplete(tag: String) {
-        PlantRepository.setOnDataFetchedListener(null)
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        finish()
     }
 }

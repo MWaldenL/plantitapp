@@ -31,25 +31,11 @@
         android:windowSoftInputMode="stateAlwaysHidden"
         tools:replace="android:fullBackupContent">
         <activity
-            android:name=".controller.activities.EditPlantActivity"
+            android:name=".controller.activities.viewing.ProfileActivity"
             android:exported="true" />
-        <activity
-            android:name=".controller.activities.AddNewJournalActivity"
-            android:exported="true" />
-        <activity
-            android:name=".controller.activities.ViewAllJournalsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".controller.activities.ViewSinglePlantActivity"
-            android:exported="true" />
-        <activity android:name=".controller.activities.fragments.ViewAllPlantsFragment" />
-        <activity android:name=".controller.activities.LoginActivity" />
-        <activity android:name=".controller.activities.fragments.DashboardFragment" />
-        <activity android:name=".controller.activities.AddPlantActivity" />
-        <activity android:name=".controller.activities.AddTaskActivity" />
-        <activity android:name=".controller.activities.MainActivity" />
         <activity
             android:name=".controller.activities.SplashActivity"
+            android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,6 +43,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".controller.activities.forms.EditPlantActivity"
+            android:exported="true" />
+        <activity
+            android:name=".controller.activities.forms.AddNewJournalActivity"
+            android:exported="true" />
+        <activity
+            android:name=".controller.activities.viewing.ViewAllJournalsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".controller.activities.viewing.ViewSinglePlantActivity"
+            android:exported="true" />
+        <activity android:name=".controller.activities.fragments.ViewAllPlantsFragment" />
+        <activity
+            android:name=".controller.activities.LoginActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true" />
+        <activity android:name=".controller.activities.fragments.DashboardFragment" />
+        <activity android:name=".controller.activities.forms.AddPlantActivity" />
+        <activity android:name=".controller.activities.forms.AddTaskActivity" />
+        <activity android:name=".controller.activities.MainActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -70,7 +77,7 @@
 
         <meta-data
             android:name="CLOUDINARY_URL"
-            android:value="cloudinary://dnoqllk3h" />
+            android:value="cloudinary://${API_KEY}:${API_SECRET}@${CLOUD_NAME}" />
 
         <receiver android:name=".controller.receivers.AlarmReceiver" />
     </application>

@@ -1,16 +1,17 @@
 package com.mobdeve.s15.group8.mobdeve_mp.controller.adapters
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseExpandableListAdapter
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
+import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Task
 import com.mobdeve.s15.group8.mobdeve_mp.model.services.DBService
@@ -69,7 +70,7 @@ class DashboardTaskGroupAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View {
-        val dateToday = DateTimeService.getCurrentDateWithoutTime().time
+        val dateToday = DateTimeService.getCurrentDateWithoutTime()
         val groupListText = getGroup(groupPosition) as String
         var cv = convertView
         if (cv == null) {
@@ -106,7 +107,7 @@ class DashboardTaskGroupAdapter(
         for (plantTask in taskMaps[taskKeys[groupPosition]]!!) {
             val task = plantTask["taskId"]?.let { TaskService.findTaskById(it) }
             if (task != null)
-                if (task.lastCompleted != dateToday)
+                if (task.lastCompleted != dateToday.time)
                     plantsLeft += 1
         }
         if (plantsLeft > 0) {
@@ -114,6 +115,48 @@ class DashboardTaskGroupAdapter(
             tvPlantsLeft.text = plantsLeft.toString()
         } else {
             tvPlantsLeft.visibility = View.INVISIBLE
+        }
+
+        // Mark all as done
+        val ibtnMarkAllDone: ImageButton = cv.findViewById(R.id.ibtn_mark_all_done)
+        ibtnMarkAllDone.isFocusable = false
+        if (plantsLeft > 1) {
+            ibtnMarkAllDone.visibility = View.VISIBLE
+        } else {
+            ibtnMarkAllDone.visibility = View.GONE
+        }
+        ibtnMarkAllDone.setOnClickListener {
+            val alertDialog: AlertDialog? = mContext.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton("Yes"
+                    ) { _, _ ->
+                        for (plantTask in taskMaps[taskKeys[groupPosition]]!!) {
+                            val task = plantTask["taskId"]?.let { t -> TaskService.findTaskById(t) }
+                            if (task != null) {
+                                // update repo
+                                task.lastCompleted = dateToday.time
+                                // update db
+                                DBService.updateDocument(
+                                    collection = F.tasksCollection,
+                                    id = task.id,
+                                    field = "lastCompleted",
+                                    value = dateToday.time
+                                )
+                            }
+                        }
+                        notifyDataSetChanged()
+                    }
+                    setNegativeButton("No"
+                    ) { _, _ -> }
+                }
+
+                builder.setMessage("All plants in this task will be checked.")
+                    .setTitle("Mark all as done?")
+
+                builder.create()
+            }
+            alertDialog?.show()
         }
 
         return cv
@@ -174,11 +217,15 @@ class DashboardTaskGroupAdapter(
                     field = "lastCompleted",
                     value = dateToday.time
                 )
+
+                Log.d("hello", "checked this")
+                NotificationService.sendCompleteNotification(mContext)
             } else {
                 val lastDue = DateTimeService.getLastDueDate(
                     task.occurrence,
                     task.repeat,
-                    dateToday.time
+                    dateToday.time,
+                    task.weeklyRecurrence
                 ).time
                 // update repo
                 task.lastCompleted = lastDue

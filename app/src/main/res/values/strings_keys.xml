@@ -8,8 +8,11 @@
     <string name="NICKNAME_KEY">NICKNAME_KEY</string>
     <string name="JOURNAL_KEY">JOURNAL_KEY</string>
     <string name="ID_KEY">ID_KEY</string>
+    <string name="EDIT_PLANT_TASKS">EDIT_PLANT_DATA</string>
+    <string name="EDIT_PLANT_OLD_TASKS">EDIT_PLANT_OLD_TASKS</string>
     <string name="ADD_TASK_ACTION">ADD_TASK_ACTION</string>
     <string name="ADD_TASK_START_DATE">ADD_TASK_START_DATE</string>
     <string name="ADD_TASK_OCCURRENCE">ADD_TASK_OCCURRENCE</string>
     <string name="ADD_TASK_REPEAT">ADD_TASK_REPEAT</string>
+    <string name="ADD_TASK_WEEKLY_RECURRENCE">ADD_TASK_WEEKLY_RECURRENCE</string>
 </resources>

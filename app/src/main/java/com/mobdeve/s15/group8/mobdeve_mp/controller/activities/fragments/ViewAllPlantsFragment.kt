@@ -3,34 +3,38 @@ package com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.adapters.PlantListAdapter
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.NewPlantCallback
-import com.mobdeve.s15.group8.mobdeve_mp.controller.interfaces.RefreshCallback
+import com.mobdeve.s15.group8.mobdeve_mp.controller.callbacks.NewPlantCallback
 import com.mobdeve.s15.group8.mobdeve_mp.model.dataobjects.Plant
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.NewPlantInstance
 import com.mobdeve.s15.group8.mobdeve_mp.model.repositories.PlantRepository
 import com.mobdeve.s15.group8.mobdeve_mp.singletons.LayoutType
 
-class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
+class ViewAllPlantsFragment: Fragment(), NewPlantCallback {
     private lateinit var ibGridView: ImageButton
     private lateinit var recyclerViewAlive: RecyclerView
     private lateinit var recyclerViewDead: RecyclerView
-    private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
     private lateinit var plantAliveAdapter: PlantListAdapter
     private lateinit var plantDeadAdapter: PlantListAdapter
+    private lateinit var tvAlive: TextView
+    private lateinit var tvDead: TextView
+    private lateinit var clNoPlants: ConstraintLayout
+    private lateinit var ivNoPLantsImage: ImageView
+
     private var mPlantListViewType = LayoutType.GRID_VIEW.ordinal // default to grid view
     private var mAlive = arrayListOf<Plant>()
     private var mDead = arrayListOf<Plant>()
@@ -48,11 +52,12 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         ibGridView = view.findViewById(R.id.ib_gridview)
         recyclerViewAlive = view.findViewById(R.id.recyclerview_plant)
         recyclerViewDead = view.findViewById(R.id.recyclerview_dead)
-        swipeToRefreshLayout = view.findViewById(R.id.sr_layout_view_all_plants)
+        tvAlive = view.findViewById(R.id.tv_alive)
+        tvDead = view.findViewById(R.id.tv_dead)
+        clNoPlants = view.findViewById(R.id.cl_no_plants)
 
         // Setup listeners
         NewPlantInstance.setOnNewPlantListener(this) // listen for new plant added
-        PlantRepository.setRefreshedListener(this) // listen for data fetch complete
         ibGridView.setOnClickListener { mToggleLayout() }
 
         // Setup shared preferences
@@ -62,7 +67,9 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         mEditor = mSharedPref.edit()
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), 0)
 
-        swipeToRefreshLayout.setOnRefreshListener { PlantRepository.getData() }
+        ibGridView.setImageResource(if (mPlantListViewType == LayoutType.LINEAR_VIEW.ordinal)
+            R.drawable.ic_bento_24 else
+            R.drawable.ic_card_24)
         mRefreshRecyclerViews()
     }
 
@@ -93,7 +100,6 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
 
     override fun onStart() {
         super.onStart()
-        Log.d("HELLO", "onStart - ${mPlantListViewType}")
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
         mDead.clear()
         mAlive.clear()
@@ -103,13 +109,15 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
             else
                 mAlive.add(plant)
         }
+
+        mSetViews()
         onPlantAdded()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("HELLO", "onResume - ${mPlantListViewType}")
         mPlantListViewType = mSharedPref.getInt(getString(R.string.SP_VIEW_KEY), mPlantListViewType)
+        mSetViews()
     }
 
     override fun onPlantAdded() {
@@ -117,7 +125,20 @@ class ViewAllPlantsFragment: Fragment(), NewPlantCallback, RefreshCallback {
         recyclerViewDead.adapter?.notifyDataSetChanged()
     }
 
-    override fun onRefreshSuccess() { // set refreshing to false para di spin ng spin nakakahilo
-        swipeToRefreshLayout.isRefreshing = false
+    private fun mSetViews() {
+        if (mDead.size == 0)
+            tvDead.visibility = View.GONE
+
+        if (mDead.size == 0 && mAlive.size == 0) {
+            tvAlive.visibility = View.INVISIBLE
+            ibGridView.visibility = View.INVISIBLE
+
+            clNoPlants.visibility = View.VISIBLE
+        } else {
+            tvAlive.visibility = View.VISIBLE
+            ibGridView.visibility = View.VISIBLE
+
+            clNoPlants.visibility = View.GONE
+        }
     }
 }
