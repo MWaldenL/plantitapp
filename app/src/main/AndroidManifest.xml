@@ -59,7 +59,6 @@
         <activity android:name=".controller.activities.fragments.ViewAllPlantsFragment" />
         <activity
             android:name=".controller.activities.LoginActivity"
-            android:excludeFromRecents="true"
             android:noHistory="true" />
         <activity android:name=".controller.activities.fragments.DashboardFragment" />
         <activity android:name=".controller.activities.forms.AddPlantActivity" />

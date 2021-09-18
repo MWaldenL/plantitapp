@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FieldValue
 import com.mobdeve.s15.group8.mobdeve_mp.R
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.BaseActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.LoginActivity
+import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.SplashActivity
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.AppFeedbackDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.activities.fragments.dialogs.DeleteDialogFragment
 import com.mobdeve.s15.group8.mobdeve_mp.controller.services.NotificationService
@@ -143,14 +144,22 @@ class ProfileActivity :
             PlantRepository.resetData()
             F.auth.signOut()
             GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
-            Log.d("Dashboard", "Logging out")
-            startActivity(Intent(this, LoginActivity::class.java))
+
+            // Proceed to login page and prevent zombie activities
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
             finish()
         }
     }
 
     override fun onDeleteConfirm(dialog: DialogFragment, justDead: Boolean) {
         PlantService.deleteAllPlants(justDead)
+        // Also prevent zombie activities here
+        val intent = Intent(this, SplashActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 
     override fun onFeedbackContinue(dialog: DialogFragment, feedbackRating: Int, feedbackComment: String) {
