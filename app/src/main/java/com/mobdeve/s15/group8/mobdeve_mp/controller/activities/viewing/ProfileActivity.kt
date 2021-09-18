@@ -144,15 +144,21 @@ class ProfileActivity :
             PlantRepository.resetData()
             F.auth.signOut()
             GoogleSignIn.getClient(this, GoogleSingleton.googleSigninOptions).signOut()
-            Log.d("Dashboard", "Logging out")
-            startActivity(Intent(this, LoginActivity::class.java))
+
+            // Proceed to login page and prevent zombie activities
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
             finish()
         }
     }
 
     override fun onDeleteConfirm(dialog: DialogFragment, justDead: Boolean) {
         PlantService.deleteAllPlants(justDead)
-        startActivity(Intent(this, SplashActivity::class.java))
+        // Also prevent zombie activities here
+        val intent = Intent(this, SplashActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
         finish()
     }
 
