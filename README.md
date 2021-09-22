@@ -6,7 +6,6 @@ A plant journaling Android application made with love for your botanical adventu
   <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304916/r7rbt5kfukdsoh3eni59.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
   <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304912/ngg9mjqllirkox8lz4d1.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
   <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304909/mejuossksufl70fsctfs.jpg" style="width: 200px;"/>&nbsp; &nbsp;
-  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304915/djgikjkrghnjl6kafhdx.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
 </div>
 
 Features:
