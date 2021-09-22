@@ -8,7 +8,7 @@ A plant journaling Android application made with love for your botanical adventu
   <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304909/mejuossksufl70fsctfs.jpg" style="width: 200px;"/>&nbsp; &nbsp;
 </div>
 
-Features:
+# Features:
 1. Adding a plant
 2. Viewing all plants 
 3. Daily plant care reminders
@@ -17,7 +17,7 @@ Features:
 6. Cloud sync
 
 In accomplishment of the subject, Introduction to Mobile Development (MOBDEVE). <br>
-Members:
+# Members:
 - Badulis, Keith
 - Lua, Matthew
 - Nill, Byron 
