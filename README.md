@@ -16,8 +16,9 @@ A plant journaling Android application made with love for your botanical adventu
 5. Plant diary
 6. Cloud sync
 
-In accomplishment of the subject, Introduction to Mobile Development (MOBDEVE). <br>
 # Members:
-- Badulis, Keith
-- Lua, Matthew
-- Nill, Byron 
+- [Badulis, Keith](www.github.com/keith-badulis) 
+- [Lua, Matthew](www.github.com/MWaldenL)
+- [Nill, Byron](https://github.com/byronnill)
+
+In accomplishment of the subject, Introduction to Mobile Development (MOBDEVE). <br>
