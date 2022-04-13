@@ -3,9 +3,9 @@ Tap into your inner Plantita! Make plant care a dazzle, not a hassle.
 A plant journaling Android application made with love for your botanical adventures. <br><br>
 
 <div style="display:flex"> 
-  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304916/r7rbt5kfukdsoh3eni59.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
-  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304912/ngg9mjqllirkox8lz4d1.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
-  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304909/mejuossksufl70fsctfs.jpg" style="width: 200px;"/>&nbsp; &nbsp;
+  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304916/plantitapp-github/r7rbt5kfukdsoh3eni59.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
+  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304912/plantitapp-github/ngg9mjqllirkox8lz4d1.jpg" style="width: 200px;"/>&nbsp; &nbsp; 
+  <img src="https://res.cloudinary.com/dnoqllk3h/image/upload/v1632304909/plantitapp-github/mejuossksufl70fsctfs.jpg" style="width: 200px;"/>&nbsp; &nbsp;
 </div>
 
 # Features:
